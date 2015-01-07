@@ -1,8 +1,5 @@
 package com.theastrologist.rest.domain;
 
-/**
- * Created by SAM on 07/01/2015.
- */
 public class HouseDecan extends Decan {
 
     private final House baseHouse;
@@ -11,11 +8,7 @@ public class HouseDecan extends Decan {
     public HouseDecan(Degree relativeDegree, House baseHouse) {
         super(relativeDegree);
         this.baseHouse = baseHouse;
-        this.relatedHouse = calculateRelatedHouse(relativeDegree, baseHouse);
-    }
-
-    private House calculateRelatedHouse(Degree relativeDegree, House baseHouse) {
-                return null;
+        this.relatedHouse = House.getHouse(calculateRelatedHouseOrSign(this.decanNumber, baseHouse.getHouseNumber()));
     }
 
     public static HouseDecan getDecan(Degree relativeDegree, House baseHouse) {
@@ -24,5 +17,9 @@ public class HouseDecan extends Decan {
 
     public House getRelatedHouse() {
         return relatedHouse;
+    }
+
+    public House getBaseHouse() {
+        return baseHouse;
     }
 }

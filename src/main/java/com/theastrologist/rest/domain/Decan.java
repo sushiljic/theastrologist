@@ -1,7 +1,5 @@
 package com.theastrologist.rest.domain;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-
 public abstract class Decan {
     protected int decanNumber;
     protected Degree relativeDegree;
@@ -21,5 +19,13 @@ public abstract class Decan {
 
     public int getDecanNumber() {
         return decanNumber;
+    }
+
+    protected int calculateRelatedHouseOrSign(int decanNumber, int baseHouseOrSign) {
+        int resultedHouseNumber = baseHouseOrSign + ((decanNumber - 1) * 4);
+        if(resultedHouseNumber > 12) {
+            resultedHouseNumber = resultedHouseNumber - 12;
+        }
+        return resultedHouseNumber;
     }
 }
