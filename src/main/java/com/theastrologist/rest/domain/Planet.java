@@ -3,7 +3,9 @@ package com.theastrologist.rest.domain;
 import swisseph.SweConst;
 
 /**
- * Created by SAM on 16/11/2014.
+ * @author SAM
+ * @since 16/11/2014.
+ * Enumération des différentes planètes et indicateurs stellaires
  */
 public enum Planet {
     ASCENDANT(-1),
@@ -20,7 +22,8 @@ public enum Planet {
     URANUS(SweConst.SE_URANUS),
     NEPTUNE(SweConst.SE_NEPTUNE),
     PLUTON(SweConst.SE_PLUTO),
-    NOEUD_NORD(SweConst.SE_MEAN_NODE),
+    NOEUD_NORD_MOYEN(SweConst.SE_MEAN_NODE),
+    NOEUD_SUD_MOYEN(0),
     LILITH_EXACTE(SweConst.SE_OSCU_APOG),
     LILITH_MOYENNE(SweConst.SE_MEAN_APOG);
 
