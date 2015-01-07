@@ -82,15 +82,15 @@ public class PlanetPositionTest {
 
 
         Assert.assertThat(degree.getDegree(), equalTo(261));
-        Assert.assertThat(degree.getMinutes(), equalTo(41));
+        Assert.assertThat(degree.getMinutes(), equalTo(14));
 
-        Assert.assertThat(planetPosition.getSign(), equalTo(Sign.GEMEAUX));
-        Assert.assertThat(degreeInSign.getDegree(), equalTo(11));
-        Assert.assertThat(degreeInSign.getMinutes(), equalTo(41));
+        Assert.assertThat(planetPosition.getSign(), equalTo(Sign.SAGITTAIRE));
+        Assert.assertThat(degreeInSign.getDegree(), equalTo(21));
+        Assert.assertThat(degreeInSign.getMinutes(), equalTo(14));
 
-        Assert.assertThat(planetPosition.getHouse(), equalTo(House.III));
-        Assert.assertThat(degreeInHouse.getDegree(), equalTo(29));
-        Assert.assertThat(degreeInHouse.getMinutes(), equalTo(54));
+        Assert.assertThat(planetPosition.getHouse(), equalTo(House.X));
+        Assert.assertThat(degreeInHouse.getDegree(), equalTo(9));
+        Assert.assertThat(degreeInHouse.getMinutes(), equalTo(27));
     }
 
 }
