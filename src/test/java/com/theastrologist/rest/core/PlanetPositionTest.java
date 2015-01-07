@@ -158,4 +158,26 @@ public class PlanetPositionTest {
         Assert.assertThat(degreeInHouse.getDegree(), equalTo(10));
         Assert.assertThat(degreeInHouse.getMinutes(), equalTo(28));
     }
+
+    @Test
+    public void testGetSaturnePosition() throws Exception {
+        PlanetPosition planetPosition = testSkyPosition.getPlanetPosition(Planet.SATURNE);
+        Assert.assertThat(planetPosition, notNullValue());
+
+        Degree degree = planetPosition.getDegree();
+        Degree degreeInSign = planetPosition.getDegreeInSign();
+        Degree degreeInHouse = planetPosition.getDegreeInHouse();
+
+
+        Assert.assertThat(degree.getDegree(), equalTo(235));
+        Assert.assertThat(degree.getMinutes(), equalTo(3));
+
+        Assert.assertThat(planetPosition.getSign(), equalTo(Sign.SCORPION));
+        Assert.assertThat(degreeInSign.getDegree(), equalTo(25));
+        Assert.assertThat(degreeInSign.getMinutes(), equalTo(3));
+
+        Assert.assertThat(planetPosition.getHouse(), equalTo(House.IX));
+        Assert.assertThat(degreeInHouse.getDegree(), equalTo(13));
+        Assert.assertThat(degreeInHouse.getMinutes(), equalTo(16));
+    }
 }
