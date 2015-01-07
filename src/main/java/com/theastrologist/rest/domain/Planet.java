@@ -23,7 +23,7 @@ public enum Planet {
     NEPTUNE(SweConst.SE_NEPTUNE),
     PLUTON(SweConst.SE_PLUTO),
     NOEUD_NORD_MOYEN(SweConst.SE_MEAN_NODE),
-    NOEUD_SUD_MOYEN(0),
+    NOEUD_SUD_MOYEN(-1),
     LILITH_EXACTE(SweConst.SE_OSCU_APOG),
     LILITH_MOYENNE(SweConst.SE_MEAN_APOG);
 

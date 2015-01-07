@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by SAM on 16/11/2014.
+ * @author SAM
+ * @since 16/11/2014.
+ * Classe permettant de calculer la position des planètes dans le ciel à une date donnée
  */
 public class SkyPosition {
 
@@ -76,6 +78,14 @@ public class SkyPosition {
                 planetPosition.setRetrograde(retrograde);
 
                 this.positionMap.put(planet, planetPosition);
+            } else if (planet == Planet.NOEUD_SUD_MOYEN) {
+                PlanetPosition noeudNord = this.positionMap.get(Planet.NOEUD_NORD_MOYEN);
+                Degree noeudSudDegree = CalcUtil.getOpposite(noeudNord.getDegree());
+
+                PlanetPosition planetPosition = createPlanetPosition(noeudSudDegree, ascendant.getDegree());
+                planetPosition.setRetrograde(true);
+
+                this.positionMap.put(planet, planetPosition);
             }
         }
     }
@@ -84,7 +94,7 @@ public class SkyPosition {
         int flags = 0;
         double[] cusps = new double[13];
         double[] acsc = new double[10];
-        int result = sw.swe_houses(sd.getJulDay(),
+        sw.swe_houses(sd.getJulDay(),
                 flags,
                 latitude.getBaseDegree(),
                 longitude.getBaseDegree(),
