@@ -1,9 +1,8 @@
 package com.theastrologist.rest.domain;
 
-/**
- * Created by SAM on 16/11/2014.
- */
 public class PlanetPosition {
+    private final SignDecan decanInSign;
+    private final HouseDecan decanInHouse;
     private Degree degree;
     private Sign sign;
     private House house;
@@ -16,7 +15,17 @@ public class PlanetPosition {
         this.sign = sign;
         this.house = house;
         this.degreeInSign = degreeInSign;
+        this.decanInSign = SignDecan.getDecan(degreeInSign, sign);
         this.degreeInHouse = degreeInHouse;
+        this.decanInHouse = HouseDecan.getDecan(degreeInHouse, house);
+    }
+
+    public SignDecan getDecanInSign() {
+        return decanInSign;
+    }
+
+    public HouseDecan getDecanInHouse() {
+        return decanInHouse;
     }
 
     public Degree getDegree() {
@@ -31,10 +40,6 @@ public class PlanetPosition {
         return sign;
     }
 
-    public void setSign(Sign sign) {
-        this.sign = sign;
-    }
-
     public House getHouse() {
         return house;
     }
@@ -47,16 +52,8 @@ public class PlanetPosition {
         return degreeInSign;
     }
 
-    public void setDegreeInSign(Degree degreeInSign) {
-        this.degreeInSign = degreeInSign;
-    }
-
     public Degree getDegreeInHouse() {
         return degreeInHouse;
-    }
-
-    public void setDegreeInHouse(Degree degreeInHouse) {
-        this.degreeInHouse = degreeInHouse;
     }
 
     public void setRetrograde(boolean retrograde) {

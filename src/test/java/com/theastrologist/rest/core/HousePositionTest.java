@@ -3,14 +3,14 @@ package com.theastrologist.rest.core;
 import com.theastrologist.rest.domain.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import util.CalcUtil;
 
 import java.util.TimeZone;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 public class HousePositionTest {
 
@@ -30,109 +30,177 @@ public class HousePositionTest {
     @Test
     public void testGetAsPosition() throws Exception {
         PlanetPosition asPosition = testSkyPosition.getPlanetPosition(Planet.ASCENDANT);
-        Assert.assertThat(asPosition, notNullValue());
+        assertThat(asPosition, notNullValue());
 
         Degree degree = asPosition.getDegree();
         Degree degreeInSign = asPosition.getDegreeInSign();
         Degree degreeInHouse = asPosition.getDegreeInHouse();
 
 
-        Assert.assertThat(degree.getDegree(), equalTo(341));
-        Assert.assertThat(degree.getMinutes(), equalTo(46));
+        assertThat(degree.getDegree(), equalTo(341));
+        assertThat(degree.getMinutes(), equalTo(46));
 
-        Assert.assertThat(asPosition.getSign(), equalTo(Sign.POISSONS));
-        Assert.assertThat(degreeInSign.getDegree(), equalTo(11));
-        Assert.assertThat(degreeInSign.getMinutes(), equalTo(46));
+        assertThat(asPosition.getSign(), equalTo(Sign.POISSONS));
+        assertThat(degreeInSign.getDegree(), equalTo(11));
+        assertThat(degreeInSign.getMinutes(), equalTo(46));
 
-        Assert.assertThat(asPosition.getHouse(), equalTo(House.I));
-        Assert.assertThat(degreeInHouse.getDegree(), equalTo(0));
-        Assert.assertThat(degreeInHouse.getMinutes(), equalTo(0));
+        assertThat(asPosition.getHouse(), equalTo(House.I));
+        assertThat(degreeInHouse.getDegree(), equalTo(0));
+        assertThat(degreeInHouse.getMinutes(), equalTo(0));
+    }
+
+    @Test
+    public void testGetAsPositionDecan() throws Exception {
+        PlanetPosition asPosition = testSkyPosition.getPlanetPosition(Planet.ASCENDANT);
+        assertThat(asPosition, notNullValue());
+
+        SignDecan decanInSign = asPosition.getDecanInSign();
+        HouseDecan decanInHouse = asPosition.getDecanInHouse();
+
+        assertThat(asPosition.getSign(), equalTo(Sign.POISSONS));
+        assertThat(decanInSign.getDecanNumber(), equalTo(2));
+        assertThat(decanInSign.getRelatedSign(), equalTo(Sign.CANCER));
+
+        assertThat(asPosition.getHouse(), equalTo(House.I));
+        assertThat(decanInHouse.getDecanNumber(), equalTo(1));
+        assertThat(decanInHouse.getRelatedHouse(), equalTo(House.I));
     }
 
     @Test
     public void testGetDsPosition() throws Exception {
         PlanetPosition asPosition = testSkyPosition.getPlanetPosition(Planet.DESCENDANT);
-        Assert.assertThat(asPosition, notNullValue());
+        assertThat(asPosition, notNullValue());
 
         Degree degree = asPosition.getDegree();
         Degree degreeInSign = asPosition.getDegreeInSign();
         Degree degreeInHouse = asPosition.getDegreeInHouse();
 
-        Assert.assertThat(degree.getDegree(), equalTo(161));
-        Assert.assertThat(degree.getMinutes(), equalTo(46));
+        assertThat(degree.getDegree(), equalTo(161));
+        assertThat(degree.getMinutes(), equalTo(46));
 
-        Assert.assertThat(asPosition.getSign(), equalTo(Sign.VIERGE));
-        Assert.assertThat(degreeInSign.getDegree(), equalTo(11));
-        Assert.assertThat(degreeInSign.getMinutes(), equalTo(46));
+        assertThat(asPosition.getSign(), equalTo(Sign.VIERGE));
+        assertThat(degreeInSign.getDegree(), equalTo(11));
+        assertThat(degreeInSign.getMinutes(), equalTo(46));
 
-        Assert.assertThat(asPosition.getHouse(), equalTo(House.VII));
-        Assert.assertThat(degreeInHouse.getDegree(), equalTo(0));
-        Assert.assertThat(degreeInHouse.getMinutes(), equalTo(0));
+        assertThat(asPosition.getHouse(), equalTo(House.VII));
+        assertThat(degreeInHouse.getDegree(), equalTo(0));
+        assertThat(degreeInHouse.getMinutes(), equalTo(0));
+    }
+
+    @Test
+    public void testGetDsPositionDecan() throws Exception {
+        PlanetPosition asPosition = testSkyPosition.getPlanetPosition(Planet.DESCENDANT);
+        assertThat(asPosition, notNullValue());
+
+        SignDecan decanInSign = asPosition.getDecanInSign();
+        HouseDecan decanInHouse = asPosition.getDecanInHouse();
+
+        assertThat(asPosition.getSign(), equalTo(Sign.VIERGE));
+        assertThat(decanInSign.getDecanNumber(), equalTo(2));
+        assertThat(decanInSign.getRelatedSign(), equalTo(Sign.CAPRICORNE));
+
+        assertThat(asPosition.getHouse(), equalTo(House.VII));
+        assertThat(decanInHouse.getDecanNumber(), equalTo(1));
+        assertThat(decanInHouse.getRelatedHouse(), equalTo(House.VII));
     }
 
     @Test
     public void testGetMcPosition() throws Exception {
         PlanetPosition asPosition = testSkyPosition.getPlanetPosition(Planet.MILIEU_DU_CIEL);
-        Assert.assertThat(asPosition, notNullValue());
+        assertThat(asPosition, notNullValue());
 
         Degree degree = asPosition.getDegree();
         Degree degreeInSign = asPosition.getDegreeInSign();
         Degree degreeInHouse = asPosition.getDegreeInHouse();
 
-        Assert.assertThat(degree.getDegree(), equalTo(262));
-        Assert.assertThat(degree.getMinutes(), equalTo(5));
+        assertThat(degree.getDegree(), equalTo(262));
+        assertThat(degree.getMinutes(), equalTo(5));
 
-        Assert.assertThat(asPosition.getSign(), equalTo(Sign.SAGITTAIRE));
-        Assert.assertThat(degreeInSign.getDegree(), equalTo(22));
-        Assert.assertThat(degreeInSign.getMinutes(), equalTo(5));
+        assertThat(asPosition.getSign(), equalTo(Sign.SAGITTAIRE));
+        assertThat(degreeInSign.getDegree(), equalTo(22));
+        assertThat(degreeInSign.getMinutes(), equalTo(5));
 
-        Assert.assertThat(asPosition.getHouse(), equalTo(House.X));
-        Assert.assertThat(degreeInHouse.getDegree(), equalTo(10));
-        Assert.assertThat(degreeInHouse.getMinutes(), equalTo(18));
+        assertThat(asPosition.getHouse(), equalTo(House.X));
+        assertThat(degreeInHouse.getDegree(), equalTo(10));
+        assertThat(degreeInHouse.getMinutes(), equalTo(18));
+    }
+
+    @Test
+    public void testGetMcPositionDecan() throws Exception {
+        PlanetPosition asPosition = testSkyPosition.getPlanetPosition(Planet.MILIEU_DU_CIEL);
+        assertThat(asPosition, notNullValue());
+
+        SignDecan decanInSign = asPosition.getDecanInSign();
+        HouseDecan decanInHouse = asPosition.getDecanInHouse();
+
+        assertThat(asPosition.getSign(), equalTo(Sign.SAGITTAIRE));
+        assertThat(decanInSign.getDecanNumber(), equalTo(3));
+        assertThat(decanInSign.getRelatedSign(), equalTo(Sign.LION));
+
+        assertThat(asPosition.getHouse(), equalTo(House.X));
+        assertThat(decanInHouse.getDecanNumber(), equalTo(2));
+        assertThat(decanInHouse.getRelatedHouse(), equalTo(House.II));
     }
 
     @Test
     public void testGetFcPosition() throws Exception {
         PlanetPosition asPosition = testSkyPosition.getPlanetPosition(Planet.FOND_DU_CIEL);
-        Assert.assertThat(asPosition, notNullValue());
+        assertThat(asPosition, notNullValue());
 
         Degree degree = asPosition.getDegree();
         Degree degreeInSign = asPosition.getDegreeInSign();
         Degree degreeInHouse = asPosition.getDegreeInHouse();
 
-        Assert.assertThat(degree.getDegree(), equalTo(82));
-        Assert.assertThat(degree.getMinutes(), equalTo(5));
+        assertThat(degree.getDegree(), equalTo(82));
+        assertThat(degree.getMinutes(), equalTo(5));
 
-        Assert.assertThat(asPosition.getSign(), equalTo(Sign.GEMEAUX));
-        Assert.assertThat(degreeInSign.getDegree(), equalTo(22));
-        Assert.assertThat(degreeInSign.getMinutes(), equalTo(5));
+        assertThat(asPosition.getSign(), equalTo(Sign.GEMEAUX));
+        assertThat(degreeInSign.getDegree(), equalTo(22));
+        assertThat(degreeInSign.getMinutes(), equalTo(5));
 
-        Assert.assertThat(asPosition.getHouse(), equalTo(House.IV));
-        Assert.assertThat(degreeInHouse.getDegree(), equalTo(10));
-        Assert.assertThat(degreeInHouse.getMinutes(), equalTo(18));
+        assertThat(asPosition.getHouse(), equalTo(House.IV));
+        assertThat(degreeInHouse.getDegree(), equalTo(10));
+        assertThat(degreeInHouse.getMinutes(), equalTo(18));
+    }
+
+    @Test
+    public void testGetFcPositionDecan() throws Exception {
+        PlanetPosition asPosition = testSkyPosition.getPlanetPosition(Planet.FOND_DU_CIEL);
+        assertThat(asPosition, notNullValue());
+
+        SignDecan decanInSign = asPosition.getDecanInSign();
+        HouseDecan decanInHouse = asPosition.getDecanInHouse();
+
+        assertThat(asPosition.getSign(), equalTo(Sign.GEMEAUX));
+        assertThat(decanInSign.getDecanNumber(), equalTo(3));
+        assertThat(decanInSign.getRelatedSign(), equalTo(Sign.VERSEAU));
+
+        assertThat(asPosition.getHouse(), equalTo(House.IV));
+        assertThat(decanInHouse.getDecanNumber(), equalTo(2));
+        assertThat(decanInHouse.getRelatedHouse(), equalTo(House.VIII));
     }
 
     @Test
     public void testGetHousePositions() throws Exception {
         HousePosition firstHousePosition = testSkyPosition.getHousePosition(House.I);
-        Assert.assertThat(firstHousePosition, notNullValue());
-        Assert.assertThat(firstHousePosition.getStartSign(), equalTo(Sign.POISSONS));
-        Assert.assertThat(firstHousePosition.getStartCuspInSign().getDegree(), equalTo(11));
-        Assert.assertThat(firstHousePosition.getEndSign(), equalTo(Sign.BELIER));
-        Assert.assertThat(firstHousePosition.getEndCuspInSign().getDegree(), equalTo(11));
+        assertThat(firstHousePosition, notNullValue());
+        assertThat(firstHousePosition.getStartSign(), equalTo(Sign.POISSONS));
+        assertThat(firstHousePosition.getStartCuspInSign().getDegree(), equalTo(11));
+        assertThat(firstHousePosition.getEndSign(), equalTo(Sign.BELIER));
+        assertThat(firstHousePosition.getEndCuspInSign().getDegree(), equalTo(11));
 
         HousePosition elevenHousePosition = testSkyPosition.getHousePosition(House.XI);
-        Assert.assertThat(elevenHousePosition, notNullValue());
-        Assert.assertThat(elevenHousePosition.getStartSign(), equalTo(Sign.CAPRICORNE));
-        Assert.assertThat(elevenHousePosition.getStartCuspInSign().getDegree(), equalTo(11));
-        Assert.assertThat(elevenHousePosition.getEndSign(), equalTo(Sign.VERSEAU));
-        Assert.assertThat(elevenHousePosition.getEndCuspInSign().getDegree(), equalTo(11));
+        assertThat(elevenHousePosition, notNullValue());
+        assertThat(elevenHousePosition.getStartSign(), equalTo(Sign.CAPRICORNE));
+        assertThat(elevenHousePosition.getStartCuspInSign().getDegree(), equalTo(11));
+        assertThat(elevenHousePosition.getEndSign(), equalTo(Sign.VERSEAU));
+        assertThat(elevenHousePosition.getEndCuspInSign().getDegree(), equalTo(11));
 
         HousePosition twelveHousePosition = testSkyPosition.getHousePosition(House.XII);
-        Assert.assertThat(twelveHousePosition, notNullValue());
-        Assert.assertThat(twelveHousePosition.getStartSign(), equalTo(Sign.VERSEAU));
-        Assert.assertThat(twelveHousePosition.getStartCuspInSign().getDegree(), equalTo(11));
-        Assert.assertThat(twelveHousePosition.getEndSign(), equalTo(Sign.POISSONS));
-        Assert.assertThat(twelveHousePosition.getEndCuspInSign().getDegree(), equalTo(11));
+        assertThat(twelveHousePosition, notNullValue());
+        assertThat(twelveHousePosition.getStartSign(), equalTo(Sign.VERSEAU));
+        assertThat(twelveHousePosition.getStartCuspInSign().getDegree(), equalTo(11));
+        assertThat(twelveHousePosition.getEndSign(), equalTo(Sign.POISSONS));
+        assertThat(twelveHousePosition.getEndCuspInSign().getDegree(), equalTo(11));
     }
 }
