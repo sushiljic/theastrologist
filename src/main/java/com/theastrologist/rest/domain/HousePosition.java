@@ -14,7 +14,9 @@ public class HousePosition {
     private Sign startSign;
     private Sign endSign;
     private Degree startCuspInSign;
+    private SignDecan startCuspDecan;
     private Degree endCuspInSign;
+    private SignDecan endCuspDecan;
 
     public HousePosition(House house, Degree absoluteStartCusp, Degree absoluteEndCusp) {
         this.house = house;
@@ -23,7 +25,17 @@ public class HousePosition {
         this.startSign = CalcUtil.getSign(this.absoluteStartCusp);
         this.endSign = CalcUtil.getSign(this.absoluteEndCusp);
         this.startCuspInSign = CalcUtil.getDegreeInSign(this.absoluteStartCusp);
+        this.startCuspDecan = SignDecan.getDecan(startCuspInSign, startSign);
         this.endCuspInSign = CalcUtil.getDegreeInSign(this.absoluteEndCusp);
+        this.endCuspDecan = SignDecan.getDecan(endCuspInSign, endSign);
+    }
+
+    public SignDecan getStartCuspDecan() {
+        return startCuspDecan;
+    }
+
+    public SignDecan getEndCuspDecan() {
+        return endCuspDecan;
     }
 
     public House getHouse() {

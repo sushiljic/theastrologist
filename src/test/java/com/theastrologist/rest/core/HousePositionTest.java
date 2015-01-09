@@ -203,4 +203,20 @@ public class HousePositionTest {
         assertThat(twelveHousePosition.getEndSign(), equalTo(Sign.POISSONS));
         assertThat(twelveHousePosition.getEndCuspInSign().getDegree(), equalTo(11));
     }
+
+    @Test
+    public void testGetHousePositionsDecan() throws Exception {
+        HousePosition firstHousePosition = testSkyPosition.getHousePosition(House.I);
+        assertThat(firstHousePosition, notNullValue());
+
+        assertThat(firstHousePosition.getStartSign(), equalTo(Sign.POISSONS));
+        SignDecan startCuspDecan = firstHousePosition.getStartCuspDecan();
+        assertThat(startCuspDecan.getRelatedSign(), equalTo(Sign.CANCER));
+        assertThat(startCuspDecan.getDecanNumber(), equalTo(2));
+
+        assertThat(firstHousePosition.getEndSign(), equalTo(Sign.BELIER));
+        SignDecan endCuspDecan = firstHousePosition.getEndCuspDecan();
+        assertThat(endCuspDecan.getRelatedSign(), equalTo(Sign.LION));
+        assertThat(endCuspDecan.getDecanNumber(), equalTo(2));
+    }
 }
