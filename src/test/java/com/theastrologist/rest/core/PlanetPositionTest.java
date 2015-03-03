@@ -290,4 +290,26 @@ public class PlanetPositionTest {
         Assert.assertThat(degreeInHouse.getDegree(), equalTo(13));
         Assert.assertThat(degreeInHouse.getMinutes(), equalTo(11));
     }
+
+    @Test
+    public void testGetLilithPosition() throws Exception {
+        PlanetPosition planetPosition = testSkyPosition.getPlanetPosition(Planet.LILITH_MOYENNE);
+        Assert.assertThat(planetPosition, notNullValue());
+
+        Degree degree = planetPosition.getDegree();
+        Degree degreeInSign = planetPosition.getDegreeInSign();
+        Degree degreeInHouse = planetPosition.getDegreeInHouse();
+
+
+        Assert.assertThat(degree.getDegree(), equalTo(13));
+        Assert.assertThat(degree.getMinutes(), equalTo(31));
+
+        Assert.assertThat(planetPosition.getSign(), equalTo(Sign.BELIER));
+        Assert.assertThat(degreeInSign.getDegree(), equalTo(13));
+        Assert.assertThat(degreeInSign.getMinutes(), equalTo(31));
+
+        Assert.assertThat(planetPosition.getHouse(), equalTo(House.II));
+        Assert.assertThat(degreeInHouse.getDegree(), equalTo(1));
+        Assert.assertThat(degreeInHouse.getMinutes(), equalTo(44));
+    }
 }
