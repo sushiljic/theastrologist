@@ -297,6 +297,15 @@ public class PlanetPositionTest {
         assertThat(planetPosition.getHouse(), equalTo(House.X));
         assertThat(degreeInHouse.getDegree(), equalTo(19));
         assertThat(degreeInHouse.getMinutes(), equalTo(49));
+
+        SignDecan decanInSign = planetPosition.getDecanInSign();
+        HouseDecan decanInHouse = planetPosition.getDecanInHouse();
+
+        assertThat(decanInSign.getDecanNumber(), equalTo(1));
+        assertThat(decanInSign.getRelatedSign(), equalTo(Sign.CAPRICORNE));
+
+        assertThat(decanInHouse.getDecanNumber(), equalTo(2));
+        assertThat(decanInHouse.getRelatedHouse(), equalTo(House.II));
     }
 
     @Test
@@ -319,6 +328,15 @@ public class PlanetPositionTest {
         assertThat(planetPosition.getHouse(), equalTo(House.VIII));
         assertThat(degreeInHouse.getDegree(), equalTo(22));
         assertThat(degreeInHouse.getMinutes(), equalTo(38));
+
+        SignDecan decanInSign = planetPosition.getDecanInSign();
+        HouseDecan decanInHouse = planetPosition.getDecanInHouse();
+
+        assertThat(decanInSign.getDecanNumber(), equalTo(1));
+        assertThat(decanInSign.getRelatedSign(), equalTo(Sign.SCORPION));
+
+        assertThat(decanInHouse.getDecanNumber(), equalTo(3));
+        assertThat(decanInHouse.getRelatedHouse(), equalTo(House.IV));
     }
 
     @Test
@@ -341,6 +359,15 @@ public class PlanetPositionTest {
         assertThat(planetPosition.getHouse(), equalTo(House.III));
         assertThat(degreeInHouse.getDegree(), equalTo(13));
         assertThat(degreeInHouse.getMinutes(), equalTo(11));
+
+        SignDecan decanInSign = planetPosition.getDecanInSign();
+        HouseDecan decanInHouse = planetPosition.getDecanInHouse();
+
+        assertThat(decanInSign.getDecanNumber(), equalTo(3));
+        assertThat(decanInSign.getRelatedSign(), equalTo(Sign.CAPRICORNE));
+
+        assertThat(decanInHouse.getDecanNumber(), equalTo(2));
+        assertThat(decanInHouse.getRelatedHouse(), equalTo(House.VII));
     }
 
     @Test
@@ -363,6 +390,15 @@ public class PlanetPositionTest {
         assertThat(planetPosition.getHouse(), equalTo(House.IX));
         assertThat(degreeInHouse.getDegree(), equalTo(13));
         assertThat(degreeInHouse.getMinutes(), equalTo(11));
+
+        SignDecan decanInSign = planetPosition.getDecanInSign();
+        HouseDecan decanInHouse = planetPosition.getDecanInHouse();
+
+        assertThat(decanInSign.getDecanNumber(), equalTo(3));
+        assertThat(decanInSign.getRelatedSign(), equalTo(Sign.CANCER));
+
+        assertThat(decanInHouse.getDecanNumber(), equalTo(2));
+        assertThat(decanInHouse.getRelatedHouse(), equalTo(House.I));
     }
 
     @Test
@@ -385,6 +421,15 @@ public class PlanetPositionTest {
         assertThat(planetPosition.getHouse(), equalTo(House.II));
         assertThat(degreeInHouse.getDegree(), equalTo(1));
         assertThat(degreeInHouse.getMinutes(), equalTo(44));
+
+        SignDecan decanInSign = planetPosition.getDecanInSign();
+        HouseDecan decanInHouse = planetPosition.getDecanInHouse();
+
+        assertThat(decanInSign.getDecanNumber(), equalTo(2));
+        assertThat(decanInSign.getRelatedSign(), equalTo(Sign.LION));
+
+        assertThat(decanInHouse.getDecanNumber(), equalTo(1));
+        assertThat(decanInHouse.getRelatedHouse(), equalTo(House.II));
     }
 
     @Test
@@ -407,5 +452,14 @@ public class PlanetPositionTest {
         assertThat(planetPosition.getHouse(), equalTo(House.V));
         assertThat(degreeInHouse.getDegree(), equalTo(27));
         assertThat(degreeInHouse.getMinutes(), equalTo(40));
+
+        SignDecan decanInSign = planetPosition.getDecanInSign();
+        HouseDecan decanInHouse = planetPosition.getDecanInHouse();
+
+        assertThat(decanInSign.getDecanNumber(), equalTo(1));
+        assertThat(decanInSign.getRelatedSign(), equalTo(Sign.LION));
+
+        assertThat(decanInHouse.getDecanNumber(), equalTo(3));
+        assertThat(decanInHouse.getRelatedHouse(), equalTo(House.I));
     }
 }
