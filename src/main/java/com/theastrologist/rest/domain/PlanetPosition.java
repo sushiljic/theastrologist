@@ -8,7 +8,7 @@ public class PlanetPosition {
     private House house;
     private Degree degreeInSign;
     private Degree degreeInHouse;
-    private boolean retrograde;
+    private boolean retrograde = false;
 
     public PlanetPosition(Degree degree, Sign sign, House house, Degree degreeInSign, Degree degreeInHouse) {
         this.degree = degree;

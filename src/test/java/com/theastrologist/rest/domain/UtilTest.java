@@ -10,7 +10,7 @@ import util.DateUtil;
 import java.util.TimeZone;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class UtilTest {
 
@@ -48,7 +48,7 @@ public class UtilTest {
     }
 
     @Test
-     public void testCalculateHouse() {
+    public void testCalculateHouse() {
         House house = CalcUtil.getHouse(new Degree(262.), new Degree(341.));
         assertThat(house, equalTo(House.X));
     }
@@ -70,5 +70,60 @@ public class UtilTest {
     public void testGetOppositeMinus() {
         Degree degree = CalcUtil.getOpposite(new Degree(11.));
         assertThat(degree.getDegree(), equalTo(191));
+    }
+
+    @Test
+    public void testCalculatePartDeFortune() {
+        Degree ascendantDegree = new Degree(341, 46);
+        Degree sunDegree = new Degree(284.);
+        Degree moonDegree = new Degree(71, 41);
+
+        Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
+        assertThat(partDeFortune.getDegree(), equalTo(129));
+        assertThat(partDeFortune.getMinutes(), equalTo(27));
+    }
+
+    @Test
+    public void testCalculatePartDeFortuneSup360() {
+        Degree ascendantDegree = new Degree(341, 46);
+        Degree sunDegree = new Degree(14, 5);
+        Degree moonDegree = new Degree(312, 16);
+
+        Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
+        assertThat(partDeFortune.getDegree(), equalTo(279));
+        assertThat(partDeFortune.getMinutes(), equalTo(57));
+    }
+
+    @Test
+    public void testCalculatePartDeFortuneEg360() {
+        Degree ascendantDegree = new Degree(150, 0);
+        Degree sunDegree = new Degree(10, 0);
+        Degree moonDegree = new Degree(220, 0);
+
+        Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
+        assertThat(partDeFortune.getDegree(), equalTo(0));
+        assertThat(partDeFortune.getMinutes(), equalTo(0));
+    }
+
+    @Test
+    public void testCalculatePartDeFortuneEg0() {
+        Degree ascendantDegree = new Degree(50, 0);
+        Degree sunDegree = new Degree(110, 0);
+        Degree moonDegree = new Degree(60, 0);
+
+        Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
+        assertThat(partDeFortune.getDegree(), equalTo(0));
+        assertThat(partDeFortune.getMinutes(), equalTo(0));
+    }
+
+    @Test
+    public void testCalculatePartDeFortuneInf0() {
+        Degree ascendantDegree = new Degree(12, 31);
+        Degree sunDegree = new Degree(254, 50);
+        Degree moonDegree = new Degree(50, 58);
+
+        Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
+        assertThat(partDeFortune.getDegree(), equalTo(168));
+        assertThat(partDeFortune.getMinutes(), equalTo(39));
     }
 }

@@ -51,6 +51,7 @@ public class SkyPosition {
         PlanetPosition ascendant = this.getPlanetPosition(Planet.ASCENDANT);
 
         for (Planet planet : Planet.values()) {
+            Degree ascendantDegree = ascendant.getDegree();
             if (planet.getSweConst() != -1) {
 
 
@@ -74,7 +75,7 @@ public class SkyPosition {
 
                 Degree degree = new Degree(position);
 
-                PlanetPosition planetPosition = createPlanetPosition(degree, ascendant.getDegree());
+                PlanetPosition planetPosition = createPlanetPosition(degree, ascendantDegree);
                 planetPosition.setRetrograde(retrograde);
 
                 this.positionMap.put(planet, planetPosition);
@@ -82,8 +83,17 @@ public class SkyPosition {
                 PlanetPosition noeudNord = this.positionMap.get(Planet.NOEUD_NORD_MOYEN);
                 Degree noeudSudDegree = CalcUtil.getOpposite(noeudNord.getDegree());
 
-                PlanetPosition planetPosition = createPlanetPosition(noeudSudDegree, ascendant.getDegree());
+                PlanetPosition planetPosition = createPlanetPosition(noeudSudDegree, ascendantDegree);
                 planetPosition.setRetrograde(true);
+
+                this.positionMap.put(planet, planetPosition);
+            } else if (planet == Planet.PART_DE_FORTUNE) {
+                Degree sunDegree = this.positionMap.get(Planet.SOLEIL).getDegree();
+                Degree moonDegree = this.positionMap.get(Planet.LUNE).getDegree();
+
+                Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
+                PlanetPosition planetPosition = createPlanetPosition(
+                        partDeFortune, ascendantDegree);
 
                 this.positionMap.put(planet, planetPosition);
             }

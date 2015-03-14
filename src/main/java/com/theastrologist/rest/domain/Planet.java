@@ -25,7 +25,8 @@ public enum Planet {
     NOEUD_NORD_MOYEN(SweConst.SE_MEAN_NODE),
     NOEUD_SUD_MOYEN(-1),
     LILITH_EXACTE(SweConst.SE_OSCU_APOG),
-    LILITH_MOYENNE(SweConst.SE_MEAN_APOG);
+    LILITH_MOYENNE(SweConst.SE_MEAN_APOG),
+    PART_DE_FORTUNE(-1);
 
     private final int sweConst;
 
