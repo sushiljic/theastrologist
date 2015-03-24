@@ -1,5 +1,7 @@
 package com.theastrologist.rest.domain;
 
+import util.CalcUtil;
+
 public class PlanetPosition {
     private final SignDecan decanInSign;
     private final HouseDecan decanInHouse;
@@ -18,6 +20,16 @@ public class PlanetPosition {
         this.decanInSign = SignDecan.getDecan(degreeInSign, sign);
         this.degreeInHouse = degreeInHouse;
         this.decanInHouse = HouseDecan.getDecan(degreeInHouse, house);
+    }
+
+    public static PlanetPosition createPlanetPosition(Degree degree, Degree asDegree) {
+        return new PlanetPosition(
+                degree,
+                CalcUtil.getSign(degree),
+                CalcUtil.getHouse(degree, asDegree),
+                CalcUtil.getDegreeInSign(degree),
+                CalcUtil.getDegreeInHouse(degree, asDegree)
+        );
     }
 
     public SignDecan getDecanInSign() {

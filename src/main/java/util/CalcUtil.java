@@ -4,11 +4,9 @@ import com.theastrologist.rest.domain.Degree;
 import com.theastrologist.rest.domain.House;
 import com.theastrologist.rest.domain.Sign;
 
-/**
- * Created by SAM on 16/11/2014.
- */
 public class CalcUtil {
     public static final double DELTA = 1e-5;
+    public static final double DELTAORBS = 1e-2;
 
     public static Sign getSign(Degree degree) {
         int signNumber = (int) (degree.getBaseDegree() / 30) + 1;
@@ -36,12 +34,20 @@ public class CalcUtil {
     }
 
     public static Degree equilibrate(Degree degree) {
-        return degree.getBaseDegree() < 0 ? new Degree(degree.getBaseDegree() + 360) : degree;
+        return new Degree(equilibrate(degree.getBaseDegree()));
+    }
+
+    public static double equilibrate(double degree) {
+        return degree < 0 ? degree + 360 : degree;
+    }
+
+    public static double getOpposite(double baseDegree) {
+        return baseDegree < 180 ? baseDegree + 180 : baseDegree - 180;
     }
 
     public static Degree getOpposite(Degree degree) {
         double baseDegree = degree.getBaseDegree();
-        return baseDegree < 180 ? new Degree(baseDegree + 180) : new Degree(baseDegree - 180);
+        return new Degree(getOpposite(baseDegree));
     }
 
     public static Sign getOpposite(Sign sign) {

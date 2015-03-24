@@ -10,6 +10,8 @@ import util.DateUtil;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.theastrologist.rest.domain.PlanetPosition.createPlanetPosition;
+
 /**
  * @author SAM
  * @since 16/11/2014.
@@ -151,17 +153,6 @@ public class SkyPosition {
         Degree dsDegree = CalcUtil.getOpposite(asDegree);
         this.positionMap.put(Planet.DESCENDANT, createPlanetPosition(dsDegree, asDegree));
     }
-
-    public PlanetPosition createPlanetPosition(Degree degree, Degree asDegree) {
-        return new PlanetPosition(
-                degree,
-                CalcUtil.getSign(degree),
-                CalcUtil.getHouse(degree, asDegree),
-                CalcUtil.getDegreeInSign(degree),
-                CalcUtil.getDegreeInHouse(degree, asDegree)
-        );
-    }
-
 
     public PlanetPosition getPlanetPosition(Planet planet) {
         return positionMap.get(planet);
