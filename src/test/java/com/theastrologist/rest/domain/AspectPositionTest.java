@@ -76,7 +76,7 @@ public class AspectPositionTest {
 
         assertThat(aspectPosition, notNullValue());
         assertThat(aspectPosition.getAspect(), is(Aspect.CARRE));
-        assertThat(aspectPosition.getOrbDelta().getDegree(), equalTo(5));
-        assertThat(aspectPosition.getOrbDelta().getMinutes(), equalTo(7));
+        assertThat(aspectPosition.getOrbDelta().getDegree(), equalTo(-5));
+        assertThat(aspectPosition.getOrbDelta().getMinutes(), equalTo(-6));
     }
 }
