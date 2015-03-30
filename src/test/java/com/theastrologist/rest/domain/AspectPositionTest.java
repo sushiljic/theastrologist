@@ -1,8 +1,14 @@
 package com.theastrologist.rest.domain;
 
+import com.theastrologist.rest.core.ThemeCalculator;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 import util.CalcUtil;
+
+import java.util.Map;
+import java.util.TimeZone;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -12,6 +18,11 @@ public class AspectPositionTest {
 
     private Degree asDegree = new Degree(341, 46);
     private PlanetPosition asPosition = PlanetPosition.createPlanetPosition(asDegree, asDegree);
+
+    public static final DateTimeZone DATE_TIME_ZONE = DateTimeZone.forTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+    private final DateTime TEST_DATE = new DateTime(1985, 1, 4, 11, 20, DATE_TIME_ZONE);
+    private final Degree LATITUDE = new Degree(48, 39);
+    private final Degree LONGITUDE = new Degree(2, 25);
 
     @Before
     public void setUp() throws Exception {
@@ -78,5 +89,42 @@ public class AspectPositionTest {
         assertThat(aspectPosition.getAspect(), is(Aspect.CARRE));
         assertThat(aspectPosition.getOrbDelta().getDegree(), equalTo(-5));
         assertThat(aspectPosition.getOrbDelta().getMinutes(), equalTo(-6));
+    }
+
+    @Test
+    public void testFullAspectMap() throws Exception {
+        SkyPosition testSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        Map<Planet, Map<Planet, AspectPosition>> aspectsForSkyPosition = AspectCalculator.INSTANCE.createAspectsForSkyPosition(testSkyPosition);
+
+        assertThat(aspectsForSkyPosition, notNullValue());
+
+        Map<Planet, AspectPosition> planetAspectPositionMap = aspectsForSkyPosition.get(Planet.MILIEU_DU_CIEL);
+
+        assertThat(planetAspectPositionMap, notNullValue());
+
+        assertThat(planetAspectPositionMap, hasKey(Planet.MERCURE));
+
+        AspectPosition aspectPosition = planetAspectPositionMap.get(Planet.MERCURE);
+        assertThat(aspectPosition, notNullValue());
+        assertThat(aspectPosition.getAspect(), is(Aspect.CONJONCTION));
+        assertThat(aspectPosition.getPlanet(), is(Planet.MILIEU_DU_CIEL));
+        assertThat(aspectPosition.getPlanetComparison(), is(Planet.MERCURE));
+        assertThat(aspectPosition.getOrbDelta().getDegree(), equalTo(0));
+        assertThat(aspectPosition.getOrbDelta().getMinutes(), equalTo(-50));
+    }
+
+    @Test
+    public void testAspectMapUnneccessary() throws Exception {
+        SkyPosition testSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        Map<Planet, Map<Planet, AspectPosition>> aspectsForSkyPosition = AspectCalculator.INSTANCE.createAspectsForSkyPosition(testSkyPosition);
+
+        assertThat(aspectsForSkyPosition, notNullValue());
+
+        Map<Planet, AspectPosition> planetAspectPositionMap = aspectsForSkyPosition.get(Planet.MILIEU_DU_CIEL);
+
+        assertThat(planetAspectPositionMap, notNullValue());
+
+        assertThat(planetAspectPositionMap, not(hasKey(Planet.SOLEIL)));
+        assertThat(planetAspectPositionMap, not(hasKey(Planet.PART_DE_FORTUNE)));
     }
 }
