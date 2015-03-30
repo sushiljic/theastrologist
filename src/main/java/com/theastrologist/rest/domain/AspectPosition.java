@@ -19,30 +19,44 @@ public class AspectPosition {
     }
 
     private boolean calculateAspectPosition() {
+
+        // -270 ou 270 ==> 90
+        // -180 ==> 180
+        // 300 ou -300 ==> 60
+        // -240 ou 240 ==> 120
+
         boolean shouldDestroy = true;
 
         double planetDegree = planetPosition.getDegree().getBaseDegree();
         double planetComparisonDegree = planetComparisonPosition.getDegree().getBaseDegree();
-        double comparison = planetComparisonDegree - planetDegree;
 
-        if (comparison < -180) {
-            comparison = CalcUtil.equilibrate(comparison);
-        } else if (comparison > 180) {
-            comparison -= 180;
+        double comparison = planetComparisonDegree - planetDegree;
+        boolean devant = comparison < 0;
+        comparison = Math.abs(comparison);
+
+        // 1 // 274 => -273 ==> 87 ==> écart de - 3
+        // 274 // 1 => 273 => 87 ==> écart de -3
+        // 1 // 268 => -267 ==> 93 ==> écart de + 3
+
+        // 1 // 358 ==> -357 ==> 3 ==> écart de 3, offset négatif
+        // 358 // 1 ==> 357 ==> 3 ==> écart de 3, offset positif
+
+        if (comparison > 180) {
+            // Ici on est dans le cas où
+            comparison = Math.abs(comparison - 360);
         }
 
         for (Aspect aspect : Aspect.values()) {
             int angleSeparation = aspect.getAngleSeparation();
-            double orbDelta;
-            if (comparison < angleSeparation) {
-                orbDelta = angleSeparation - comparison;
-            } else {
-                orbDelta = comparison - angleSeparation;
-            }
-            orbDelta = comparison - angleSeparation;
-            double aspectOrbe = aspect.getOrbe();
+            double orbDelta = comparison - angleSeparation; // -3
 
-            if (orbDelta >= 0 && orbDelta < aspectOrbe || orbDelta < 0 && aspectOrbe + orbDelta >= 0) {
+            double aspectOrbe = aspect.getOrbe(); // + ou - 5
+
+
+            if (Math.abs(orbDelta) <=  aspectOrbe) {
+                if(devant) {
+                    orbDelta = - orbDelta;
+                }
                 this.aspect = aspect;
                 this.orbDelta = new Degree(orbDelta);
                 shouldDestroy = false;
