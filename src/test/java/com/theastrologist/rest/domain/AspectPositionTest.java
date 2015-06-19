@@ -114,7 +114,7 @@ public class AspectPositionTest {
     }
 
     @Test
-    public void testAspectMapUnneccessary() throws Exception {
+    public void testAspectMapUnsuccessful() throws Exception {
         SkyPosition testSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
         Map<Planet, Map<Planet, AspectPosition>> aspectsForSkyPosition = AspectCalculator.INSTANCE.createAspectsForSkyPosition(testSkyPosition);
 

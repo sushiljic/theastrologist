@@ -9,6 +9,11 @@ public class AspectCalculator {
 
     public static final AspectCalculator INSTANCE = new AspectCalculator();
 
+    /**
+     * Calcul des aspects sur une carte du ciel
+     * @param skyPosition la carte du ciel de référence
+     * @return une map contenant par planète une map avec correspondance entre l'aspect et la planète comparée
+     */
     public Map<Planet, Map<Planet, AspectPosition>> createAspectsForSkyPosition(SkyPosition skyPosition) {
 
         Map<Planet, Map<Planet, AspectPosition>> aspectMapForPlanet = new HashMap<Planet, Map<Planet, AspectPosition>>();
@@ -37,12 +42,25 @@ public class AspectCalculator {
         return aspectMapForPlanet;
     }
 
-    public List<AspectPosition> createAspectsForComparison(SkyPosition skyPosition, SkyPosition skyPositionComparison) {
+    /**
+     * Calcul des aspects pour une synastrie
+     * @param skyPosition la carte du ciel servant de référence
+     * @param skyPositionComparison la carte du ciel à comparer
+     * @return une map contenant par planète une map avec correspondance entre l'aspect et la planète comparée
+     */
+    public Map<Planet, Map<Planet, AspectPosition>> createAspectsForComparison(SkyPosition skyPosition, SkyPosition skyPositionComparison) {
 
         return null;
     }
 
-    public List<AspectPosition> createAspectsForTransit(SkyPosition skyPosition, SkyPosition transitPosition) {
+
+    /**
+     * Calcul des aspects pour un transit (orbes différentes)
+     * @param skyPosition la carte du ciel servant de référence
+     * @param transitPosition la carte du ciel à comparer
+     * @return une map contenant par planète une map avec correspondance entre l'aspect et la planète comparée
+     */
+    public Map<Planet, Map<Planet, AspectPosition>> createAspectsForTransit(SkyPosition skyPosition, SkyPosition transitPosition) {
 
         return null;
     }
