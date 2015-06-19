@@ -5,7 +5,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
-import util.CalcUtil;
 
 import java.util.Map;
 import java.util.TimeZone;
@@ -21,6 +20,7 @@ public class AspectPositionTest {
 
     public static final DateTimeZone DATE_TIME_ZONE = DateTimeZone.forTimeZone(TimeZone.getTimeZone("Europe/Paris"));
     private final DateTime TEST_DATE = new DateTime(1985, 1, 4, 11, 20, DATE_TIME_ZONE);
+    private final DateTime TEST_DATE_COMP = new DateTime(1953, 8, 25, 21, 45, DATE_TIME_ZONE);
     private final Degree LATITUDE = new Degree(48, 39);
     private final Degree LONGITUDE = new Degree(2, 25);
 
@@ -126,5 +126,29 @@ public class AspectPositionTest {
 
         assertThat(planetAspectPositionMap, not(hasKey(Planet.SOLEIL)));
         assertThat(planetAspectPositionMap, not(hasKey(Planet.PART_DE_FORTUNE)));
+    }
+
+    @Test
+    public void testSynastryConjAscLune() throws Exception {
+        SkyPosition testSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPositionComparison = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE_COMP, LATITUDE, LONGITUDE);
+        Map<Planet, Map<Planet, AspectPosition>> synastry =
+                AspectCalculator.INSTANCE.createAspectsForComparison(testSkyPosition, testSkyPositionComparison);
+
+        assertThat(synastry, notNullValue());
+
+        Map<Planet, AspectPosition> planetAspectPositionMap = synastry.get(Planet.ASCENDANT);
+
+        assertThat(planetAspectPositionMap, notNullValue());
+
+        assertThat(planetAspectPositionMap, hasKey(Planet.LUNE));
+
+        AspectPosition aspectPosition = planetAspectPositionMap.get(Planet.LUNE);
+        assertThat(aspectPosition, notNullValue());
+        assertThat(aspectPosition.getAspect(), is(Aspect.CONJONCTION));
+        assertThat(aspectPosition.getPlanet(), is(Planet.ASCENDANT));
+        assertThat(aspectPosition.getPlanetComparison(), is(Planet.LUNE));
+        assertThat(aspectPosition.getOrbDelta().getDegree(), equalTo(4));
+        assertThat(aspectPosition.getOrbDelta().getMinutes(), equalTo(57));
     }
 }

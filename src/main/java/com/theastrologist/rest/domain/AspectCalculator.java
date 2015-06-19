@@ -2,7 +2,6 @@ package com.theastrologist.rest.domain;
 
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AspectCalculator {
@@ -11,8 +10,9 @@ public class AspectCalculator {
 
     /**
      * Calcul des aspects sur une carte du ciel
-     * @param skyPosition la carte du ciel de référence
-     * @return une map contenant par planète une map avec correspondance entre l'aspect et la planète comparée
+     *
+     * @param skyPosition la carte du ciel de rÃ©fÃ©rence
+     * @return une map contenant par planÃ¨te une map avec correspondance entre l'aspect et la planÃ¨te comparÃ©e
      */
     public Map<Planet, Map<Planet, AspectPosition>> createAspectsForSkyPosition(SkyPosition skyPosition) {
 
@@ -32,7 +32,7 @@ public class AspectCalculator {
                 if (planet != planetComparison) {
                     PlanetPosition planetComparisonPosition = skyPosition.getPlanetPosition(planetComparison);
                     AspectPosition aspectPosition = AspectPosition.createAspectPosition(planet, planetComparison, planetPosition, planetComparisonPosition);
-                    if(aspectPosition != null) {
+                    if (aspectPosition != null) {
                         aspectMap.put(planetComparison, aspectPosition);
                     }
                 }
@@ -44,21 +44,47 @@ public class AspectCalculator {
 
     /**
      * Calcul des aspects pour une synastrie
-     * @param skyPosition la carte du ciel servant de référence
-     * @param skyPositionComparison la carte du ciel à comparer
-     * @return une map contenant par planète une map avec correspondance entre l'aspect et la planète comparée
+     *
+     * @param skyPosition           la carte du ciel servant de rÃ©fÃ©rence
+     * @param skyPositionComparison la carte du ciel Ã  comparer
+     * @return une map contenant par planÃ¨te une map avec correspondance entre l'aspect et la planÃ¨te comparÃ©e
      */
     public Map<Planet, Map<Planet, AspectPosition>> createAspectsForComparison(SkyPosition skyPosition, SkyPosition skyPositionComparison) {
 
-        return null;
+        Map<Planet, Map<Planet, AspectPosition>> aspectMapForPlanet = new HashMap<Planet, Map<Planet, AspectPosition>>();
+
+        for (Planet planet : Planet.values()) {
+            PlanetPosition planetPosition = skyPosition.getPlanetPosition(planet);
+            Map<Planet, AspectPosition> aspectMap;
+            if (!aspectMapForPlanet.containsKey(planet)) {
+                aspectMap = new HashMap<Planet, AspectPosition>();
+                aspectMapForPlanet.put(planet, aspectMap);
+            } else {
+                aspectMap = aspectMapForPlanet.get(planet);
+            }
+
+            for (Planet planetComparison : Planet.values()) {
+                if (planet != planetComparison) {
+                    PlanetPosition planetComparisonPosition = skyPositionComparison.getPlanetPosition(planetComparison);
+                    AspectPosition aspectPosition = AspectPosition.createAspectPosition(planet, planetComparison, planetPosition, planetComparisonPosition);
+                    if (aspectPosition != null) {
+                        aspectMap.put(planetComparison, aspectPosition);
+                    }
+                }
+            }
+        }
+
+        return aspectMapForPlanet;
+
     }
 
 
     /**
-     * Calcul des aspects pour un transit (orbes différentes)
-     * @param skyPosition la carte du ciel servant de référence
-     * @param transitPosition la carte du ciel à comparer
-     * @return une map contenant par planète une map avec correspondance entre l'aspect et la planète comparée
+     * Calcul des aspects pour un transit (orbes diffÃ©rentes)
+     *
+     * @param skyPosition     la carte du ciel servant de rÃ©fÃ©rence
+     * @param transitPosition la carte du ciel Ã  comparer
+     * @return une map contenant par planÃ¨te une map avec correspondance entre l'aspect et la planÃ¨te comparÃ©e
      */
     public Map<Planet, Map<Planet, AspectPosition>> createAspectsForTransit(SkyPosition skyPosition, SkyPosition transitPosition) {
 
