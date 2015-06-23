@@ -21,6 +21,7 @@ public class AspectPositionTest {
     public static final DateTimeZone DATE_TIME_ZONE = DateTimeZone.forTimeZone(TimeZone.getTimeZone("Europe/Paris"));
     private final DateTime TEST_DATE = new DateTime(1985, 1, 4, 11, 20, DATE_TIME_ZONE);
     private final DateTime TEST_DATE_COMP = new DateTime(1953, 8, 25, 21, 45, DATE_TIME_ZONE);
+    private final DateTime TEST_DATE_TRANSIT = new DateTime(2015, 6, 23, 20, 30, DATE_TIME_ZONE);
     private final Degree LATITUDE = new Degree(48, 39);
     private final Degree LONGITUDE = new Degree(2, 25);
 
@@ -133,7 +134,7 @@ public class AspectPositionTest {
         SkyPosition testSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
         SkyPosition testSkyPositionComparison = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE_COMP, LATITUDE, LONGITUDE);
         Map<Planet, Map<Planet, AspectPosition>> synastry =
-                AspectCalculator.INSTANCE.createAspectsForComparison(testSkyPosition, testSkyPositionComparison);
+                AspectCalculator.INSTANCE.createAspectsForSynastry(testSkyPosition, testSkyPositionComparison);
 
         assertThat(synastry, notNullValue());
 
@@ -150,5 +151,68 @@ public class AspectPositionTest {
         assertThat(aspectPosition.getPlanetComparison(), is(Planet.LUNE));
         assertThat(aspectPosition.getOrbDelta().getDegree(), equalTo(4));
         assertThat(aspectPosition.getOrbDelta().getMinutes(), equalTo(57));
+    }
+
+    @Test
+    public void testTransitConjNormale() throws Exception {
+        SkyPosition testSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPositionComparison = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE_TRANSIT, LATITUDE, LONGITUDE);
+        Map<Planet, Map<Planet, AspectPosition>> transit =
+                AspectCalculator.INSTANCE.createAspectsForTransit(testSkyPosition, testSkyPositionComparison);
+
+        assertThat(transit, notNullValue());
+
+        Map<Planet, AspectPosition> planetAspectPositionMap = transit.get(Planet.ASCENDANT);
+
+        assertThat(planetAspectPositionMap, notNullValue());
+
+        assertThat(planetAspectPositionMap, hasKey(Planet.NEPTUNE));
+
+        AspectPosition aspectPosition = planetAspectPositionMap.get(Planet.NEPTUNE);
+        assertThat(aspectPosition, notNullValue());
+        assertThat(aspectPosition.getAspect(), is(Aspect.CONJONCTION));
+        assertThat(aspectPosition.getPlanet(), is(Planet.ASCENDANT));
+        assertThat(aspectPosition.getPlanetComparison(), is(Planet.NEPTUNE));
+        assertThat(aspectPosition.getOrbDelta().getDegree(), equalTo(-1));
+        assertThat(aspectPosition.getOrbDelta().getMinutes(), equalTo(-59));
+    }
+
+    @Test
+    public void testTransitPasConjDansOrbe() throws Exception {
+        SkyPosition testSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPositionComparison = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE_TRANSIT, LATITUDE, LONGITUDE);
+        Map<Planet, Map<Planet, AspectPosition>> transit =
+                AspectCalculator.INSTANCE.createAspectsForTransit(testSkyPosition, testSkyPositionComparison);
+
+        assertThat(transit, notNullValue());
+
+        Map<Planet, AspectPosition> planetAspectPositionMap = transit.get(Planet.LILITH_MOYENNE);
+
+        assertThat(planetAspectPositionMap, notNullValue());
+        assertThat(planetAspectPositionMap, not(hasKey(Planet.URANUS)));
+    }
+
+    @Test
+    public void testTransitConjSurMemePlanete() throws Exception {
+        SkyPosition testSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPositionComparison = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE_TRANSIT, LATITUDE, LONGITUDE);
+        Map<Planet, Map<Planet, AspectPosition>> transit =
+                AspectCalculator.INSTANCE.createAspectsForTransit(testSkyPosition, testSkyPositionComparison);
+
+        assertThat(transit, notNullValue());
+
+        Map<Planet, AspectPosition> planetAspectPositionMap = transit.get(Planet.SATURNE);
+
+        assertThat(planetAspectPositionMap, notNullValue());
+
+        assertThat(planetAspectPositionMap, hasKey(Planet.SATURNE));
+
+        AspectPosition aspectPosition = planetAspectPositionMap.get(Planet.SATURNE);
+        assertThat(aspectPosition, notNullValue());
+        assertThat(aspectPosition.getAspect(), is(Aspect.CONJONCTION));
+        assertThat(aspectPosition.getPlanet(), is(Planet.SATURNE));
+        assertThat(aspectPosition.getPlanetComparison(), is(Planet.SATURNE));
+        assertThat(aspectPosition.getOrbDelta().getDegree(), equalTo(4));
+        assertThat(aspectPosition.getOrbDelta().getMinutes(), equalTo(24));
     }
 }
