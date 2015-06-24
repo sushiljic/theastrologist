@@ -16,7 +16,7 @@ public class AspectCalculator {
      */
     public Map<Planet, Map<Planet, AspectPosition>> createAspectsForSkyPosition(SkyPosition skyPosition) {
 
-        return createAspectsForComparison(skyPosition, skyPosition);
+        return createAspectsForComparison(skyPosition, skyPosition, false);
     }
 
     /**
@@ -24,9 +24,10 @@ public class AspectCalculator {
      *
      * @param skyPosition           la carte du ciel servant de référence
      * @param skyPositionComparison la carte du ciel à comparer
+     * @param transit
      * @return une map contenant par planète une map avec correspondance entre l'aspect et la planète comparée
      */
-    public Map<Planet, Map<Planet, AspectPosition>> createAspectsForComparison(SkyPosition skyPosition, SkyPosition skyPositionComparison) {
+    public Map<Planet, Map<Planet, AspectPosition>> createAspectsForComparison(SkyPosition skyPosition, SkyPosition skyPositionComparison, boolean transit) {
 
         Map<Planet, Map<Planet, AspectPosition>> aspectMapForPlanet = new HashMap<Planet, Map<Planet, AspectPosition>>();
 
@@ -41,9 +42,9 @@ public class AspectCalculator {
             }
 
             for (Planet planetComparison : Planet.values()) {
-                if (planet != planetComparison) {
+                if (planet != planetComparison || skyPosition != skyPositionComparison) {
                     PlanetPosition planetComparisonPosition = skyPositionComparison.getPlanetPosition(planetComparison);
-                    AspectPosition aspectPosition = AspectPosition.createAspectPosition(planet, planetComparison, planetPosition, planetComparisonPosition);
+                    AspectPosition aspectPosition = AspectPosition.createAspectPosition(planet, planetComparison, planetPosition, planetComparisonPosition, transit);
                     if (aspectPosition != null) {
                         aspectMap.put(planetComparison, aspectPosition);
                     }
@@ -65,6 +66,10 @@ public class AspectCalculator {
      */
     public Map<Planet, Map<Planet, AspectPosition>> createAspectsForTransit(SkyPosition skyPosition, SkyPosition transitPosition) {
 
-        return null;
+        return createAspectsForComparison(skyPosition, transitPosition, true);
+    }
+
+    public Map<Planet, Map<Planet, AspectPosition>> createAspectsForSynastry(SkyPosition testSkyPosition, SkyPosition testSkyPositionComparison) {
+        return createAspectsForComparison(testSkyPosition, testSkyPositionComparison, false);
     }
 }
