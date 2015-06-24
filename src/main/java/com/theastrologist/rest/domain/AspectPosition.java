@@ -1,8 +1,6 @@
 package com.theastrologist.rest.domain;
 
 
-import util.CalcUtil;
-
 public class AspectPosition {
     private Aspect aspect;
     private Planet planet;
@@ -11,14 +9,23 @@ public class AspectPosition {
     private PlanetPosition planetComparisonPosition;
     private Degree orbDelta;
 
-    public static AspectPosition createAspectPosition(Planet planet, Planet planetComparison, PlanetPosition planetPosition, PlanetPosition planetComparisonPosition) {
-        AspectPosition aspectPosition = new AspectPosition(planet, planetComparison, planetPosition, planetComparisonPosition);
-        boolean shouldDestroy = aspectPosition.calculateAspectPosition();
+    public static AspectPosition createAspectPosition(Planet planet, Planet planetComparison, PlanetPosition
+            planetPosition, PlanetPosition planetComparisonPosition, boolean transit) {
+
+        AspectPosition aspectPosition = new AspectPosition(planet, planetComparison, planetPosition,
+                planetComparisonPosition);
+        boolean shouldDestroy = aspectPosition.calculateAspectPosition(transit);
 
         return shouldDestroy ? null : aspectPosition;
     }
 
-    private boolean calculateAspectPosition() {
+    public static AspectPosition createAspectPosition(Planet planet, Planet planetComparison, PlanetPosition
+            planetPosition, PlanetPosition planetComparisonPosition) {
+        return createAspectPosition(planet, planetComparison, planetPosition, planetComparisonPosition, false);
+    }
+
+
+    private boolean calculateAspectPosition(boolean transit) {
 
         // -270 ou 270 ==> 90
         // -180 ==> 180
@@ -50,12 +57,12 @@ public class AspectPosition {
             int angleSeparation = aspect.getAngleSeparation();
             double orbDelta = comparison - angleSeparation; // -3
 
-            double aspectOrbe = aspect.getOrbe(); // + ou - 5
+            double aspectOrbe = transit ? aspect.getOrbeTransit() : aspect.getOrbe(); // + ou - 5
 
 
-            if (Math.abs(orbDelta) <=  aspectOrbe) {
-                if(devant) {
-                    orbDelta = - orbDelta;
+            if (Math.abs(orbDelta) <= aspectOrbe) {
+                if (devant) {
+                    orbDelta = -orbDelta;
                 }
                 this.aspect = aspect;
                 this.orbDelta = new Degree(orbDelta);
@@ -67,7 +74,8 @@ public class AspectPosition {
         return shouldDestroy;
     }
 
-    private AspectPosition(Planet planet, Planet planetComparison, PlanetPosition planetPosition, PlanetPosition planetComparisonPosition) {
+    private AspectPosition(Planet planet, Planet planetComparison, PlanetPosition planetPosition, PlanetPosition
+            planetComparisonPosition) {
         this.planet = planet;
         this.planetComparison = planetComparison;
         this.planetPosition = planetPosition;
