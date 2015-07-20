@@ -1,6 +1,7 @@
-package com.theastrologist.rest.domain;
+package com.theastrologist.rest.core;
 
-import com.theastrologist.rest.core.ThemeCalculator;
+import com.theastrologist.rest.domain.*;
+import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
@@ -37,7 +38,7 @@ public class AspectPositionTest {
         AspectPosition aspectPosition = AspectPosition.createAspectPosition(Planet.SOLEIL, Planet.ASCENDANT, sunPosition, asPosition);
 
         assertThat(aspectPosition, notNullValue());
-        assertThat(aspectPosition.getAspect(), is(Aspect.SEXTILE));
+        assertThat(aspectPosition.getAspect(), Matchers.is(Aspect.SEXTILE));
         assertThat(aspectPosition.getOrbDelta().getDegree(), equalTo(-2));
         assertThat(aspectPosition.getOrbDelta().getMinutes(), equalTo(-13));
     }

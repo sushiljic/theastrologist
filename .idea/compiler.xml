@@ -23,10 +23,12 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="theastrologist-rest" />
+        <module name="TheAstrologist-Rest" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="theastrologist-rest" target="1.5" />
+      <module name="TheAstrologist-Rest" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

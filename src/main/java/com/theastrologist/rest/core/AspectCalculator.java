@@ -1,5 +1,10 @@
-package com.theastrologist.rest.domain;
+package com.theastrologist.rest.core;
 
+
+import com.theastrologist.rest.domain.AspectPosition;
+import com.theastrologist.rest.domain.Planet;
+import com.theastrologist.rest.domain.PlanetPosition;
+import com.theastrologist.rest.domain.SkyPosition;
 
 import java.util.HashMap;
 import java.util.Map;
