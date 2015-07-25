@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/theastrologist-rest.iml" filepath="$PROJECT_DIR$/theastrologist-rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TheAstrologist-Rest.iml" filepath="$PROJECT_DIR$/TheAstrologist-Rest.iml" />
     </modules>
   </component>
 </project>

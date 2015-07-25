@@ -7,8 +7,7 @@ import swisseph.SwissEph;
 import util.CalcUtil;
 import util.DateUtil;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.theastrologist.rest.domain.PlanetPosition.createPlanetPosition;
 
@@ -26,6 +25,11 @@ public class SkyPosition {
     private Map<Planet, PlanetPosition> positionMap = new HashMap<Planet, PlanetPosition>();
 
     private Map<House, HousePosition> houseMap = new HashMap<House, HousePosition>();
+    private SortedSet<Planet> dominantPlanetList = null;
+    private PlanetPosition ascendantPosition = positionMap.get(Planet.ASCENDANT);
+    private PlanetPosition lunePosition = positionMap.get(Planet.LUNE);
+    private PlanetPosition soleilPosition = positionMap.get(Planet.SOLEIL);
+    private PlanetPosition noeudSudPosition = positionMap.get(Planet.NOEUD_SUD_MOYEN);
 
     public SkyPosition(DateTime dateTime, Degree latitude, Degree longitude) {
         this.date = dateTime;
@@ -102,7 +106,7 @@ public class SkyPosition {
         }
     }
 
-    public void fillHousesAndAscendant(SwissEph sw, SweDate sd) {
+    private void fillHousesAndAscendant(SwissEph sw, SweDate sd) {
         int flags = 0;
         double[] cusps = new double[13];
         double[] acsc = new double[10];
@@ -130,7 +134,7 @@ public class SkyPosition {
         }
     }
 
-    public void fillAngles(double[] degrees) {
+    private void fillAngles(double[] degrees) {
         double as = degrees[0];
         double mc = degrees[1];
 
@@ -152,6 +156,125 @@ public class SkyPosition {
 
         Degree dsDegree = CalcUtil.getOpposite(asDegree);
         this.positionMap.put(Planet.DESCENDANT, createPlanetPosition(dsDegree, asDegree));
+    }
+
+    public SortedSet<Planet> getDominantPlanets() {
+        if (dominantPlanetList == null) {
+            // Calcul des dominantes
+
+            final SkyPosition skyPosition = this;
+
+            dominantPlanetList = new TreeSet<Planet>(new Comparator<Planet>() {
+                public int compare(Planet planet, Planet planetToCompare) {
+                    return skyPosition.compare(planet, planetToCompare);
+                }
+            });
+            Collections.addAll(dominantPlanetList, Planet.values());
+        }
+        return dominantPlanetList;
+    }
+
+    public int compare(Planet planet, Planet planetToCompare) {
+
+        int comparison = 0;
+
+        PlanetPosition planetPosition = positionMap.get(planet);
+        PlanetPosition planetToComparePosition = positionMap.get(planetToCompare);
+
+        if (isPlanetPrincipale(planet)) {
+            if(!(isPlanetPrincipale(planetToCompare))) {
+                // Cas où la planète principale est comparée à une autre planète
+                comparison = 1;
+            } else {
+                // Cas où les deux planètes sont principales
+                Sign planetSign = planetPosition.getSign();
+                Sign planetToCompareSign = planetToComparePosition.getSign();
+
+                if(planetSign.isPositiveDignity(planet)) {
+                    // Cas où la planète est en dignité positive
+                    if(planetToCompareSign.isPositiveDignity(planetToCompare)) {
+                        // Cas à gérer de deux planètes en dignité positive
+                        // TODO
+                    } else {
+                        comparison = 1;
+                    }
+                } else if(planetSign.isNegativeDignity(planet)) {
+                    // Planète en dignité négative
+                    if(planetToCompareSign.isPositiveDignity(planetToCompare)) {
+                        // Cas à gérer de deux planètes en dignité positive
+                        // TODO
+                    } else {
+                        comparison = 1;
+                    }
+                } else {
+                    // Planète normale
+                    if(planetToCompareSign.isPositiveDignity(planetToCompare)) {
+                        // Cas à gérer de deux planètes en dignité positive
+                        // TODO
+                    } else {
+                        comparison = 1;
+                    }
+                }
+            }
+        } else {
+            if(isPlanetPrincipale(planetToCompare)) {
+                // Cas où la planète principale est comparée à une autre planète
+                comparison = -1;
+            } else {
+                // Cas de deux planètes normales
+                // TODO
+            }
+        }
+
+        return comparison;
+    }
+
+    public PlanetPosition getAscendantPosition() {
+        if (ascendantPosition == null) {
+            ascendantPosition = positionMap.get(Planet.ASCENDANT);
+        }
+        return ascendantPosition;
+    }
+
+    public PlanetPosition getLunePosition() {
+        if (lunePosition == null) {
+            lunePosition = positionMap.get(Planet.LUNE);
+        }
+        return lunePosition;
+    }
+
+    public PlanetPosition getSoleilPosition() {
+        if (soleilPosition == null) {
+            soleilPosition = positionMap.get(Planet.SOLEIL);
+        }
+        return soleilPosition;
+    }
+
+    public PlanetPosition getNoeudSudPosition() {
+        if (noeudSudPosition == null) {
+            noeudSudPosition = positionMap.get(Planet.NOEUD_SUD_MOYEN);
+        }
+        return noeudSudPosition;
+    }
+
+    private boolean isPlanetPrincipale(Planet planet) {
+        return isPlanetMasterSoleil(planet) || isPlanetMasterAscendant(planet) || isPlanetMasterLune(planet) || isPlanetMasterNoeudSud(planet);
+    }
+
+    private boolean isPlanetMasterSoleil(Planet planet) {
+        return getSoleilPosition().getSign().isMasterPlanet(planet);
+    }
+
+    private boolean isPlanetMasterLune(Planet planet) {
+        return getLunePosition().getSign().isMasterPlanet(planet);
+    }
+
+    private boolean isPlanetMasterAscendant(Planet planet) {
+        return getAscendantPosition().getSign().isMasterPlanet(planet);
+    }
+
+    private boolean isPlanetMasterNoeudSud(Planet planet) {
+        return getNoeudSudPosition().getSign().isMasterPlanet(planet);
     }
 
     public PlanetPosition getPlanetPosition(Planet planet) {

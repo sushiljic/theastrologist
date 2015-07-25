@@ -1,7 +1,9 @@
 package com.theastrologist.rest.core;
 
 import com.theastrologist.rest.domain.Degree;
+import com.theastrologist.rest.domain.Planet;
 import com.theastrologist.rest.domain.SkyPosition;
+import javafx.collections.transformation.SortedList;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import swisseph.*;
@@ -27,6 +29,4 @@ public class ThemeCalculator {
         skyPosition.calculate(sw);
         return skyPosition;
     }
-
-
 }
