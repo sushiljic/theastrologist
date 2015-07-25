@@ -1,7 +1,13 @@
 package com.theastrologist.rest.domain;
 
+import com.google.common.base.Enums;
+import com.google.common.primitives.Primitives;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static com.google.common.collect.Iterables.contains;
 
 /**
  * Created by SAM on 16/11/2014.
@@ -42,16 +48,40 @@ public enum Sign {
         return masterPlanets;
     }
 
+    public boolean isPositiveDignity(Planet planet) {
+        return isMasterPlanet(planet) || isExaltedPlanet(planet);
+    }
+
+    public boolean isNegativeDignity(Planet planet) {
+        return isExilPlanet(planet) || isChutePlanet(planet);
+    }
+
+    public boolean isMasterPlanet(Planet planet) {
+        return Arrays.asList(masterPlanets).contains(planet);
+    }
+
     public Planet[] getExaltedPlanets() {
         return exaltedPlanets;
+    }
+
+    public boolean isExaltedPlanet(Planet planet) {
+        return Arrays.asList(exaltedPlanets).contains(planet);
     }
 
     public Planet[] getExilPlanets() {
         return exilPlanets;
     }
 
+    public boolean isExilPlanet(Planet planet) {
+        return Arrays.asList(exilPlanets).contains(planet);
+    }
+
     public Planet[] getChutePlanets() {
         return chutePlanets;
+    }
+
+    public boolean isChutePlanet(Planet planet) {
+        return Arrays.asList(chutePlanets).contains(planet);
     }
 
     private static List<Sign> signs = new ArrayList<Sign>(12);
