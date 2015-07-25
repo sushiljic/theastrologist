@@ -200,8 +200,8 @@ public class SkyPosition {
                     }
                 } else if(planetSign.isNegativeDignity(planet)) {
                     // Planète en dignité négative
-                    if(planetToCompareSign.isPositiveDignity(planetToCompare)) {
-                        // Cas à gérer de deux planètes en dignité positive
+                    if(planetToCompareSign.isNegativeDignity(planetToCompare)) {
+                        // Cas à gérer de deux planètes en dignité negative
                         // TODO
                     } else {
                         comparison = 1;
@@ -210,9 +210,9 @@ public class SkyPosition {
                     // Planète normale
                     if(planetToCompareSign.isPositiveDignity(planetToCompare)) {
                         // Cas à gérer de deux planètes en dignité positive
-                        // TODO
+                        comparison = -1;
                     } else {
-                        comparison = 1;
+                        // TODO
                     }
                 }
             }
