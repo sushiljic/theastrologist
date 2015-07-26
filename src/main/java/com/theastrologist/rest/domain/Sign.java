@@ -21,7 +21,7 @@ public enum Sign {
     VIERGE(6, new Planet[]{Planet.MERCURE}, new Planet[]{Planet.MERCURE, Planet.NEPTUNE}, new Planet[]{Planet.JUPITER, Planet.NEPTUNE}, new Planet[]{Planet.VENUS}),
     BALANCE(7, new Planet[]{Planet.VENUS}, new Planet[]{Planet.SATURNE, Planet.URANUS}, new Planet[]{Planet.MARS, Planet.PLUTON}, new Planet[]{Planet.SOLEIL}),
     SCORPION(8, new Planet[]{Planet.MARS, Planet.PLUTON}, new Planet[]{Planet.SATURNE, Planet.URANUS}, new Planet[]{Planet.VENUS}, new Planet[]{Planet.LUNE}),
-    SAGITTAIRE(9, new Planet[]{Planet.JUPITER, Planet.NEPTUNE}, new Planet[]{Planet.MERCURE, Planet.NEPTUNE}, new Planet[]{}, new Planet[]{Planet.VENUS}),
+    SAGITTAIRE(9, new Planet[]{Planet.JUPITER, Planet.NEPTUNE}, new Planet[]{Planet.MERCURE, Planet.NEPTUNE}, new Planet[]{Planet.MERCURE}, new Planet[]{Planet.VENUS}),
     CAPRICORNE(10, new Planet[]{Planet.SATURNE, Planet.URANUS}, new Planet[]{Planet.MARS, Planet.PLUTON}, new Planet[]{Planet.LUNE}, new Planet[]{Planet.JUPITER}),
     VERSEAU(11, new Planet[]{Planet.SATURNE, Planet.URANUS}, new Planet[]{Planet.JUPITER}, new Planet[]{Planet.SOLEIL}, new Planet[]{Planet.MARS, Planet.PLUTON}),
     POISSONS(12, new Planet[]{Planet.JUPITER, Planet.NEPTUNE}, new Planet[]{Planet.VENUS}, new Planet[]{Planet.MERCURE}, new Planet[]{Planet.MERCURE, Planet.NEPTUNE});

@@ -20,15 +20,18 @@ public class SkyPositionTest {
     public static final DateTimeZone DATE_TIME_ZONE = DateTimeZone.forTimeZone(TimeZone.getTimeZone("Europe/Paris"));
     private final DateTime SAMY_DATE = new DateTime(1985, 1, 4, 11, 20, DATE_TIME_ZONE);
     private final DateTime LAURENT_DATE = new DateTime(1980, 8, 9, 14, 25, DATE_TIME_ZONE);
+    private final DateTime EMILIE_DATE = new DateTime(1983, 7, 1, 13, 20, DATE_TIME_ZONE);
     private final Degree LATITUDE = new Degree(48, 39);
     private final Degree LONGITUDE = new Degree(2, 25);
     private SkyPosition samySkyPosition;
     private SkyPosition laurentSkyPosition;
+    private SkyPosition emilieSkyPosition;
 
     @Before
     public void setUp() throws Exception {
         samySkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
         laurentSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(LAURENT_DATE, LATITUDE, LONGITUDE);
+        emilieSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(EMILIE_DATE, LATITUDE, LONGITUDE);
     }
 
     @Test
@@ -117,13 +120,13 @@ public class SkyPositionTest {
     @Test
     public void testCompareDeuxPlanetesPrincipalesExaltation() throws Exception {
         int comparison = laurentSkyPosition.compare(Planet.URANUS, Planet.SATURNE);
-        assertThat(comparison, greaterThan(0));
+        assertThat(comparison, lessThan(0));
     }
 
     @Test
     public void testCompareDeuxPlanetesPrincipalesExaltationX() throws Exception {
         int comparison = laurentSkyPosition.compare(Planet.SATURNE, Planet.URANUS);
-        assertThat(comparison, lessThan(0));
+        assertThat(comparison, greaterThan(0));
     }
 
     @Test
@@ -139,6 +142,12 @@ public class SkyPositionTest {
     }
 
     @Test
+    public void testCompareDeuxPlanetesPrincipalesSigneDeNaissance() throws Exception {
+        int comparison = samySkyPosition.compare(Planet.NEPTUNE, Planet.MERCURE);
+        assertThat(comparison, greaterThan(0));
+    }
+
+    @Test
     public void testCompareConjonctionLuminaireNormale() throws Exception {
         int comparison = laurentSkyPosition.compare(Planet.MERCURE, Planet.NEPTUNE);
         assertThat(comparison, greaterThan(0));
@@ -150,15 +159,16 @@ public class SkyPositionTest {
         assertThat(comparison, lessThan(0));
     }
 
+
     @Test
     public void testComparePlaneteDansSigneDeNaissance() throws Exception {
-        int comparison = samySkyPosition.compare(Planet.VENUS, Planet.SOLEIL);
+        int comparison = samySkyPosition.compare(Planet.VENUS, Planet.LUNE);
         assertThat(comparison, greaterThan(0));
     }
 
     @Test
     public void testComparePlaneteDansSigneDeNaissanceX() throws Exception {
-        int comparison = samySkyPosition.compare(Planet.SOLEIL, Planet.VENUS);
+        int comparison = samySkyPosition.compare(Planet.LUNE, Planet.VENUS);
         assertThat(comparison, lessThan(0));
     }
 }

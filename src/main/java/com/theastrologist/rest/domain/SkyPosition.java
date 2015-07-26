@@ -34,7 +34,7 @@ public class SkyPosition {
     private PlanetPosition noeudSudPosition = positionMap.get(Planet.NOEUD_SUD_MOYEN);
 
     // Champs pour le calcul des aspects
-    private Map<Planet, Map<Planet, AspectPosition>> aspectsForSkyPosition;
+    private Map<Planet, Map<Planet, AspectPosition>> aspects;
 
     public SkyPosition(DateTime dateTime, Degree latitude, Degree longitude) {
         this.date = dateTime;
@@ -44,10 +44,7 @@ public class SkyPosition {
     }
 
     public Map<Planet, Map<Planet, AspectPosition>> getAspects() {
-        if (aspectsForSkyPosition == null) {
-            aspectsForSkyPosition = AspectCalculator.INSTANCE.createAspectsForSkyPosition(this);
-        }
-        return aspectsForSkyPosition;
+        return aspects;
     }
 
     public void calculate(SwissEph sw) {
@@ -58,6 +55,12 @@ public class SkyPosition {
         fillHousesAndAscendant(sw, sd);
         fillPlanets(sw, sd);
 
+        ascendantPosition = positionMap.get(Planet.ASCENDANT);
+        lunePosition = positionMap.get(Planet.LUNE);
+        soleilPosition = positionMap.get(Planet.SOLEIL);
+        noeudSudPosition = positionMap.get(Planet.NOEUD_SUD_MOYEN);
+
+        aspects = AspectCalculator.INSTANCE.createAspectsForSkyPosition(this);
     }
 
     private void fillPlanets(SwissEph sw, SweDate sd) {
@@ -180,6 +183,9 @@ public class SkyPosition {
                     return skyPosition.compare(planet, planetToCompare);
                 }
             });
+
+            // TODO enlever les planètes qui n'en sont pas
+
             Collections.addAll(dominantPlanetList, Planet.values());
         }
         return dominantPlanetList;
@@ -201,46 +207,69 @@ public class SkyPosition {
         int points = 0;
 
         if (isPlanetPrincipale(planet)) {
-            points += 10;
+            points += 20;
         }
 
         if (hasConjunctionWithLuminaire(planet)) {
-            points += 6;
+            points += 10;
+        } else {
+            if (isInPrincipaleSign(planetPosition)) {
+                points += 1;
+            }
+
+            if (isInPrincipaleHouse(planet)) {
+                points += 1;
+            }
         }
 
         if (sign.isMasterPlanet(planet)) {
-            points += 2;
+            points += 4;
         }
 
         if (sign.isExaltedPlanet(planet)) {
-            points += 1;
-        }
-
-        if (sign.isExilPlanet(planet)) {
-            points -= 2;
-        }
-
-        if (sign.isChutePlanet(planet)) {
-            points -= 1;
-        }
-
-        if (house.isMasterPlanet(planet)) {
             points += 2;
         }
 
+        if (sign.isExilPlanet(planet)) {
+            points -= 4;
+        }
+
+        if (sign.isChutePlanet(planet)) {
+            points -= 2;
+        }
+
+        if (house.isMasterPlanet(planet)) {
+            points += 4;
+        }
+
         if (house.isExaltedPlanet(planet)) {
-            points += 1;
+            points += 2;
         }
 
         if (house.isExilPlanet(planet)) {
+            points -= 4;
+        }
+
+        if (house.isChutePlanet(planet)) {
             points -= 2;
         }
 
         if (house.isChutePlanet(planet)) {
-            points -= 1;
+            points -= 2;
         }
 
         return points;
+    }
+
+    private boolean isInPrincipaleHouse(Planet planet) {
+        // TODO is principale house
+        return false;
+    }
+
+    private boolean isInPrincipaleSign(PlanetPosition planetPosition) {
+        Sign sign = planetPosition.getSign();
+        return sign == getAscendantPosition().getSign() || sign == lunePosition.getSign() ||
+                sign == soleilPosition.getSign() || sign == noeudSudPosition.getSign();
     }
 
     private boolean hasConjunctionWithLuminaire(Planet planet) {
@@ -259,30 +288,18 @@ public class SkyPosition {
     }
 
     public PlanetPosition getAscendantPosition() {
-        if (ascendantPosition == null) {
-            ascendantPosition = positionMap.get(Planet.ASCENDANT);
-        }
         return ascendantPosition;
     }
 
     public PlanetPosition getLunePosition() {
-        if (lunePosition == null) {
-            lunePosition = positionMap.get(Planet.LUNE);
-        }
         return lunePosition;
     }
 
     public PlanetPosition getSoleilPosition() {
-        if (soleilPosition == null) {
-            soleilPosition = positionMap.get(Planet.SOLEIL);
-        }
         return soleilPosition;
     }
 
     public PlanetPosition getNoeudSudPosition() {
-        if (noeudSudPosition == null) {
-            noeudSudPosition = positionMap.get(Planet.NOEUD_SUD_MOYEN);
-        }
         return noeudSudPosition;
     }
 
