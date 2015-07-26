@@ -31,6 +31,7 @@ public enum Planet {
     LILITH_MOYENNE(SweConst.SE_MEAN_APOG),
     PART_DE_FORTUNE(-1);
 
+    private static List<Planet> realPlanets;
     private final int sweConst;
     private static List<Planet> principalePlanets;
 
@@ -51,5 +52,22 @@ public enum Planet {
             principalePlanets.add(NOEUD_SUD_MOYEN);
         }
         return principalePlanets;
+    }
+
+    public static List<Planet> getRealPlanets() {
+        if (realPlanets == null) {
+            realPlanets = new ArrayList<Planet>();
+            realPlanets.add(SOLEIL);
+            realPlanets.add(LUNE);
+            realPlanets.add(MERCURE);
+            realPlanets.add(VENUS);
+            realPlanets.add(MARS);
+            realPlanets.add(JUPITER);
+            realPlanets.add(SATURNE);
+            realPlanets.add(URANUS);
+            realPlanets.add(NEPTUNE);
+            realPlanets.add(PLUTON);
+        }
+        return realPlanets;
     }
 }

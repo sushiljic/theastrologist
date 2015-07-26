@@ -1,5 +1,6 @@
 package com.theastrologist.rest.domain;
 
+import com.google.common.collect.Maps;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import swisseph.SweDate;
@@ -27,7 +28,7 @@ public class SkyPosition {
     private Map<House, HousePosition> houseMap = new HashMap<House, HousePosition>();
 
     // Champs pour le calcul des dominances
-    private SortedSet<Planet> dominantPlanetList = null;
+    private List<Map.Entry<Planet, Integer>> dominantPlanetList = null;
     private PlanetPosition ascendantPosition = positionMap.get(Planet.ASCENDANT);
     private PlanetPosition lunePosition = positionMap.get(Planet.LUNE);
     private PlanetPosition soleilPosition = positionMap.get(Planet.SOLEIL);
@@ -172,21 +173,17 @@ public class SkyPosition {
         this.positionMap.put(Planet.DESCENDANT, createPlanetPosition(dsDegree, asDegree));
     }
 
-    public SortedSet<Planet> getDominantPlanets() {
+    public List<Map.Entry<Planet, Integer>> getDominantPlanets() {
         if (dominantPlanetList == null) {
             // Calcul des dominantes
+            Map<Planet, Integer> temporaryMap = Maps.newHashMap();
 
-            final SkyPosition skyPosition = this;
-
-            dominantPlanetList = new TreeSet<Planet>(new Comparator<Planet>() {
-                public int compare(Planet planet, Planet planetToCompare) {
-                    return - skyPosition.compare(planet, planetToCompare);
-                }
-            });
-
-            // TODO enlever les planètes qui n'en sont pas
-
-            Collections.addAll(dominantPlanetList, Planet.values());
+            for (Planet planet : Planet.getRealPlanets()) {
+                int result = calculateDominant(planet);
+                temporaryMap.put(planet, result);
+            }
+            SortedSet<Map.Entry<Planet, Integer>> sortedSet = CalcUtil.entriesSortedByValues(temporaryMap);
+            dominantPlanetList = CalcUtil.reverseSet(sortedSet);
         }
         return dominantPlanetList;
     }
@@ -211,55 +208,51 @@ public class SkyPosition {
         }
 
         if (isPlanetMaitrePrincipalHouse(planet)) {
-            points += 1;
+            points += 20;
         }
 
         if (hasConjunctionWithLuminaire(planet)) {
             points += 10;
         } else {
             if (isInPrincipaleSign(planetPosition)) {
-                points += 1;
+                points += 4;
             }
 
-            if (isInPrincipaleHouse(planet)) {
-                points += 1;
+            if (isInPrincipaleHouse(planetPosition)) {
+                points += 4;
             }
         }
 
         if (sign.isMasterPlanet(planet)) {
-            points += 4;
+            points += 2;
         }
 
         if (sign.isExaltedPlanet(planet)) {
-            points += 2;
+            points += 1;
         }
 
         if (sign.isExilPlanet(planet)) {
-            points -= 4;
+            points -= 2;
         }
 
         if (sign.isChutePlanet(planet)) {
-            points -= 2;
+            points -= 1;
         }
 
         if (house.isMasterPlanet(planet)) {
-            points += 4;
-        }
-
-        if (house.isExaltedPlanet(planet)) {
             points += 2;
         }
 
+        if (house.isExaltedPlanet(planet)) {
+            points += 1;
+        }
+
         if (house.isExilPlanet(planet)) {
-            points -= 4;
-        }
-
-        if (house.isChutePlanet(planet)) {
             points -= 2;
         }
 
         if (house.isChutePlanet(planet)) {
-            points -= 2;
+            points -= 1;
         }
 
         return points;
@@ -340,9 +333,10 @@ public class SkyPosition {
         return getNoeudSudPosition().getHouse().isMasterPlanet(planet);
     }
 
-    private boolean isInPrincipaleHouse(Planet planet) {
-        // TODO is principale house
-        return false;
+    private boolean isInPrincipaleHouse(PlanetPosition planetPosition) {
+        House house = planetPosition.getHouse();
+        return house == ascendantPosition.getHouse() || house == lunePosition.getHouse() ||
+                house == soleilPosition.getHouse() || house == noeudSudPosition.getHouse();
     }
 
     public PlanetPosition getPlanetPosition(Planet planet) {

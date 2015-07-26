@@ -6,10 +6,7 @@ import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TimeZone;
+import java.util.*;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -37,12 +34,42 @@ public class SkyPositionTest {
     }
 
     @Test
-    public void testGetDominantPlanets() throws Exception {
-        SortedSet<Planet> testList = samySkyPosition.getDominantPlanets();
+    public void testGetDominantPlanetsSamy() throws Exception {
+        List<Map.Entry<Planet, Integer>> testList = samySkyPosition.getDominantPlanets();
         assertThat(testList, notNullValue());
         assertThat(testList, not(empty()));
-        List<Planet> elements = new ArrayList<Planet>(testList);
-        assertThat(elements.get(0), is(Planet.SATURNE));
+        assertThat(testList.get(0).getKey(), is(Planet.SATURNE));
+        assertThat(testList.get(1).getKey(), is(Planet.JUPITER));
+        assertThat(testList.get(2).getKey(), is(Planet.NEPTUNE));
+        assertThat(testList.get(3).getKey(), is(Planet.URANUS));
+        assertThat(testList.get(4).getKey(), is(Planet.MERCURE));
+        assertThat(testList.get(5).getKey(), is(Planet.MARS));
+        assertThat(testList.get(6).getKey(), is(Planet.PLUTON));
+        assertThat(testList.get(7).getKey(), is(Planet.VENUS));
+    }
+
+    @Test
+    public void testGetDominantPlanetsLaurent() throws Exception {
+        List<Map.Entry<Planet, Integer>> testList = laurentSkyPosition.getDominantPlanets();
+        assertThat(testList, notNullValue());
+        assertThat(testList, not(empty()));
+        assertThat(testList.get(0).getKey(), is(Planet.SOLEIL));
+        assertThat(testList.get(1).getKey(), is(Planet.JUPITER));
+        assertThat(testList.get(2).getKey(), is(Planet.URANUS));
+        assertThat(testList.get(3).getKey(), is(Planet.NEPTUNE));
+        assertThat(testList.get(4).getKey(), is(Planet.MARS));
+    }
+
+    @Test
+    public void testGetDominantPlanetsEmilie() throws Exception {
+        List<Map.Entry<Planet, Integer>> testList = emilieSkyPosition.getDominantPlanets();
+        assertThat(testList, notNullValue());
+        assertThat(testList, not(empty()));
+        assertThat(testList.get(0).getKey(), is(Planet.NEPTUNE));
+        assertThat(testList.get(1).getKey(), is(Planet.JUPITER));
+        assertThat(testList.get(2).getKey(), is(Planet.URANUS));
+        assertThat(testList.get(3).getKey(), is(Planet.NEPTUNE));
+        assertThat(testList.get(4).getKey(), is(Planet.MARS));
     }
 
     @Test
@@ -62,7 +89,9 @@ public class SkyPositionTest {
 
     @Test
     public void testComparePlanetePrincipaleEtPlaneteNormale3() throws Exception {
-        int comparison = samySkyPosition.compare(Planet.URANUS, Planet.VENUS);
+        // Soleil en XI et en capricorne, Uranus en X
+        // Venus dans signe de naissance
+        int comparison = samySkyPosition.compare(Planet.URANUS, Planet.LUNE);
         assertThat(comparison, greaterThan(0));
     }
 
@@ -74,12 +103,20 @@ public class SkyPositionTest {
 
     @Test
     public void testCompareDeuxPlanetesPrincipalesMaitre() throws Exception {
+        // Soleil en Cancer
+        // Noeud sud en sagittaire (exil) et en III, mercure en gémeaux en IX (exil)
+        int comparison = emilieSkyPosition.compare(Planet.MERCURE, Planet.LUNE);
+        assertThat(comparison, greaterThan(0));
+    }
+
+    @Test
+    public void testCompareDeuxPlanetesPrincipalesMaitrePlusieurs() throws Exception {
         int comparison = laurentSkyPosition.compare(Planet.SOLEIL, Planet.SATURNE);
         assertThat(comparison, greaterThan(0));
     }
 
     @Test
-    public void testCompareDeuxPlanetesPrincipalesMaitreExaltation() throws Exception {
+    public void testCompareDeuxPlanetesPrincipalesMaitreExaltationPlusieurs() throws Exception {
         int comparison = laurentSkyPosition.compare(Planet.SOLEIL, Planet.URANUS);
         assertThat(comparison, greaterThan(0));
     }
@@ -104,7 +141,7 @@ public class SkyPositionTest {
 
     @Test
     public void testCompareConjonctionLuminaireNormale() throws Exception {
-        int comparison = laurentSkyPosition.compare(Planet.MERCURE, Planet.NEPTUNE);
+        int comparison = laurentSkyPosition.compare(Planet.LUNE, Planet.JUPITER);
         assertThat(comparison, greaterThan(0));
     }
 
