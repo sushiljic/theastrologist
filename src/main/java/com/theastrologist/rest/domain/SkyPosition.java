@@ -1,6 +1,9 @@
 package com.theastrologist.rest.domain;
 
 import com.google.common.collect.Maps;
+import com.theastrologist.rest.domain.aspect.Aspect;
+import com.theastrologist.rest.domain.aspect.AspectCalculator;
+import com.theastrologist.rest.domain.aspect.AspectPosition;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import swisseph.SweDate;

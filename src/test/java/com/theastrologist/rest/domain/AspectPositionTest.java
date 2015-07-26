@@ -1,6 +1,9 @@
 package com.theastrologist.rest.domain;
 
 import com.theastrologist.rest.core.ThemeCalculator;
+import com.theastrologist.rest.domain.aspect.Aspect;
+import com.theastrologist.rest.domain.aspect.AspectCalculator;
+import com.theastrologist.rest.domain.aspect.AspectPosition;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;

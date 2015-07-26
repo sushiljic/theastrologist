@@ -1,4 +1,4 @@
-package com.theastrologist.rest.domain;
+package com.theastrologist.rest.domain.aspect;
 
 
 public enum Aspect {

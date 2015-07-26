@@ -1,5 +1,9 @@
-package com.theastrologist.rest.domain;
+package com.theastrologist.rest.domain.aspect;
 
+
+import com.theastrologist.rest.domain.Degree;
+import com.theastrologist.rest.domain.Planet;
+import com.theastrologist.rest.domain.PlanetPosition;
 
 public class AspectPosition {
     private Aspect aspect;
