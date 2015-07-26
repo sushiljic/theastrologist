@@ -188,15 +188,7 @@ public class SkyPosition {
         return dominantPlanetList;
     }
 
-    public int compare(Planet planet, Planet planetToCompare) {
-
-        int dominantPoints = calculateDominant(planet);
-        int dominantPointsToCompare = calculateDominant(planetToCompare);
-
-        return dominantPoints - dominantPointsToCompare;
-    }
-
-    private int calculateDominant(Planet planet) {
+    public int calculateDominant(Planet planet) {
         PlanetPosition planetPosition = positionMap.get(planet);
         Sign sign = planetPosition.getSign();
         House house = planetPosition.getHouse();
@@ -204,60 +196,61 @@ public class SkyPosition {
         int points = 0;
 
         if (isPlanetMaitrePrincipalSign(planet)) {
-            points += 20;
+            points += 10;
         }
 
         if (isPlanetMaitrePrincipalHouse(planet)) {
-            points += 20;
+            points += 10;
         }
 
         if (hasConjunctionWithLuminaire(planet)) {
-            points += 10;
+            points += 4;
         } else {
-            if (isInPrincipaleSign(planetPosition)) {
-                points += 4;
-            }
+            if (planet != Planet.LUNE && planet != Planet.SOLEIL) {
+                if (isInPrincipaleSign(planetPosition)) {
+                    points += 2;
+                }
 
-            if (isInPrincipaleHouse(planetPosition)) {
-                points += 4;
+                if (isInPrincipaleHouse(planetPosition)) {
+                    points += 2;
+                }
             }
         }
 
         if (sign.isMasterPlanet(planet)) {
-            points += 2;
+            points += 4;
         }
 
         if (sign.isExaltedPlanet(planet)) {
-            points += 1;
-        }
-
-        if (sign.isExilPlanet(planet)) {
-            points -= 2;
-        }
-
-        if (sign.isChutePlanet(planet)) {
-            points -= 1;
-        }
-
-        if (house.isMasterPlanet(planet)) {
             points += 2;
         }
 
-        if (house.isExaltedPlanet(planet)) {
-            points += 1;
+        if (sign.isExilPlanet(planet)) {
+            points -= 4;
         }
 
-        if (house.isExilPlanet(planet)) {
+        if (sign.isChutePlanet(planet)) {
             points -= 2;
         }
 
+        if (house.isMasterPlanet(planet)) {
+            points += 4;
+        }
+
+        if (house.isExaltedPlanet(planet)) {
+            points += 2;
+        }
+
+        if (house.isExilPlanet(planet)) {
+            points -= 4;
+        }
+
         if (house.isChutePlanet(planet)) {
-            points -= 1;
+            points -= 2;
         }
 
         return points;
     }
-
 
 
     private boolean hasConjunctionWithLuminaire(Planet planet) {

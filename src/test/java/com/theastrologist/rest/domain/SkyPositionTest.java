@@ -66,24 +66,36 @@ public class SkyPositionTest {
         assertThat(testList, notNullValue());
         assertThat(testList, not(empty()));
         assertThat(testList.get(0).getKey(), is(Planet.NEPTUNE));
-        assertThat(testList.get(1).getKey(), is(Planet.JUPITER));
+        assertThat(testList.get(1).getKey(), is(Planet.MERCURE));
         assertThat(testList.get(2).getKey(), is(Planet.URANUS));
-        assertThat(testList.get(3).getKey(), is(Planet.NEPTUNE));
-        assertThat(testList.get(4).getKey(), is(Planet.MARS));
+        assertThat(testList.get(3).getKey(), is(Planet.SATURNE));
+        assertThat(testList.get(4).getKey(), is(Planet.JUPITER));
+        assertThat(testList.get(5).getKey(), is(Planet.LUNE));
+        assertThat(testList.get(6).getKey(), is(Planet.VENUS));
+        assertThat(testList.get(7).getKey(), is(Planet.MARS));
+        assertThat(testList.get(8).getKey(), is(Planet.PLUTON));
+    }
+
+    public int compare(SkyPosition skyPosition, Planet planet, Planet planetToCompare) {
+
+        int dominantPoints = skyPosition.calculateDominant(planet);
+        int dominantPointsToCompare = skyPosition.calculateDominant(planetToCompare);
+
+        return dominantPoints - dominantPointsToCompare;
     }
 
     @Test
     public void testComparePlanetePrincipaleEtPlaneteNormale() throws Exception {
         // Ascendant Poissons
         // Rien pour Soleil
-        int comparison = samySkyPosition.compare(Planet.JUPITER, Planet.SOLEIL);
+        int comparison = compare(samySkyPosition, Planet.JUPITER, Planet.SOLEIL);
         assertThat(comparison, greaterThan(0));
     }
 
     @Test
     public void testComparePlanetePrincipaleEtPlaneteNormale2() throws Exception {
         // Noeud sud conjoint à saturne, Soleil Capricorne, Soleil Maison XI
-        int comparison = samySkyPosition.compare(Planet.SATURNE, Planet.LUNE);
+        int comparison = compare(samySkyPosition, Planet.SATURNE, Planet.LUNE);
         assertThat(comparison, greaterThan(0));
     }
 
@@ -91,13 +103,13 @@ public class SkyPositionTest {
     public void testComparePlanetePrincipaleEtPlaneteNormale3() throws Exception {
         // Soleil en XI et en capricorne, Uranus en X
         // Venus dans signe de naissance
-        int comparison = samySkyPosition.compare(Planet.URANUS, Planet.LUNE);
+        int comparison = compare(samySkyPosition, Planet.URANUS, Planet.LUNE);
         assertThat(comparison, greaterThan(0));
     }
 
     @Test
     public void testCompareDeuxPlanetesPrincipalesConjonctionLuminaire() throws Exception {
-        int comparison = samySkyPosition.compare(Planet.URANUS, Planet.JUPITER);
+        int comparison = compare(samySkyPosition, Planet.URANUS, Planet.JUPITER);
         assertThat(comparison, lessThan(0));
     }
 
@@ -105,49 +117,49 @@ public class SkyPositionTest {
     public void testCompareDeuxPlanetesPrincipalesMaitre() throws Exception {
         // Soleil en Cancer
         // Noeud sud en sagittaire (exil) et en III, mercure en gémeaux en IX (exil)
-        int comparison = emilieSkyPosition.compare(Planet.MERCURE, Planet.LUNE);
+        int comparison = compare(emilieSkyPosition, Planet.MERCURE, Planet.LUNE);
         assertThat(comparison, greaterThan(0));
     }
 
     @Test
     public void testCompareDeuxPlanetesPrincipalesMaitrePlusieurs() throws Exception {
-        int comparison = laurentSkyPosition.compare(Planet.SOLEIL, Planet.SATURNE);
+        int comparison = compare(laurentSkyPosition, Planet.SOLEIL, Planet.SATURNE);
         assertThat(comparison, greaterThan(0));
     }
 
     @Test
     public void testCompareDeuxPlanetesPrincipalesMaitreExaltationPlusieurs() throws Exception {
-        int comparison = laurentSkyPosition.compare(Planet.SOLEIL, Planet.URANUS);
+        int comparison = compare(laurentSkyPosition, Planet.SOLEIL, Planet.URANUS);
         assertThat(comparison, greaterThan(0));
     }
 
     @Test
     public void testCompareDeuxPlanetesPrincipalesExaltation() throws Exception {
-        int comparison = laurentSkyPosition.compare(Planet.URANUS, Planet.SATURNE);
+        int comparison = compare(laurentSkyPosition, Planet.URANUS, Planet.SATURNE);
         assertThat(comparison, lessThan(0));
     }
 
     @Test
     public void testCompareDeuxPlanetesPrincipalesExil() throws Exception {
-        int comparison = laurentSkyPosition.compare(Planet.MARS, Planet.SATURNE);
+        int comparison = compare(laurentSkyPosition, Planet.MARS, Planet.SATURNE);
         assertThat(comparison, lessThan(0));
     }
 
     @Test
     public void testCompareDeuxPlanetesPrincipalesSigneDeNaissance() throws Exception {
-        int comparison = samySkyPosition.compare(Planet.NEPTUNE, Planet.MERCURE);
+        int comparison = compare(samySkyPosition, Planet.NEPTUNE, Planet.MERCURE);
         assertThat(comparison, greaterThan(0));
     }
 
     @Test
     public void testCompareConjonctionLuminaireNormale() throws Exception {
-        int comparison = laurentSkyPosition.compare(Planet.LUNE, Planet.JUPITER);
+        int comparison = compare(laurentSkyPosition, Planet.LUNE, Planet.JUPITER);
         assertThat(comparison, greaterThan(0));
     }
 
     @Test
     public void testComparePlaneteDansSigneDeNaissance() throws Exception {
-        int comparison = samySkyPosition.compare(Planet.VENUS, Planet.LUNE);
+        int comparison = compare(samySkyPosition, Planet.VENUS, Planet.LUNE);
         assertThat(comparison, greaterThan(0));
     }
 
