@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by SAM on 16/11/2014.
  */
-public enum House {
+public enum House implements SkyArtefact {
     I(1),
     II(2),
     III(3),

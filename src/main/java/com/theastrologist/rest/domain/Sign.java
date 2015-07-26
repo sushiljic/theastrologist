@@ -12,7 +12,7 @@ import static com.google.common.collect.Iterables.contains;
 /**
  * Created by SAM on 16/11/2014.
  */
-public enum Sign {
+public enum Sign implements SkyArtefact {
     BELIER(1, new Planet[]{Planet.MARS, Planet.PLUTON}, new Planet[]{Planet.SOLEIL}, new Planet[]{Planet.VENUS}, new Planet[]{Planet.SATURNE, Planet.URANUS}),
     TAUREAU(2, new Planet[]{Planet.VENUS}, new Planet[]{Planet.LUNE}, new Planet[]{Planet.MARS, Planet.PLUTON}, new Planet[]{Planet.SATURNE, Planet.URANUS}),
     GEMEAUX(3, new Planet[]{Planet.MERCURE}, new Planet[]{Planet.VENUS}, new Planet[]{Planet.JUPITER, Planet.NEPTUNE}, new Planet[]{Planet.MERCURE, Planet.NEPTUNE}),

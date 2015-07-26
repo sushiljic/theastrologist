@@ -10,7 +10,7 @@ import java.util.List;
  * @since 16/11/2014.
  * Enumération des différentes planètes et indicateurs stellaires
  */
-public enum Planet {
+public enum Planet implements SkyArtefact {
     ASCENDANT(-1),
     DESCENDANT(-1),
     MILIEU_DU_CIEL(-1),

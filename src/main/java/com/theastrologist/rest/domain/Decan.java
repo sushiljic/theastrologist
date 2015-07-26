@@ -1,6 +1,6 @@
 package com.theastrologist.rest.domain;
 
-public abstract class Decan {
+public abstract class Decan  implements SkyArtefact {
     protected int decanNumber;
     protected Degree relativeDegree;
 
