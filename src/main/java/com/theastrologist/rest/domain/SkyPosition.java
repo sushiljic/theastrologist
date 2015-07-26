@@ -25,11 +25,16 @@ public class SkyPosition {
     private Map<Planet, PlanetPosition> positionMap = new HashMap<Planet, PlanetPosition>();
 
     private Map<House, HousePosition> houseMap = new HashMap<House, HousePosition>();
+
+    // Champs pour le calcul des dominances
     private SortedSet<Planet> dominantPlanetList = null;
     private PlanetPosition ascendantPosition = positionMap.get(Planet.ASCENDANT);
     private PlanetPosition lunePosition = positionMap.get(Planet.LUNE);
     private PlanetPosition soleilPosition = positionMap.get(Planet.SOLEIL);
     private PlanetPosition noeudSudPosition = positionMap.get(Planet.NOEUD_SUD_MOYEN);
+
+    // Champs pour le calcul des aspects
+    private Map<Planet, Map<Planet, AspectPosition>> aspectsForSkyPosition;
 
     public SkyPosition(DateTime dateTime, Degree latitude, Degree longitude) {
         this.date = dateTime;
@@ -38,6 +43,12 @@ public class SkyPosition {
         this.longitude = longitude;
     }
 
+    public Map<Planet, Map<Planet, AspectPosition>> getAspects() {
+        if (aspectsForSkyPosition == null) {
+            aspectsForSkyPosition = AspectCalculator.INSTANCE.createAspectsForSkyPosition(this);
+        }
+        return aspectsForSkyPosition;
+    }
 
     public void calculate(SwissEph sw) {
         SweDate sd = DateUtil.getSweDateUTC(date);
@@ -176,57 +187,75 @@ public class SkyPosition {
 
     public int compare(Planet planet, Planet planetToCompare) {
 
-        int comparison = 0;
+        int dominantPoints = calculateDominant(planet);
+        int dominantPointsToCompare = calculateDominant(planetToCompare);
 
+        return dominantPoints - dominantPointsToCompare;
+    }
+
+    private int calculateDominant(Planet planet) {
         PlanetPosition planetPosition = positionMap.get(planet);
-        PlanetPosition planetToComparePosition = positionMap.get(planetToCompare);
+        Sign sign = planetPosition.getSign();
+        House house = planetPosition.getHouse();
+
+        int points = 0;
 
         if (isPlanetPrincipale(planet)) {
-            if(!(isPlanetPrincipale(planetToCompare))) {
-                // Cas où la planète principale est comparée à une autre planète
-                comparison = 1;
-            } else {
-                // Cas où les deux planètes sont principales
-                Sign planetSign = planetPosition.getSign();
-                Sign planetToCompareSign = planetToComparePosition.getSign();
+            points += 10;
+        }
 
-                if(planetSign.isPositiveDignity(planet)) {
-                    // Cas où la planète est en dignité positive
-                    if(planetToCompareSign.isPositiveDignity(planetToCompare)) {
-                        // Cas à gérer de deux planètes en dignité positive
-                        // TODO
-                    } else {
-                        comparison = 1;
-                    }
-                } else if(planetSign.isNegativeDignity(planet)) {
-                    // Planète en dignité négative
-                    if(planetToCompareSign.isNegativeDignity(planetToCompare)) {
-                        // Cas à gérer de deux planètes en dignité negative
-                        // TODO
-                    } else {
-                        comparison = 1;
-                    }
-                } else {
-                    // Planète normale
-                    if(planetToCompareSign.isPositiveDignity(planetToCompare)) {
-                        // Cas à gérer de deux planètes en dignité positive
-                        comparison = -1;
-                    } else {
-                        // TODO
-                    }
-                }
-            }
-        } else {
-            if(isPlanetPrincipale(planetToCompare)) {
-                // Cas où la planète principale est comparée à une autre planète
-                comparison = -1;
-            } else {
-                // Cas de deux planètes normales
-                // TODO
+        if (hasConjunctionWithLuminaire(planet)) {
+            points += 6;
+        }
+
+        if (sign.isMasterPlanet(planet)) {
+            points += 2;
+        }
+
+        if (sign.isExaltedPlanet(planet)) {
+            points += 1;
+        }
+
+        if (sign.isExilPlanet(planet)) {
+            points -= 2;
+        }
+
+        if (sign.isChutePlanet(planet)) {
+            points -= 1;
+        }
+
+        if (house.isMasterPlanet(planet)) {
+            points += 2;
+        }
+
+        if (house.isExaltedPlanet(planet)) {
+            points += 1;
+        }
+
+        if (house.isExilPlanet(planet)) {
+            points -= 2;
+        }
+
+        if (house.isChutePlanet(planet)) {
+            points -= 1;
+        }
+
+        return points;
+    }
+
+    private boolean hasConjunctionWithLuminaire(Planet planet) {
+        boolean returnValue = false;
+        Map<Planet, Map<Planet, AspectPosition>> aspectsMap = getAspects();
+        Map<Planet, AspectPosition> aspects = aspectsMap.get(planet);
+
+        for (Planet principalePlanet : Planet.getPrincipalePlanets()) {
+            if (aspects.containsKey(principalePlanet) && aspects.get(principalePlanet).getAspect() == Aspect.CONJONCTION) {
+                returnValue = true;
+                break;
             }
         }
 
-        return comparison;
+        return returnValue;
     }
 
     public PlanetPosition getAscendantPosition() {

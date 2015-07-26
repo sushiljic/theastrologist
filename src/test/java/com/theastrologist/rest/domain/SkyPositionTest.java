@@ -41,6 +41,8 @@ public class SkyPositionTest {
 
     @Test
     public void testComparePlanetePrincipaleEtPlaneteNormale() throws Exception {
+        // Ascendant Poissons
+        // Rien pour Soleil
         int comparison = samySkyPosition.compare(Planet.JUPITER, Planet.SOLEIL);
         assertThat(comparison, greaterThan(0));
     }
@@ -53,6 +55,7 @@ public class SkyPositionTest {
 
     @Test
     public void testComparePlanetePrincipaleEtPlaneteNormale2() throws Exception {
+        // Noeud sud conjoint à saturne, Soleil Capricorne, Soleil Maison XI
         int comparison = samySkyPosition.compare(Planet.SATURNE, Planet.LUNE);
         assertThat(comparison, greaterThan(0));
     }

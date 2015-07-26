@@ -2,6 +2,9 @@ package com.theastrologist.rest.domain;
 
 import swisseph.SweConst;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author SAM
  * @since 16/11/2014.
@@ -29,6 +32,7 @@ public enum Planet {
     PART_DE_FORTUNE(-1);
 
     private final int sweConst;
+    private static List<Planet> principalePlanets;
 
     public int getSweConst() {
         return sweConst;
@@ -36,5 +40,16 @@ public enum Planet {
 
     Planet(int sweConst) {
         this.sweConst = sweConst;
+    }
+
+    public static List<Planet> getPrincipalePlanets() {
+        if (principalePlanets == null) {
+            principalePlanets = new ArrayList<Planet>();
+            principalePlanets.add(ASCENDANT);
+            principalePlanets.add(SOLEIL);
+            principalePlanets.add(LUNE);
+            principalePlanets.add(NOEUD_SUD_MOYEN);
+        }
+        return principalePlanets;
     }
 }

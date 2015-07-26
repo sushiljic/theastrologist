@@ -41,4 +41,20 @@ public enum House {
     public static House getHouse(int i) {
         return houses.get(i - 1);
     }
+
+    public boolean isMasterPlanet(Planet planet) {
+        return Sign.getSign(houseNumber).isMasterPlanet(planet);
+    }
+
+    public boolean isExaltedPlanet(Planet planet) {
+        return Sign.getSign(houseNumber).isExaltedPlanet(planet);
+    }
+
+    public boolean isExilPlanet(Planet planet) {
+        return Sign.getSign(houseNumber).isExilPlanet(planet);
+    }
+
+    public boolean isChutePlanet(Planet planet) {
+        return Sign.getSign(houseNumber).isChutePlanet(planet);
+    }
 }
