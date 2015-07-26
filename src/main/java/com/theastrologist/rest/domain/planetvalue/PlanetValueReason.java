@@ -6,6 +6,11 @@ import com.theastrologist.rest.domain.SkyArtefact;
  * Created by Samy on 26/07/2015.
  */
 public class PlanetValueReason {
-    String reason;
-    SkyArtefact artefact;
+    private PlanetValueReasonType reasonType;
+    private SkyArtefact artefact;
+
+    public PlanetValueReason(PlanetValueReasonType reason, SkyArtefact skyArtefact) {
+        reasonType = reason;
+        artefact = skyArtefact;
+    }
 }
