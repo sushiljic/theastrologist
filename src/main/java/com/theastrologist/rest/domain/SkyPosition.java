@@ -1,9 +1,11 @@
 package com.theastrologist.rest.domain;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.theastrologist.rest.domain.aspect.Aspect;
 import com.theastrologist.rest.domain.aspect.AspectCalculator;
 import com.theastrologist.rest.domain.aspect.AspectPosition;
+import com.theastrologist.rest.domain.planetvalue.PlanetValue;
+import com.theastrologist.rest.domain.planetvalue.PlanetValueReasonType;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import swisseph.SweDate;
@@ -31,7 +33,7 @@ public class SkyPosition {
     private Map<House, HousePosition> houseMap = new HashMap<House, HousePosition>();
 
     // Champs pour le calcul des dominances
-    private List<Map.Entry<Planet, Integer>> dominantPlanetList = null;
+    private SortedSet<PlanetValue> dominantPlanetSet = null;
     private PlanetPosition ascendantPosition = positionMap.get(Planet.ASCENDANT);
     private PlanetPosition lunePosition = positionMap.get(Planet.LUNE);
     private PlanetPosition soleilPosition = positionMap.get(Planet.SOLEIL);
@@ -176,95 +178,82 @@ public class SkyPosition {
         this.positionMap.put(Planet.DESCENDANT, createPlanetPosition(dsDegree, asDegree));
     }
 
-    public List<Map.Entry<Planet, Integer>> getDominantPlanets() {
-        if (dominantPlanetList == null) {
+    public SortedSet<PlanetValue> getDominantPlanets() {
+        if (dominantPlanetSet == null) {
             // Calcul des dominantes
-            Map<Planet, Integer> temporaryMap = Maps.newHashMap();
+
+            dominantPlanetSet = Sets.newTreeSet();
 
             for (Planet planet : Planet.getRealPlanets()) {
-                int result = calculateDominant(planet);
-                temporaryMap.put(planet, result);
+                PlanetValue value = calculateDominant(planet);
+                dominantPlanetSet.add(value);
             }
-            SortedSet<Map.Entry<Planet, Integer>> sortedSet = CalcUtil.entriesSortedByValues(temporaryMap);
-            dominantPlanetList = CalcUtil.reverseSet(sortedSet);
         }
-        return dominantPlanetList;
+        return dominantPlanetSet;
     }
 
-    public int calculateDominant(Planet planet) {
+    public PlanetValue calculateDominant(Planet planet) {
         PlanetPosition planetPosition = positionMap.get(planet);
+        PlanetValue value = new PlanetValue(planet);
         Sign sign = planetPosition.getSign();
         House house = planetPosition.getHouse();
 
-        int points = 0;
+        appendIfPlanetMaitrePrincipalSign(planet, value);
 
-        if (isPlanetMaitrePrincipalSign(planet)) {
-            points += 10;
-        }
+        appendIfPlanetMaitrePrincipalHouse(planet, value);
 
-        if (isPlanetMaitrePrincipalHouse(planet)) {
-            points += 10;
-        }
+        boolean hasConjonctionWithLuminaire = appendIfHasConjunctionWithLuminaire(planet, value);
 
-        if (hasConjunctionWithLuminaire(planet)) {
-            points += 4;
-        } else {
-            if (planet != Planet.LUNE && planet != Planet.SOLEIL) {
-                if (isInPrincipaleSign(planetPosition)) {
-                    points += 2;
-                }
-
-                if (isInPrincipaleHouse(planetPosition)) {
-                    points += 2;
-                }
-            }
+        if (!hasConjonctionWithLuminaire && planet != Planet.LUNE && planet != Planet.SOLEIL) {
+            appendIfIsInPrincipaleSign(planetPosition, value);
+            appendIfIsInPrincipaleHouse(planetPosition, value);
         }
 
         if (sign.isMasterPlanet(planet)) {
-            points += 4;
+            value.appendValue(PlanetValueReasonType.MASTER_SIGN, sign);
         }
 
         if (sign.isExaltedPlanet(planet)) {
-            points += 2;
+            value.appendValue(PlanetValueReasonType.EXALTED_SIGN, sign);
         }
 
         if (sign.isExilPlanet(planet)) {
-            points -= 4;
+            value.appendValue(PlanetValueReasonType.EXIL_SIGN, sign);
         }
 
         if (sign.isChutePlanet(planet)) {
-            points -= 2;
+            value.appendValue(PlanetValueReasonType.CHUTE_SIGN, sign);
         }
 
         if (house.isMasterPlanet(planet)) {
-            points += 4;
+            value.appendValue(PlanetValueReasonType.MASTER_HOUSE, house);
         }
 
         if (house.isExaltedPlanet(planet)) {
-            points += 2;
+            value.appendValue(PlanetValueReasonType.EXALTED_HOUSE, house);
         }
 
         if (house.isExilPlanet(planet)) {
-            points -= 4;
+            value.appendValue(PlanetValueReasonType.EXIL_HOUSE, house);
         }
 
         if (house.isChutePlanet(planet)) {
-            points -= 2;
+            value.appendValue(PlanetValueReasonType.CHUTE_HOUSE, house);
         }
 
-        return points;
+        return value;
     }
 
 
-    private boolean hasConjunctionWithLuminaire(Planet planet) {
+    private boolean appendIfHasConjunctionWithLuminaire(Planet planet, PlanetValue value) {
         boolean returnValue = false;
         Map<Planet, Map<Planet, AspectPosition>> aspectsMap = getAspects();
         Map<Planet, AspectPosition> aspects = aspectsMap.get(planet);
 
         for (Planet principalePlanet : Planet.getPrincipalePlanets()) {
             if (aspects.containsKey(principalePlanet) && aspects.get(principalePlanet).getAspect() == Aspect.CONJONCTION) {
+                value.appendValue(PlanetValueReasonType.CONJONCTION_LUMINAIRE, principalePlanet);
                 returnValue = true;
-                break;
             }
         }
 
@@ -287,8 +276,22 @@ public class SkyPosition {
         return noeudSudPosition;
     }
 
-    private boolean isPlanetMaitrePrincipalSign(Planet planet) {
-        return isPlanetMasterSoleil(planet) || isPlanetMasterAscendant(planet) || isPlanetMasterLune(planet) || isPlanetMasterNoeudSud(planet);
+    private void appendIfPlanetMaitrePrincipalSign(Planet planet, PlanetValue value) {
+        if(isPlanetMasterSoleil(planet)) {
+            value.appendValue(PlanetValueReasonType.PRINCIPAL_SIGN, soleilPosition.getSign());
+        }
+
+        if(isPlanetMasterLune(planet)) {
+            value.appendValue(PlanetValueReasonType.PRINCIPAL_SIGN, lunePosition.getSign());
+        }
+
+        if(isPlanetMasterAscendant(planet)) {
+            value.appendValue(PlanetValueReasonType.PRINCIPAL_SIGN, ascendantPosition.getSign());
+        }
+
+        if(isPlanetMasterNoeudSud(planet)) {
+            value.appendValue(PlanetValueReasonType.PRINCIPAL_SIGN, noeudSudPosition.getSign());
+        }
     }
 
     private boolean isPlanetMasterSoleil(Planet planet) {
@@ -307,14 +310,38 @@ public class SkyPosition {
         return getNoeudSudPosition().getSign().isMasterPlanet(planet);
     }
 
-    private boolean isInPrincipaleSign(PlanetPosition planetPosition) {
+    private void appendIfIsInPrincipaleSign(PlanetPosition planetPosition, PlanetValue value) {
         Sign sign = planetPosition.getSign();
-        return sign == ascendantPosition.getSign() || sign == lunePosition.getSign() ||
-                sign == soleilPosition.getSign() || sign == noeudSudPosition.getSign();
+
+        if(sign == ascendantPosition.getSign()) {
+            value.appendValue(PlanetValueReasonType.IS_IN_PRINCIPAL_SIGN, ascendantPosition.getSign());
+        }
+
+        if(sign == lunePosition.getSign()) {
+            value.appendValue(PlanetValueReasonType.IS_IN_PRINCIPAL_SIGN, lunePosition.getSign());
+        }
+
+        if(sign == soleilPosition.getSign()) {
+            value.appendValue(PlanetValueReasonType.IS_IN_PRINCIPAL_SIGN, soleilPosition.getSign());
+        }
+
+        if(sign == noeudSudPosition.getSign()) {
+            value.appendValue(PlanetValueReasonType.IS_IN_PRINCIPAL_SIGN, noeudSudPosition.getSign());
+        }
     }
 
-    private boolean isPlanetMaitrePrincipalHouse(Planet planet) {
-        return isPlanetMasterSoleilHouse(planet) || isPlanetMasterLuneHouse(planet) || isPlanetMasterNoeudSudHouse(planet);
+    private void appendIfPlanetMaitrePrincipalHouse(Planet planet, PlanetValue value) {
+        if(isPlanetMasterSoleilHouse(planet)) {
+            value.appendValue(PlanetValueReasonType.PRINCIPAL_HOUSE, soleilPosition.getHouse());
+        }
+
+        if(isPlanetMasterLuneHouse(planet)) {
+            value.appendValue(PlanetValueReasonType.PRINCIPAL_SIGN, lunePosition.getHouse());
+        }
+
+        if(isPlanetMasterNoeudSudHouse(planet)) {
+            value.appendValue(PlanetValueReasonType.PRINCIPAL_SIGN, noeudSudPosition.getHouse());
+        }
     }
 
     private boolean isPlanetMasterSoleilHouse(Planet planet) {
@@ -329,10 +356,20 @@ public class SkyPosition {
         return getNoeudSudPosition().getHouse().isMasterPlanet(planet);
     }
 
-    private boolean isInPrincipaleHouse(PlanetPosition planetPosition) {
+    private void appendIfIsInPrincipaleHouse(PlanetPosition planetPosition, PlanetValue value) {
         House house = planetPosition.getHouse();
-        return house == ascendantPosition.getHouse() || house == lunePosition.getHouse() ||
-                house == soleilPosition.getHouse() || house == noeudSudPosition.getHouse();
+
+        if(house == soleilPosition.getHouse()) {
+            value.appendValue(PlanetValueReasonType.IS_IN_PRINCIPAL_HOUSE, soleilPosition.getHouse());
+        }
+
+        if(house == lunePosition.getHouse()) {
+            value.appendValue(PlanetValueReasonType.IS_IN_PRINCIPAL_HOUSE, lunePosition.getHouse());
+        }
+
+        if(house == noeudSudPosition.getHouse()) {
+            value.appendValue(PlanetValueReasonType.IS_IN_PRINCIPAL_HOUSE, noeudSudPosition.getHouse());
+        }
     }
 
     public PlanetPosition getPlanetPosition(Planet planet) {

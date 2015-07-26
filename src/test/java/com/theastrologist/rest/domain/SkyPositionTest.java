@@ -1,6 +1,7 @@
 package com.theastrologist.rest.domain;
 
 import com.theastrologist.rest.core.ThemeCalculator;
+import com.theastrologist.rest.domain.planetvalue.PlanetValue;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
@@ -20,66 +21,97 @@ public class SkyPositionTest {
     private final DateTime SAMY_DATE = new DateTime(1985, 1, 4, 11, 20, DATE_TIME_ZONE);
     private final DateTime LAURENT_DATE = new DateTime(1980, 8, 9, 14, 25, DATE_TIME_ZONE);
     private final DateTime EMILIE_DATE = new DateTime(1983, 7, 1, 13, 20, DATE_TIME_ZONE);
+    private final DateTime VANESSA_DATE = new DateTime(1974, 10, 4, 4, 20, DATE_TIME_ZONE);
     private final Degree LATITUDE = new Degree(48, 39);
     private final Degree LONGITUDE = new Degree(2, 25);
     private SkyPosition samySkyPosition;
     private SkyPosition laurentSkyPosition;
     private SkyPosition emilieSkyPosition;
+    private SkyPosition vanessaSkyPosition;
 
     @Before
     public void setUp() throws Exception {
         samySkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
         laurentSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(LAURENT_DATE, LATITUDE, LONGITUDE);
         emilieSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(EMILIE_DATE, LATITUDE, LONGITUDE);
+        vanessaSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(VANESSA_DATE, LATITUDE, LONGITUDE);
     }
 
     @Test
     public void testGetDominantPlanetsSamy() throws Exception {
-        List<Map.Entry<Planet, Integer>> testList = samySkyPosition.getDominantPlanets();
-        assertThat(testList, notNullValue());
-        assertThat(testList, not(empty()));
-        assertThat(testList.get(0).getKey(), is(Planet.SATURNE));
-        assertThat(testList.get(1).getKey(), is(Planet.JUPITER));
-        assertThat(testList.get(2).getKey(), is(Planet.NEPTUNE));
-        assertThat(testList.get(3).getKey(), is(Planet.URANUS));
-        assertThat(testList.get(4).getKey(), is(Planet.MERCURE));
-        assertThat(testList.get(5).getKey(), is(Planet.MARS));
-        assertThat(testList.get(6).getKey(), is(Planet.PLUTON));
-        assertThat(testList.get(7).getKey(), is(Planet.VENUS));
+        SortedSet<PlanetValue> testSet = samySkyPosition.getDominantPlanets();
+        assertThat(testSet, notNullValue());
+        assertThat(testSet, not(empty()));
+        List<PlanetValue> testList = new ArrayList<PlanetValue>(testSet);
+        Iterator<PlanetValue> iter = testList.iterator();
+        assertThat(iter.next().getPlanet(), is(Planet.SATURNE));
+        assertThat(iter.next().getPlanet(), is(Planet.JUPITER));
+        assertThat(iter.next().getPlanet(), is(Planet.URANUS));
+        assertThat(iter.next().getPlanet(), is(Planet.NEPTUNE));
+        assertThat(iter.next().getPlanet(), is(Planet.MERCURE));
+        assertThat(iter.next().getPlanet(), is(Planet.PLUTON));
+        assertThat(iter.next().getPlanet(), is(Planet.MARS));
+        assertThat(iter.next().getPlanet(), is(Planet.VENUS));
     }
 
     @Test
     public void testGetDominantPlanetsLaurent() throws Exception {
-        List<Map.Entry<Planet, Integer>> testList = laurentSkyPosition.getDominantPlanets();
-        assertThat(testList, notNullValue());
-        assertThat(testList, not(empty()));
-        assertThat(testList.get(0).getKey(), is(Planet.SOLEIL));
-        assertThat(testList.get(1).getKey(), is(Planet.JUPITER));
-        assertThat(testList.get(2).getKey(), is(Planet.URANUS));
-        assertThat(testList.get(3).getKey(), is(Planet.NEPTUNE));
-        assertThat(testList.get(4).getKey(), is(Planet.MARS));
+        SortedSet<PlanetValue> testSet = laurentSkyPosition.getDominantPlanets();
+        assertThat(testSet, notNullValue());
+        assertThat(testSet, not(empty()));
+
+        List<PlanetValue> testList = new ArrayList<PlanetValue>(testSet);
+        Iterator<PlanetValue> iter = testList.iterator();
+        assertThat(iter.next().getPlanet(), is(Planet.SOLEIL));
+        assertThat(iter.next().getPlanet(), is(Planet.SATURNE));
+        assertThat(iter.next().getPlanet(), is(Planet.URANUS));
+        assertThat(iter.next().getPlanet(), is(Planet.NEPTUNE));
+        assertThat(iter.next().getPlanet(), is(Planet.LUNE));
+        assertThat(iter.next().getPlanet(), is(Planet.JUPITER));
+        assertThat(iter.next().getPlanet(), is(Planet.PLUTON));
+        assertThat(iter.next().getPlanet(), is(Planet.MARS));
     }
 
     @Test
     public void testGetDominantPlanetsEmilie() throws Exception {
-        List<Map.Entry<Planet, Integer>> testList = emilieSkyPosition.getDominantPlanets();
-        assertThat(testList, notNullValue());
-        assertThat(testList, not(empty()));
-        assertThat(testList.get(0).getKey(), is(Planet.NEPTUNE));
-        assertThat(testList.get(1).getKey(), is(Planet.MERCURE));
-        assertThat(testList.get(2).getKey(), is(Planet.URANUS));
-        assertThat(testList.get(3).getKey(), is(Planet.SATURNE));
-        assertThat(testList.get(4).getKey(), is(Planet.JUPITER));
-        assertThat(testList.get(5).getKey(), is(Planet.LUNE));
-        assertThat(testList.get(6).getKey(), is(Planet.VENUS));
-        assertThat(testList.get(7).getKey(), is(Planet.MARS));
-        assertThat(testList.get(8).getKey(), is(Planet.PLUTON));
+        SortedSet<PlanetValue> testSet = emilieSkyPosition.getDominantPlanets();
+        assertThat(testSet, notNullValue());
+        assertThat(testSet, not(empty()));
+        List<PlanetValue> testList = new ArrayList<PlanetValue>(testSet);
+        Iterator<PlanetValue> iter = testList.iterator();
+        assertThat(iter.next().getPlanet(), is(Planet.NEPTUNE));
+        assertThat(iter.next().getPlanet(), is(Planet.MERCURE));
+        assertThat(iter.next().getPlanet(), is(Planet.JUPITER));
+        assertThat(iter.next().getPlanet(), is(Planet.URANUS));
+        assertThat(iter.next().getPlanet(), is(Planet.SATURNE));
+        assertThat(iter.next().getPlanet(), is(Planet.VENUS));
+        assertThat(iter.next().getPlanet(), is(Planet.LUNE));
+        assertThat(iter.next().getPlanet(), is(Planet.MARS));
+        assertThat(iter.next().getPlanet(), is(Planet.PLUTON));
+    }
+
+    @Test
+    public void testGetDominantPlanetsVanessa() throws Exception {
+        SortedSet<PlanetValue> testSet = vanessaSkyPosition.getDominantPlanets();
+        assertThat(testSet, notNullValue());
+        assertThat(testSet, not(empty()));
+        List<PlanetValue> testList = new ArrayList<PlanetValue>(testSet);
+        Iterator<PlanetValue> iter = testList.iterator();
+        assertThat(iter.next().getPlanet(), is(Planet.VENUS));
+        assertThat(iter.next().getPlanet(), is(Planet.MERCURE));
+        assertThat(iter.next().getPlanet(), is(Planet.PLUTON));
+        assertThat(iter.next().getPlanet(), is(Planet.NEPTUNE));
+        assertThat(iter.next().getPlanet(), is(Planet.JUPITER));
+        assertThat(iter.next().getPlanet(), is(Planet.URANUS));
+        assertThat(iter.next().getPlanet(), is(Planet.SATURNE));
+        assertThat(iter.next().getPlanet(), is(Planet.LUNE));
+        assertThat(iter.next().getPlanet(), is(Planet.MARS));
     }
 
     public int compare(SkyPosition skyPosition, Planet planet, Planet planetToCompare) {
 
-        int dominantPoints = skyPosition.calculateDominant(planet);
-        int dominantPointsToCompare = skyPosition.calculateDominant(planetToCompare);
+        int dominantPoints = skyPosition.calculateDominant(planet).getValue();
+        int dominantPointsToCompare = skyPosition.calculateDominant(planetToCompare).getValue();
 
         return dominantPoints - dominantPointsToCompare;
     }
