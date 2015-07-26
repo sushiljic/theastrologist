@@ -100,12 +100,15 @@ public class SkyPositionTest {
         assertThat(iter.next().getPlanet(), is(Planet.VENUS));
         assertThat(iter.next().getPlanet(), is(Planet.MERCURE));
         assertThat(iter.next().getPlanet(), is(Planet.PLUTON));
-        assertThat(iter.next().getPlanet(), is(Planet.NEPTUNE));
-        assertThat(iter.next().getPlanet(), is(Planet.JUPITER));
         assertThat(iter.next().getPlanet(), is(Planet.URANUS));
         assertThat(iter.next().getPlanet(), is(Planet.SATURNE));
-        assertThat(iter.next().getPlanet(), is(Planet.LUNE));
+        assertThat(iter.next().getPlanet(), is(Planet.NEPTUNE));
         assertThat(iter.next().getPlanet(), is(Planet.MARS));
+        assertThat(iter.next().getPlanet(), is(Planet.JUPITER));
+        assertThat(iter.next().getPlanet(), is(Planet.LUNE));
+
+        SortedSet<PlanetValue> filleVanessa = ThemeCalculator.INSTANCE.getSkyPosition(new DateTime(2005, 2, 4, 17, 35, DATE_TIME_ZONE), LATITUDE, LONGITUDE).getDominantPlanets();
+        assertThat(filleVanessa, notNullValue());
     }
 
     public int compare(SkyPosition skyPosition, Planet planet, Planet planetToCompare) {
@@ -155,7 +158,7 @@ public class SkyPositionTest {
 
     @Test
     public void testCompareDeuxPlanetesPrincipalesMaitrePlusieurs() throws Exception {
-        int comparison = compare(laurentSkyPosition, Planet.SOLEIL, Planet.SATURNE);
+        int comparison = compare(laurentSkyPosition, Planet.SOLEIL, Planet.URANUS);
         assertThat(comparison, greaterThan(0));
     }
 
