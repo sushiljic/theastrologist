@@ -5,76 +5,103 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.theastrologist</groupId>
-    <artifactId>theastrologist-rest</artifactId>
-    <packaging>war</packaging>
+    <artifactId>theastrologist-parent</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>The Astrologist - REST Web Service</name>
+    <name>The Astrologist - Parent</name>
 
     <properties>
-        <spring.version>3.0.5.RELEASE</spring.version>
+        <!-- La JVM cible est actuellement Java 6 -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <!-- L'encodage le complet et efficace est UTF-8. C'est donc ce qui est
+            utilisé -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Toutes les versions des dépendences en ordre alphabétique -->
+        <phantomjsdriver.version>1.1.0</phantomjsdriver.version>
+        <activation.version>1.1.1</activation.version>
+        <antlr.version>3.0.1</antlr.version>
+        <aspectj.version>1.6.1</aspectj.version>
+        <fluentlenium.version>0.10.2</fluentlenium.version>
+        <assertj.version>1.6.0</assertj.version>
+        <cglib.version>2.2</cglib.version>
+        <guava.version>17.0</guava.version>
+        <commons-collections.version>3.2.1</commons-collections.version>
+        <commons-io.version>1.4</commons-io.version>
+        <commons-lang.version>2.4</commons-lang.version>
+        <commons-pool.version>1.6</commons-pool.version>
+        <ctg.version>7.2</ctg.version>
+        <cxf.version>2.5.1</cxf.version>
+        <!-- TODO -->
+        <dbunit.version>2.4.3</dbunit.version>
+        <displaytag.version>1.2</displaytag.version>
+        <easymock.version>3.2</easymock.version>
+        <ehcache.version>1.5.0</ehcache.version>
+        <h2.version>1.4.178</h2.version>
+        <hibernate-core.version>3.6.10.Final</hibernate-core.version>
+        <hibernate-annotations.version>3.4.0.GA</hibernate-annotations.version>
+        <hibernate-commons-annotations.version>3.2.0.Final</hibernate-commons-annotations.version>
+        <hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
+        <hibernate-tools.version>3.2.0.ga</hibernate-tools.version>
+        <hibernate-ejb3-persistence.version>1.0.2.GA</hibernate-ejb3-persistence.version>
+        <hibernate-jmx.version>3.5.6-Final</hibernate-jmx.version>
+        <javaee.version>5.0</javaee.version>
+        <javassist.version>3.12.0.GA</javassist.version>
+        <jaxb.version>2.1</jaxb.version>
+        <jax-ws.version>2.1</jax-ws.version>
+        <jms.version>1.1</jms.version>
+        <jpa.version>2.0</jpa.version>
+        <jsp-api.version>2.1</jsp-api.version>
+        <jstl.version>1.2</jstl.version>
+        <junit.version>4.11</junit.version>
+        <log4j.version>1.2.17</log4j.version>
+        <mail.version>1.4.1</mail.version>
+        <oracle.version>11.2.0.2.0</oracle.version>
+        <persistence-api.version>1.0.1.Final</persistence-api.version>
+        <prima.version>6.1.4</prima.version>
+        <servlet-api.version>2.5</servlet-api.version>
+        <spring.version>3.1.1.RELEASE</spring.version>
+        <!-- TODO -->
+        <slf4j.version>1.6.1</slf4j.version>
+        <ss4j.version>1.6.4</ss4j.version>
+        <stax.version>1.0-2</stax.version>
+        <tiles-jsp.version>2.2.2</tiles-jsp.version>
+        <taglibs-standard.version>1.1.2</taglibs-standard.version>
+        <wro4j.version>1.7.5</wro4j.version>
+
     </properties>
 
+    <modules>
+        <module>service</module>
+        <module>rest</module>
+    </modules>
+
     <dependencies>
-        <dependency>
-            <groupId>swisseph</groupId>
-            <artifactId>swisseph</artifactId>
-            <version>2.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/swissephSWI-2.00.00-01.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>18.0</version>
-        </dependency>
-
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.5</version>
         </dependency>
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-
-
-        <!-- TEST -->
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.4</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>1.3</version>
-            <scope>test</scope>
-        </dependency>
-
-
     </dependencies>
-    <build>
-        <finalName>CounterWebApp</finalName>
-    </build>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>com.theastrologist</groupId>
+                <artifactId>theastrologist-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.theastrologist</groupId>
+                <artifactId>theastrologist-rest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 
 </project>
