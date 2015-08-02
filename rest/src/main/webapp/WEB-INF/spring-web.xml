@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <context:property-placeholder location="classpath:app.properties"/>
+  
+  <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+  
+  <bean id="wroFilter" class="ro.isdc.wro.http.ConfigurableWroFilter">
+    <property name="debug" value="true"/>
+    <property name="disableCache" value="true"/>
+    <property name="gzipEnabled" value="false"/>
+    <property name="cacheUpdatePeriod" value="5"/>
+    <property name="modelUpdatePeriod" value="5"/>
+    <property name="wroManagerFactory" ref="wroManagerFactory"/>
+  </bean>
+
+  <bean id="wroConfiguration" class="ro.isdc.wro.config.jmx.WroConfiguration"/>
+  
+  <bean id="wroManagerFactory" class="ro.isdc.wro.manager.factory.DefaultWroManagerFactory" factory-method="create">
+      <constructor-arg ref="wroConfiguration"/>
+  </bean>
+  
+</beans>

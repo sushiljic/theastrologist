@@ -3,6 +3,11 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rest" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/WEB-INF/app-servlet.xml" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/WEB-INF/spring-web.xml" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/WEB-INF/tiles.xml" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/WEB-INF/urlrewrite.xml" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/WEB-INF/wro.xml" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/rest/src/main/webapp/lib/bootstrap" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/rest/src/main/webapp/lib/fuelux" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/rest/src/main/webapp/lib/jquery" charset="windows-1252" />

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<groups xmlns="http://www.isdc.ro/wro">
+  <group name="all">
+    <!-- Ne pas mettre de fichiers minifiés dans cette liste. WRO s'occupe de la minification -->
+      
+    <!-- Attention, l'ordre est important, en cas de surcharge, c'est le dernier css chargé qui gagne  -->
+    <!-- Librairies génériques. À modifier à vos risques et périls -->
+    <css>/lib/bootstrap/css/bootstrap.css</css>
+    <css>/lib/bootstrap/css/bootstrap-theme.css</css>
+    <css>/lib/fuelux/css/fuelux.css</css>
+    <!-- À partir d'ici, il s'agit de fichier spécifique à l'application -->
+    <css>/css/override.css</css>
+    <css>/css/app.css</css>
+
+    <!--  Attention, l'ordre de minification est important, il faut ordonner les dépendances (jQuery avant bootstrap par exemple) -->
+    <!-- Librairies génériques. À modifier à vos risques et périls -->
+    <js>/lib/jquery/jquery.js</js>
+    <js>/lib/jquery.i18n.properties/jquery.i18n.properties.js</js>
+    <js>/lib/jquery.cookie/jquery.cookie.js</js>
+    <js>/lib/bootstrap/js/bootstrap.js</js>
+    <js>/lib/underscore/underscore.js</js>
+    <js>/lib/moment/moment.js</js>
+    <js>/lib/jquery-validation/jquery.validate.js</js>
+    <js>/lib/jquery-validation/additional-methods.js</js>
+    <!-- À partir d'ici, il s'agit de fichier spécifique à l'application -->
+    <js>/js/affichageContact.js</js>
+    <js>/js/creationContact.js</js>
+    <js>/js/demoFuelux.js</js>
+    <js>/js/modificationContact.js</js>
+    <js>/js/rechercheContacts.js</js>
+    <js>/js/repeaterContacts.js</js>
+    <js>/js/treeContacts.js</js>
+    <js>/js/wizardCreationContact.js</js>
+    <js>/js/codeInformation.js</js>
+    <js>/js/app.js</js>
+
+  </group>
+</groups>
