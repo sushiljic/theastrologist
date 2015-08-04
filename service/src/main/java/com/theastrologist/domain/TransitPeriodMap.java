@@ -1,5 +1,6 @@
 package com.theastrologist.domain;
 
+import com.theastrologist.domain.aspect.AspectPosition;
 import org.joda.time.DateTime;
 
 import java.util.Collection;

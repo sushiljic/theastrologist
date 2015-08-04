@@ -10,6 +10,21 @@
     <version>1.0-SNAPSHOT</version>
     <name>The Astrologist - Parent</name>
 
+    <scm>
+        <url>https://github.com/samyamirou/theastrologist</url>
+        <developerConnection>scm:git:ssh://github.com:samyamirou/theastrologist.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <email>samyamirou@gmail.com</email>
+            <name>Samy Amirou</name>
+            <url>https://github.com/samyamirou</url>
+            <id>samyamirou</id>
+        </developer>
+    </developers>
+
     <properties>
         <!-- La JVM cible est actuellement Java 6 -->
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -144,5 +159,25 @@
         </dependency>
     </dependencies>
 
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.scm</groupId>
+                        <artifactId>maven-scm-provider-gitexe</artifactId>
+                        <version>1.9.2</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <checkModificationExcludes>
+                        <checkModificationExclude>pom.xml</checkModificationExclude>
+                    </checkModificationExcludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
