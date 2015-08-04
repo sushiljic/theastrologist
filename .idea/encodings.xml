@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding">
-    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/rest" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/WEB-INF/app-servlet.xml" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/WEB-INF/spring-web.xml" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/WEB-INF/tiles.xml" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/WEB-INF/urlrewrite.xml" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/WEB-INF/wro.xml" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/index.jsp" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/lib/bootstrap" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/lib/fuelux" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/lib/jquery" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/lib/jquery-validation" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/lib/jquery.cookie" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/lib/jquery.i18n.properties" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/lib/moment" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/rest/src/main/webapp/lib/underscore" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/service" charset="UTF-8" />
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/src/main/java/com/theastrologist/rest/controller/ThemeController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/theastrologist/rest/domain/aspect/AspectCalculator.java" charset="UTF-8" />
   </component>
 </project>
