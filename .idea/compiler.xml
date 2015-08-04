@@ -22,13 +22,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="theastrologist-rest" />
         <module name="TheAstrologist-Rest" />
+        <module name="theastrologist-rest" />
+        <module name="theastrologist-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="theastrologist-rest" target="1.5" />
+      <module name="theastrologist-parent" target="1.8" />
+      <module name="theastrologist-rest" target="1.8" />
       <module name="TheAstrologist-Rest" target="1.5" />
+      <module name="theastrologist-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

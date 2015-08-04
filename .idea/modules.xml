@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TheAstrologist-Rest.iml" filepath="$PROJECT_DIR$/TheAstrologist-Rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/theastrologist-parent.iml" filepath="$PROJECT_DIR$/theastrologist-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rest/theastrologist-rest.iml" filepath="$PROJECT_DIR$/rest/theastrologist-rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service/theastrologist-service.iml" filepath="$PROJECT_DIR$/service/theastrologist-service.iml" />
     </modules>
   </component>
 </project>
