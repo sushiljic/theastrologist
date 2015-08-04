@@ -1,4 +1,5 @@
-package com.theastrologist.rest.domain;
+package com.theastrologist.domain;
+
 
 public abstract class Decan  implements SkyArtefact {
     protected int decanNumber;

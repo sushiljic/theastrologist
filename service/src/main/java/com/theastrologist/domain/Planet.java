@@ -1,4 +1,4 @@
-package com.theastrologist.rest.domain;
+package com.theastrologist.domain;
 
 import swisseph.SweConst;
 

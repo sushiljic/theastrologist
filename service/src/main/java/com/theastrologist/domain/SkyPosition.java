@@ -1,21 +1,21 @@
-package com.theastrologist.rest.domain;
+package com.theastrologist.domain;
 
 import com.google.common.collect.Sets;
-import com.theastrologist.rest.domain.aspect.Aspect;
-import com.theastrologist.rest.domain.aspect.AspectCalculator;
-import com.theastrologist.rest.domain.aspect.AspectPosition;
-import com.theastrologist.rest.domain.planetvalue.PlanetValue;
-import com.theastrologist.rest.domain.planetvalue.PlanetValueReasonType;
+import com.google.gson.annotations.JsonAdapter;
+import com.theastrologist.core.AspectCalculator;
+import com.theastrologist.domain.aspect.Aspect;
+import com.theastrologist.domain.aspect.AspectPosition;
+import com.theastrologist.domain.planetvalue.PlanetValue;
+import com.theastrologist.domain.planetvalue.PlanetValueReasonType;
+import com.theastrologist.util.CalcUtil;
+import com.theastrologist.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import swisseph.SweDate;
 import swisseph.SwissEph;
-import util.CalcUtil;
-import util.DateUtil;
 
 import java.util.*;
 
-import static com.theastrologist.rest.domain.PlanetPosition.createPlanetPosition;
 
 /**
  * @author SAM
@@ -27,6 +27,7 @@ public class SkyPosition {
     static final Logger LOG = Logger.getLogger(SkyPosition.class);
     private final Degree latitude;
     private final Degree longitude;
+    @JsonAdapter(DateTimeJSONAdapter.class)
     private DateTime date;
     private Map<Planet, PlanetPosition> positionMap = new HashMap<Planet, PlanetPosition>();
 
@@ -101,7 +102,7 @@ public class SkyPosition {
 
                 Degree degree = new Degree(position);
 
-                PlanetPosition planetPosition = createPlanetPosition(degree, ascendantDegree);
+                PlanetPosition planetPosition = PlanetPosition.createPlanetPosition(degree, ascendantDegree);
                 planetPosition.setRetrograde(retrograde);
 
                 this.positionMap.put(planet, planetPosition);
@@ -109,7 +110,7 @@ public class SkyPosition {
                 PlanetPosition noeudNord = this.positionMap.get(Planet.NOEUD_NORD_MOYEN);
                 Degree noeudSudDegree = CalcUtil.getOpposite(noeudNord.getDegree());
 
-                PlanetPosition planetPosition = createPlanetPosition(noeudSudDegree, ascendantDegree);
+                PlanetPosition planetPosition = PlanetPosition.createPlanetPosition(noeudSudDegree, ascendantDegree);
                 planetPosition.setRetrograde(true);
 
                 this.positionMap.put(planet, planetPosition);
@@ -118,7 +119,7 @@ public class SkyPosition {
                 Degree moonDegree = this.positionMap.get(Planet.LUNE).getDegree();
 
                 Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
-                PlanetPosition planetPosition = createPlanetPosition(
+                PlanetPosition planetPosition = PlanetPosition.createPlanetPosition(
                         partDeFortune, ascendantDegree);
 
                 this.positionMap.put(planet, planetPosition);
@@ -169,13 +170,13 @@ public class SkyPosition {
         this.positionMap.put(Planet.ASCENDANT, asPosition);
 
         Degree mcDegree = new Degree(mc);
-        this.positionMap.put(Planet.MILIEU_DU_CIEL, createPlanetPosition(mcDegree, asDegree));
+        this.positionMap.put(Planet.MILIEU_DU_CIEL, PlanetPosition.createPlanetPosition(mcDegree, asDegree));
 
         Degree fcDegree = CalcUtil.getOpposite(mcDegree);
-        this.positionMap.put(Planet.FOND_DU_CIEL, createPlanetPosition(fcDegree, asDegree));
+        this.positionMap.put(Planet.FOND_DU_CIEL, PlanetPosition.createPlanetPosition(fcDegree, asDegree));
 
         Degree dsDegree = CalcUtil.getOpposite(asDegree);
-        this.positionMap.put(Planet.DESCENDANT, createPlanetPosition(dsDegree, asDegree));
+        this.positionMap.put(Planet.DESCENDANT, PlanetPosition.createPlanetPosition(dsDegree, asDegree));
     }
 
     public SortedSet<PlanetValue> getDominantPlanets() {

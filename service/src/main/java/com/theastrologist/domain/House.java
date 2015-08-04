@@ -1,4 +1,5 @@
-package com.theastrologist.rest.domain;
+package com.theastrologist.domain;
+
 
 import java.util.ArrayList;
 import java.util.List;

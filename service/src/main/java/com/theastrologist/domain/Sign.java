@@ -1,13 +1,8 @@
-package com.theastrologist.rest.domain;
-
-import com.google.common.base.Enums;
-import com.google.common.primitives.Primitives;
+package com.theastrologist.domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.google.common.collect.Iterables.contains;
 
 /**
  * Created by SAM on 16/11/2014.

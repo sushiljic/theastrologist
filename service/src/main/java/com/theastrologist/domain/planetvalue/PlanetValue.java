@@ -2,6 +2,7 @@ package com.theastrologist.domain.planetvalue;
 
 import com.google.common.collect.Lists;
 import com.theastrologist.domain.Planet;
+import com.theastrologist.domain.SkyArtefact;
 
 import java.util.List;
 
