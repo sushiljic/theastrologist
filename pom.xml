@@ -12,7 +12,8 @@
 
     <scm>
         <url>https://github.com/samyamirou/theastrologist</url>
-        <developerConnection>scm:git:ssh://github.com:samyamirou/theastrologist.git</developerConnection>
+        <connection>scm:git:ssh://git@github.com/samyamirou/theastrologist.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/samyamirou/theastrologist.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
