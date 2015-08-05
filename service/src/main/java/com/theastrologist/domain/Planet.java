@@ -12,9 +12,6 @@ import java.util.List;
  */
 public enum Planet implements SkyArtefact {
     ASCENDANT(-1),
-    DESCENDANT(-1),
-    MILIEU_DU_CIEL(-1),
-    FOND_DU_CIEL(-1),
     SOLEIL(SweConst.SE_SUN),
     LUNE(SweConst.SE_MOON),
     MERCURE(SweConst.SE_MERCURY),
@@ -29,7 +26,10 @@ public enum Planet implements SkyArtefact {
     NOEUD_SUD_MOYEN(-1),
     LILITH_EXACTE(SweConst.SE_OSCU_APOG),
     LILITH_MOYENNE(SweConst.SE_MEAN_APOG),
-    PART_DE_FORTUNE(-1);
+    PART_DE_FORTUNE(-1),
+    DESCENDANT(-1),
+    MILIEU_DU_CIEL(-1),
+    FOND_DU_CIEL(-1);
 
     private static List<Planet> realPlanets;
     private final int sweConst;

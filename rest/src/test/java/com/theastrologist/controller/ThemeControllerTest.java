@@ -6,6 +6,7 @@ import com.jayway.restassured.module.mockmvc.response.MockMvcResponse;
 import com.theastrologist.domain.Degree;
 import org.junit.After;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.get;
@@ -30,7 +31,11 @@ public class ThemeControllerTest {
                                                .getBaseDegree(), new Degree(2, 25)
                                                .getBaseDegree(), "1985-01-04T11:20:00+01:00");
         // Ce test vérifie
-        response.then().statusCode(200).body("positionMap.MERCURE.sign", equalTo("SAGITTAIRE"));
+        response.prettyPrint();
+        response.then().statusCode(200)
+                .body("positions.MERCURE.sign", equalTo("SAGITTAIRE"))
+                .body("positions.LUNE.house", equalTo("III"));
+
     }
 
     @Test
@@ -39,6 +44,7 @@ public class ThemeControllerTest {
                                                .getBaseDegree(), new Degree(2, 25)
                                                .getBaseDegree(), "1985-01-04T11:20:00+01:00");
         // Ce test vérifie que la date est bien prise en compte et que le format est correct
+        response.prettyPrint();
         response.then().statusCode(200).body("date", equalTo("1985-01-04T11:20:00+01:00"));
     }
 
@@ -48,6 +54,7 @@ public class ThemeControllerTest {
                                                .getBaseDegree(), new Degree(4, 5)
                                                .getBaseDegree(), "1985-01-04T11:20:00+01:00");
         // Ce test vérifie que la latitude est bien prise en compte
+        response.prettyPrint();
         response.then().statusCode(200)
                 .body("latitude.degree", equalTo(32))
                 .body("latitude.minutes", equalTo(39));

@@ -1,6 +1,7 @@
 package com.theastrologist.core;
 
 
+import com.google.common.collect.Maps;
 import com.theastrologist.domain.Planet;
 import com.theastrologist.domain.PlanetPosition;
 import com.theastrologist.domain.SkyPosition;
@@ -8,6 +9,8 @@ import com.theastrologist.domain.aspect.AspectPosition;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class AspectCalculator {
 
@@ -19,7 +22,7 @@ public class AspectCalculator {
      * @param skyPosition la carte du ciel de référence
      * @return une map contenant par planète une map avec correspondance entre l'aspect et la planète comparée
      */
-    public Map<Planet, Map<Planet, AspectPosition>> createAspectsForSkyPosition(SkyPosition skyPosition) {
+    public SortedMap<Planet, SortedMap<Planet, AspectPosition>> createAspectsForSkyPosition(SkyPosition skyPosition) {
 
         return createAspectsForComparison(skyPosition, skyPosition, false);
     }
@@ -32,15 +35,15 @@ public class AspectCalculator {
      * @param transit
      * @return une map contenant par planète une map avec correspondance entre l'aspect et la planète comparée
      */
-    public Map<Planet, Map<Planet, AspectPosition>> createAspectsForComparison(SkyPosition skyPosition, SkyPosition skyPositionComparison, boolean transit) {
+    public SortedMap<Planet, SortedMap<Planet, AspectPosition>> createAspectsForComparison(SkyPosition skyPosition, SkyPosition skyPositionComparison, boolean transit) {
 
-        Map<Planet, Map<Planet, AspectPosition>> aspectMapForPlanet = new HashMap<Planet, Map<Planet, AspectPosition>>();
+        SortedMap<Planet, SortedMap<Planet, AspectPosition>> aspectMapForPlanet = Maps.newTreeMap();
 
         for (Planet planet : Planet.values()) {
             PlanetPosition planetPosition = skyPosition.getPlanetPosition(planet);
-            Map<Planet, AspectPosition> aspectMap;
+            SortedMap<Planet, AspectPosition> aspectMap;
             if (!aspectMapForPlanet.containsKey(planet)) {
-                aspectMap = new HashMap<Planet, AspectPosition>();
+                aspectMap = Maps.newTreeMap();
                 aspectMapForPlanet.put(planet, aspectMap);
             } else {
                 aspectMap = aspectMapForPlanet.get(planet);
@@ -69,12 +72,12 @@ public class AspectCalculator {
      * @param transitPosition la carte du ciel à comparer
      * @return une map contenant par planète une map avec correspondance entre l'aspect et la planète comparée
      */
-    public Map<Planet, Map<Planet, AspectPosition>> createAspectsForTransit(SkyPosition skyPosition, SkyPosition transitPosition) {
+    public SortedMap<Planet, SortedMap<Planet, AspectPosition>> createAspectsForTransit(SkyPosition skyPosition, SkyPosition transitPosition) {
 
         return createAspectsForComparison(skyPosition, transitPosition, true);
     }
 
-    public Map<Planet, Map<Planet, AspectPosition>> createAspectsForSynastry(SkyPosition testSkyPosition, SkyPosition testSkyPositionComparison) {
+    public SortedMap<Planet, SortedMap<Planet, AspectPosition>> createAspectsForSynastry(SkyPosition testSkyPosition, SkyPosition testSkyPositionComparison) {
         return createAspectsForComparison(testSkyPosition, testSkyPositionComparison, false);
     }
 }

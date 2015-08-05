@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * Created by SAM on 16/11/2014.
  */
 public class Degree {
-    private double baseDegree;
+    private transient double baseDegree;
     private int degree;
     private int minutes;
     private transient double seconds;

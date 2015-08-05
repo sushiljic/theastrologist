@@ -3,7 +3,7 @@ package com.theastrologist.domain;
 
 public abstract class Decan  implements SkyArtefact {
     protected int decanNumber;
-    protected Degree relativeDegree;
+    protected transient Degree relativeDegree;
 
     public Decan(Degree relativeDegree) {
         this.relativeDegree = relativeDegree;

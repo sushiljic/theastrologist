@@ -3,12 +3,12 @@ package com.theastrologist.domain;
 import com.theastrologist.util.CalcUtil;
 
 public class PlanetPosition {
-    private Degree degree;
     private Sign sign;
-    private House house;
+    private Degree degree;
     private Degree degreeInSign;
-    private Degree degreeInHouse;
     private final SignDecan decanInSign;
+    private House house;
+    private Degree degreeInHouse;
     private final HouseDecan decanInHouse;
     private boolean retrograde = false;
 

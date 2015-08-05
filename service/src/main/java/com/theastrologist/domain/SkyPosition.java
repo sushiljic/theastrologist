@@ -25,23 +25,23 @@ import java.util.*;
 public class SkyPosition {
 
     static final Logger LOG = Logger.getLogger(SkyPosition.class);
-    private final Degree latitude;
-    private final Degree longitude;
     @JsonAdapter(DateTimeJSONAdapter.class)
     private DateTime date;
-    private Map<Planet, PlanetPosition> positionMap = new HashMap<Planet, PlanetPosition>();
+    private final Degree latitude;
+    private final Degree longitude;
+    private SortedMap<Planet, PlanetPosition> positions = new TreeMap<Planet, PlanetPosition>();
 
-    private Map<House, HousePosition> houseMap = new HashMap<House, HousePosition>();
-
-    // Champs pour le calcul des dominances
-    private SortedSet<PlanetValue> dominantPlanetSet = null;
-    private PlanetPosition ascendantPosition = positionMap.get(Planet.ASCENDANT);
-    private PlanetPosition lunePosition = positionMap.get(Planet.LUNE);
-    private PlanetPosition soleilPosition = positionMap.get(Planet.SOLEIL);
-    private PlanetPosition noeudSudPosition = positionMap.get(Planet.NOEUD_SUD_MOYEN);
+    private transient Map<House, HousePosition> houseMap = new HashMap<House, HousePosition>();
 
     // Champs pour le calcul des aspects
-    private Map<Planet, Map<Planet, AspectPosition>> aspects;
+    private SortedMap<Planet, SortedMap<Planet, AspectPosition>> aspects;
+
+    // Champs pour le calcul des dominances
+    private SortedSet<PlanetValue> dominantPlanets = null;
+    private transient PlanetPosition ascendantPosition = positions.get(Planet.ASCENDANT);
+    private transient PlanetPosition lunePosition = positions.get(Planet.LUNE);
+    private transient PlanetPosition soleilPosition = positions.get(Planet.SOLEIL);
+    private transient PlanetPosition noeudSudPosition = positions.get(Planet.NOEUD_SUD_MOYEN);
 
     public SkyPosition(DateTime dateTime, Degree latitude, Degree longitude) {
         this.date = dateTime;
@@ -50,24 +50,26 @@ public class SkyPosition {
         this.longitude = longitude;
     }
 
-    public Map<Planet, Map<Planet, AspectPosition>> getAspects() {
+    public SortedMap<Planet, SortedMap<Planet, AspectPosition>> getAspects() {
         return aspects;
     }
 
     public void calculate(SwissEph sw) {
         SweDate sd = DateUtil.getSweDateUTC(date);
 
-        LOG.info("Calculating sky position for Date = " + sd + ", with Latitude = " + latitude + " and Longitude = " + longitude);
+        LOG.info("Calculating sky position for Date = " + sd + ", with Latitude = " + latitude + " and Longitude = "
+                         + longitude);
 
         fillHousesAndAscendant(sw, sd);
         fillPlanets(sw, sd);
 
-        ascendantPosition = positionMap.get(Planet.ASCENDANT);
-        lunePosition = positionMap.get(Planet.LUNE);
-        soleilPosition = positionMap.get(Planet.SOLEIL);
-        noeudSudPosition = positionMap.get(Planet.NOEUD_SUD_MOYEN);
+        ascendantPosition = positions.get(Planet.ASCENDANT);
+        lunePosition = positions.get(Planet.LUNE);
+        soleilPosition = positions.get(Planet.SOLEIL);
+        noeudSudPosition = positions.get(Planet.NOEUD_SUD_MOYEN);
 
         aspects = AspectCalculator.INSTANCE.createAspectsForSkyPosition(this);
+        dominantPlanets = calculateDominantPlanets();
     }
 
     private void fillPlanets(SwissEph sw, SweDate sd) {
@@ -105,24 +107,24 @@ public class SkyPosition {
                 PlanetPosition planetPosition = PlanetPosition.createPlanetPosition(degree, ascendantDegree);
                 planetPosition.setRetrograde(retrograde);
 
-                this.positionMap.put(planet, planetPosition);
+                this.positions.put(planet, planetPosition);
             } else if (planet == Planet.NOEUD_SUD_MOYEN) {
-                PlanetPosition noeudNord = this.positionMap.get(Planet.NOEUD_NORD_MOYEN);
+                PlanetPosition noeudNord = this.positions.get(Planet.NOEUD_NORD_MOYEN);
                 Degree noeudSudDegree = CalcUtil.getOpposite(noeudNord.getDegree());
 
                 PlanetPosition planetPosition = PlanetPosition.createPlanetPosition(noeudSudDegree, ascendantDegree);
                 planetPosition.setRetrograde(true);
 
-                this.positionMap.put(planet, planetPosition);
+                this.positions.put(planet, planetPosition);
             } else if (planet == Planet.PART_DE_FORTUNE) {
-                Degree sunDegree = this.positionMap.get(Planet.SOLEIL).getDegree();
-                Degree moonDegree = this.positionMap.get(Planet.LUNE).getDegree();
+                Degree sunDegree = this.positions.get(Planet.SOLEIL).getDegree();
+                Degree moonDegree = this.positions.get(Planet.LUNE).getDegree();
 
                 Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
                 PlanetPosition planetPosition = PlanetPosition.createPlanetPosition(
                         partDeFortune, ascendantDegree);
 
-                this.positionMap.put(planet, planetPosition);
+                this.positions.put(planet, planetPosition);
             }
         }
     }
@@ -167,34 +169,36 @@ public class SkyPosition {
                 CalcUtil.getDegreeInSign(asDegree),
                 new Degree(0)
         );
-        this.positionMap.put(Planet.ASCENDANT, asPosition);
+        this.positions.put(Planet.ASCENDANT, asPosition);
 
         Degree mcDegree = new Degree(mc);
-        this.positionMap.put(Planet.MILIEU_DU_CIEL, PlanetPosition.createPlanetPosition(mcDegree, asDegree));
+        this.positions.put(Planet.MILIEU_DU_CIEL, PlanetPosition.createPlanetPosition(mcDegree, asDegree));
 
         Degree fcDegree = CalcUtil.getOpposite(mcDegree);
-        this.positionMap.put(Planet.FOND_DU_CIEL, PlanetPosition.createPlanetPosition(fcDegree, asDegree));
+        this.positions.put(Planet.FOND_DU_CIEL, PlanetPosition.createPlanetPosition(fcDegree, asDegree));
 
         Degree dsDegree = CalcUtil.getOpposite(asDegree);
-        this.positionMap.put(Planet.DESCENDANT, PlanetPosition.createPlanetPosition(dsDegree, asDegree));
+        this.positions.put(Planet.DESCENDANT, PlanetPosition.createPlanetPosition(dsDegree, asDegree));
     }
 
     public SortedSet<PlanetValue> getDominantPlanets() {
-        if (dominantPlanetSet == null) {
-            // Calcul des dominantes
+        return dominantPlanets;
+    }
 
-            dominantPlanetSet = Sets.newTreeSet();
+    private SortedSet<PlanetValue> calculateDominantPlanets() {
+        // Calcul des dominantes
 
-            for (Planet planet : Planet.getRealPlanets()) {
-                PlanetValue value = calculateDominant(planet);
-                dominantPlanetSet.add(value);
-            }
+        SortedSet<PlanetValue> dominantPlanets = Sets.newTreeSet();
+
+        for (Planet planet : Planet.getRealPlanets()) {
+            PlanetValue value = calculateDominant(planet);
+            dominantPlanets.add(value);
         }
-        return dominantPlanetSet;
+        return dominantPlanets;
     }
 
     public PlanetValue calculateDominant(Planet planet) {
-        PlanetPosition planetPosition = positionMap.get(planet);
+        PlanetPosition planetPosition = positions.get(planet);
         PlanetValue value = new PlanetValue(planet);
         Sign sign = planetPosition.getSign();
         House house = planetPosition.getHouse();
@@ -248,8 +252,8 @@ public class SkyPosition {
 
     private boolean appendIfHasConjunctionWithLuminaire(Planet planet, PlanetValue value) {
         boolean returnValue = false;
-        Map<Planet, Map<Planet, AspectPosition>> aspectsMap = getAspects();
-        Map<Planet, AspectPosition> aspects = aspectsMap.get(planet);
+        SortedMap<Planet, SortedMap<Planet, AspectPosition>> aspectsMap = getAspects();
+        SortedMap<Planet, AspectPosition> aspects = aspectsMap.get(planet);
 
         for (Planet principalePlanet : Planet.getPrincipalePlanets()) {
             if (aspects.containsKey(principalePlanet) && aspects.get(principalePlanet).getAspect() == Aspect.CONJONCTION) {
@@ -374,7 +378,7 @@ public class SkyPosition {
     }
 
     public PlanetPosition getPlanetPosition(Planet planet) {
-        return positionMap.get(planet);
+        return positions.get(planet);
     }
 
     public HousePosition getHousePosition(House house) {

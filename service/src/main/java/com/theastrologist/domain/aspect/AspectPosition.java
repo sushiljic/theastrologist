@@ -8,10 +8,10 @@ import com.theastrologist.domain.PlanetPosition;
 public class AspectPosition {
     private Aspect aspect;
     private Planet planet;
-    private Planet planetComparison;
-    private PlanetPosition planetPosition;
-    private PlanetPosition planetComparisonPosition;
     private Degree orbDelta;
+    private transient Planet planetComparison;
+    private transient PlanetPosition planetPosition;
+    private transient PlanetPosition planetComparisonPosition;
 
     public static AspectPosition createAspectPosition(Planet planet, Planet planetComparison, PlanetPosition
             planetPosition, PlanetPosition planetComparisonPosition, boolean transit) {
