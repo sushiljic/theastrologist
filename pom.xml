@@ -10,7 +10,7 @@
 
     <scm>
         <url>https://github.com/samyamirou/theastrologist</url>
-        <developerConnection>scm:git:ssh://github.com:samyamirou/theastrologist.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/samyamirou/theastrologist</developerConnection>
         <tag>1.0</tag>
     </scm>
 
