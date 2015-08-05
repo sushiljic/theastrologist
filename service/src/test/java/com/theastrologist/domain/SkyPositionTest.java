@@ -79,7 +79,9 @@ public class SkyPositionTest {
         assertThat(testSet, not(empty()));
         List<PlanetValue> testList = new ArrayList<PlanetValue>(testSet);
         Iterator<PlanetValue> iter = testList.iterator();
-        assertThat(iter.next().getPlanet(), is(Planet.NEPTUNE));
+        PlanetValue next = iter.next();
+        assertThat(next.getPlanet(), is(Planet.NEPTUNE));
+        assertThat(next.getValue(), is(38));
         assertThat(iter.next().getPlanet(), is(Planet.MERCURE));
         assertThat(iter.next().getPlanet(), is(Planet.JUPITER));
         assertThat(iter.next().getPlanet(), is(Planet.URANUS));

@@ -41,7 +41,8 @@ public class PlanetValue implements Comparable<PlanetValue> {
     }
 
     public void appendValue(PlanetValueReasonType reason, SkyArtefact skyArtefact) {
-        this.value += reason.getPoints();
-        reasons.add(new PlanetValueReason(reason, skyArtefact));
+        int points = reason.getPoints();
+        this.value += points;
+        reasons.add(new PlanetValueReason(reason, skyArtefact, points));
     }
 }
