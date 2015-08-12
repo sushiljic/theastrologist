@@ -24,10 +24,6 @@
     </developers>
 
     <properties>
-        <!-- La JVM cible est actuellement Java 6 -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-
         <!-- L'encodage le complet et efficace est UTF-8. C'est donc ce qui est
             utilisé -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
