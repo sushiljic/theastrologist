@@ -17,8 +17,8 @@
             <groupId>com.swisseph</groupId>
             <artifactId>swisseph</artifactId>
             <version>2.0.0</version>
-            <!--<scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/swissephSWI-2.00.00-01.jar</systemPath>-->
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/lib/swissephSWI-2.0.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
