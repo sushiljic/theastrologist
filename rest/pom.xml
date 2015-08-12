@@ -131,6 +131,7 @@
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                     </archive>
+                    <warName>ROOT.war</warName>
                 </configuration>
             </plugin>
             <plugin>
