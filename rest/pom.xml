@@ -131,18 +131,17 @@
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                     </archive>
-                    <warName>ROOT.war</warName>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
-                <configuration>
+                <!--<configuration>
                     <port>9090</port>
                     <path>/theastrologist</path>
                 </configuration>
-                <!--<executions>
+                <executions>
                     <execution>
                         <id>tomcat-run</id>
                         <configuration>
