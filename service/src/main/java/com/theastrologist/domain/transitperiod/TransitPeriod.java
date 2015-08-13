@@ -1,5 +1,6 @@
-package com.theastrologist.domain;
+package com.theastrologist.domain.transitperiod;
 
+import com.theastrologist.domain.Planet;
 import com.theastrologist.domain.aspect.AspectPosition;
 import org.joda.time.DateTime;
 
