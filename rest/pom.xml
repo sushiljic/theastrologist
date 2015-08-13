@@ -116,6 +116,7 @@
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                     </archive>
+                    <warName>ROOT.war</warName>
                 </configuration>
             </plugin>
             <plugin>
@@ -126,7 +127,7 @@
                     <port>9090</port>
                     <path>/theastrologist</path>
                 </configuration>
-                <executions>
+                <!--<executions>
                     <execution>
                         <id>tomcat-run</id>
                         <configuration>
@@ -146,7 +147,7 @@
                         </goals>
                         <phase>post-integration-test</phase>
                     </execution>
-                </executions>
+                </executions>-->
                 <dependencies>
                     <dependency>
                         <groupId>com.h2database</groupId>

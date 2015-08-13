@@ -24,10 +24,6 @@
     </developers>
 
     <properties>
-        <!-- La JVM cible est actuellement Java 6 -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-
         <!-- L'encodage le complet et efficace est UTF-8. C'est donc ce qui est
             utilisé -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -178,4 +174,31 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <!-- When built in OpenShift the 'openshift' profile will be used when
+                invoking mvn. -->
+            <!-- Use this profile for any OpenShift specific customization your app
+                will need. -->
+            <!-- By default that is to put the resulting archive into the 'webapps'
+                folder. -->
+            <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
+            <id>openshift</id>
+            <build>
+                <finalName>${project.name}</finalName>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>2.1.1</version>
+                        <configuration>
+                            <outputDirectory>webapps</outputDirectory>
+                            <warName>ROOT</warName>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
