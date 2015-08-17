@@ -12,6 +12,9 @@ import org.junit.Test;
 import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.get;
 import static org.hamcrest.Matchers.equalTo;
 
+/**
+ * Classes de test pour tester les URL de type "theme/48.6456630/2.4104510/1985-01-04T11:20:00+01:00"
+ */
 public class ThemeControllerTest {
 
     @BeforeClass

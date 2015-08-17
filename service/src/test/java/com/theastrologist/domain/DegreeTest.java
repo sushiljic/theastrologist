@@ -3,8 +3,6 @@ package com.theastrologist.domain;
 import org.junit.Test;
 import com.theastrologist.util.CalcUtil;
 
-import java.io.IOException;
-
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 

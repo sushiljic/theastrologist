@@ -14,7 +14,7 @@
 
     <servlet-mapping>
         <servlet-name>rest</servlet-name>
-        <url-pattern>/rest/*</url-pattern>
+        <url-pattern>/res*</url-pattern>
     </servlet-mapping>
 
     <!-- H2 Console -->
