@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=swissephSWI-2.00.00-01.jar -Dversion=2.0.0 -Dpackaging=jar -DgroupId=com.swisseph -DartifactId=swisseph
