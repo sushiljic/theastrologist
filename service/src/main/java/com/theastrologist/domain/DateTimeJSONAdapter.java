@@ -21,7 +21,6 @@ public class DateTimeJSONAdapter extends TypeAdapter<DateTime>{
         if(dateTime == null) {
             returnString = "-";
         } else {
-        // implement write: combine firstName and lastName into name
             if (dateTime.getHourOfDay() == 0 && dateTime.getMinuteOfHour() == 0 && dateTime.getSecondOfMinute() == 0) {
                 returnString = dateTime.toString(ISODateTimeFormat.date());
             } else {

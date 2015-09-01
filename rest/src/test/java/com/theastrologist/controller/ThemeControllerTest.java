@@ -115,20 +115,55 @@ public class ThemeControllerTest {
 	public void testWrongDate() {
 		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", "Mauvaise date",
 									   new Degree(48, 39).getBaseDegree(), new Degree(2, 25).getBaseDegree());
-		response.then().statusCode(400);
+		response.then().statusCode(400).statusLine("400 Wrong date format");
 	}
 
 	@Test
 	public void testWrongLatitude() {
 		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", "1985-01-04T11:20:00", "truc",
 									   new Degree(2, 25).getBaseDegree());
-		response.then().statusCode(400);
+		response.then().statusCode(400).statusLine(
+				"400 Failed to convert value of type 'java.lang.String' to required type 'double'; nested exception is java.lang.NumberFormatException: For input string: \"truc\"");
 	}
 
 	@Test
 	public void testWrongLongitude() {
 		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", "1985-01-04T11:20:00",
 									   new Degree(2, 25).getBaseDegree(), "truc");
-		response.then().statusCode(400);
+		response.then().statusCode(400).statusLine(
+				"400 Failed to convert value of type 'java.lang.String' to required type 'double'; nested exception is java.lang.NumberFormatException: For input string: \"truc\"");
+	}
+
+	@Test
+	public void testSimpleThemeWithAddressParis() {
+		String dateTime = "1985-01-04T11:20:00";
+
+		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
+				.andReturn(DateTimeZone.forID("Europe/Paris"));
+		replay(controllerUtil);
+
+		MockMvcResponse response = get("/{datetime}/{address}/theme", dateTime, "Ris-Orangis");
+
+		response.then().statusCode(200)
+				.body("address", equalTo("91130 Ris-Orangis, France"))
+				.body("positions.MERCURE.sign", equalTo("SAGITTAIRE"))
+				.body("positions.LUNE.house", equalTo("III"))
+				.body("positions.ASCENDANT.sign", equalTo("POISSONS"));
+
+		verify(controllerUtil);
+	}
+
+	@Test
+	public void testTooManyResults() {
+		String dateTime = "1985-01-04T11:20:00";
+		MockMvcResponse response = get("/{datetime}/{address}/theme", dateTime, "Chin");
+		response.then().statusCode(400).statusLine("400 Too many results for geoloc");
+	}
+
+	@Test
+	public void testNoResult() {
+		String dateTime = "1985-01-04T11:20:00";
+		MockMvcResponse response = get("/{datetime}/{address}/theme", dateTime, "Choudavoir");
+		response.then().statusCode(400).statusLine("400 No result returned by Google API");
 	}
 }
