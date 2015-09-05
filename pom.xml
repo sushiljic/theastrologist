@@ -133,6 +133,8 @@
             <version>1.2.0</version>
         </dependency>
 
+        <!-- dépendances de test -->
+
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
