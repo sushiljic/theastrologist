@@ -17,16 +17,6 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
-    <!-- H2 Console -->
-    <servlet>
-        <servlet-name>H2Console</servlet-name>
-        <servlet-class>org.h2.server.web.WebServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>H2Console</servlet-name>
-        <url-pattern>/console/*</url-pattern>
-    </servlet-mapping>
 
     <!-- Page d'accueil -->
     <welcome-file-list>

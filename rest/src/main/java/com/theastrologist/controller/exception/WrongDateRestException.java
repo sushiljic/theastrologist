@@ -11,6 +11,12 @@ public class WrongDateRestException extends RuntimeException {
     private final String datetime;
 
     public WrongDateRestException(String datetime) {
+        super();
+        this.datetime = datetime;
+    }
+
+    public WrongDateRestException(String datetime, Throwable e) {
+        super(e);
         this.datetime = datetime;
     }
 

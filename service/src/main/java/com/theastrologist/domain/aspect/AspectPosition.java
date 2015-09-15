@@ -13,19 +13,40 @@ public class AspectPosition {
     private transient PlanetPosition planetPosition;
     private transient PlanetPosition planetComparisonPosition;
 
-    public static AspectPosition createAspectPosition(Planet planet, Planet planetComparison, PlanetPosition
-            planetPosition, PlanetPosition planetComparisonPosition, boolean transit) {
+    /**
+     * Créer une position de transit
+     * @param planet la planète natale
+     * @param planetInTransit la planète qui transite
+     * @param planetPosition position de la planète natale
+     * @param planetInTransitPosition position de la planète qui transite
+     * @return Le calcul du transit, ou alors NULL si ce n'est pas un aspect connu
+     */
+    public static AspectPosition createTransitPosition(Planet planet, Planet planetInTransit, PlanetPosition
+            planetPosition, PlanetPosition planetInTransitPosition) {
 
+        return getAspectOrTransitPosition(planet, planetInTransit, planetPosition, planetInTransitPosition, true);
+    }
+
+    /**
+     * Créer un aspect
+     * @param planet la planète natale
+     * @param planetComparison la planète en comparaison
+     * @param planetPosition position de la planète natale
+     * @param planetComparisonPosition position de la planète qui transite
+     * @return Le calcul du transit, ou alors NULL si ce n'est pas un aspect connu
+     */
+    public static AspectPosition createAspectPosition(Planet planet, Planet planetComparison, PlanetPosition
+            planetPosition, PlanetPosition planetComparisonPosition) {
+
+        return getAspectOrTransitPosition(planet, planetComparison, planetPosition, planetComparisonPosition, false);
+    }
+
+    private static AspectPosition getAspectOrTransitPosition(Planet planet, Planet planetComparison, PlanetPosition planetPosition, PlanetPosition planetComparisonPosition, boolean transit) {
         AspectPosition aspectPosition = new AspectPosition(planet, planetComparison, planetPosition,
                 planetComparisonPosition);
         boolean shouldDestroy = aspectPosition.calculateAspectPosition(transit);
 
         return shouldDestroy ? null : aspectPosition;
-    }
-
-    public static AspectPosition createAspectPosition(Planet planet, Planet planetComparison, PlanetPosition
-            planetPosition, PlanetPosition planetComparisonPosition) {
-        return createAspectPosition(planet, planetComparison, planetPosition, planetComparisonPosition, false);
     }
 
 
