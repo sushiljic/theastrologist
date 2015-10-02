@@ -34,7 +34,8 @@ public class ThemeControllerTest {
 		// Ce test vérifie
 		response.then().statusCode(200)
 				.body("positions.MERCURE.sign", equalTo("SAGITTAIRE"))
-				.body("positions.LUNE.house", equalTo("III"));
+				.body("positions.LUNE.house", equalTo("III"))
+				.body("positions.ASCENDANT.sign", equalTo("POISSONS"));
 
 	}
 
