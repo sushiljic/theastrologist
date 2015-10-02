@@ -11,6 +11,7 @@ import com.theastrologist.util.CalcUtil;
 import com.theastrologist.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import swisseph.SweConst;
 import swisseph.SweDate;
 import swisseph.SwissEph;
 
@@ -73,7 +74,7 @@ public class SkyPosition {
     }
 
     private void fillPlanets(SwissEph sw, SweDate sd) {
-        int flags = 0;
+        int flags = SweConst.SEFLG_MOSEPH;
         double[] xp = new double[6];
         StringBuffer serr = new StringBuffer();
 
@@ -173,12 +174,6 @@ public class SkyPosition {
 
         Degree mcDegree = new Degree(mc);
         this.positions.put(Planet.MILIEU_DU_CIEL, PlanetPosition.createPlanetPosition(mcDegree, asDegree));
-
-        Degree fcDegree = CalcUtil.getOpposite(mcDegree);
-        this.positions.put(Planet.FOND_DU_CIEL, PlanetPosition.createPlanetPosition(fcDegree, asDegree));
-
-        Degree dsDegree = CalcUtil.getOpposite(asDegree);
-        this.positions.put(Planet.DESCENDANT, PlanetPosition.createPlanetPosition(dsDegree, asDegree));
     }
 
     public SortedSet<PlanetValue> getDominantPlanets() {

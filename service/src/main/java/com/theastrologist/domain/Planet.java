@@ -27,11 +27,10 @@ public enum Planet implements SkyArtefact {
     LILITH_EXACTE(SweConst.SE_OSCU_APOG),
     LILITH_MOYENNE(SweConst.SE_MEAN_APOG),
     PART_DE_FORTUNE(-1),
-    DESCENDANT(-1),
-    MILIEU_DU_CIEL(-1),
-    FOND_DU_CIEL(-1);
+    MILIEU_DU_CIEL(-1);
 
     private static List<Planet> realPlanets;
+    private static List<Planet> transitPlanets;
     private final int sweConst;
     private static List<Planet> principalePlanets;
 
@@ -69,5 +68,25 @@ public enum Planet implements SkyArtefact {
             realPlanets.add(PLUTON);
         }
         return realPlanets;
+    }
+
+    public static List<Planet> getTransitPlanets() {
+        if (transitPlanets == null) {
+            transitPlanets = new ArrayList<Planet>();
+            transitPlanets.add(SOLEIL);
+            transitPlanets.add(LUNE);
+            transitPlanets.add(MERCURE);
+            transitPlanets.add(VENUS);
+            transitPlanets.add(MARS);
+            transitPlanets.add(JUPITER);
+            transitPlanets.add(SATURNE);
+            transitPlanets.add(URANUS);
+            transitPlanets.add(NEPTUNE);
+            transitPlanets.add(PLUTON);
+            transitPlanets.add(LILITH_MOYENNE);
+            transitPlanets.add(LILITH_EXACTE);
+            transitPlanets.add(NOEUD_NORD_MOYEN);
+        }
+        return transitPlanets;
     }
 }

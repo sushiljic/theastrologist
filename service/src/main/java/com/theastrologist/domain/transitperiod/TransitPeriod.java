@@ -1,48 +1,77 @@
 package com.theastrologist.domain.transitperiod;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.theastrologist.domain.DateTimeJSONAdapter;
 import com.theastrologist.domain.Planet;
-import com.theastrologist.domain.aspect.AspectPosition;
+import com.theastrologist.domain.aspect.Aspect;
 import org.joda.time.DateTime;
 
 /**
  * Created by SAM on 20/07/2015.
  */
-public class TransitPeriod {
-    Planet planet;
-    AspectPosition aspectPosition;
-    DateTime startDate;
-    DateTime endDate;
+public class TransitPeriod implements Comparable {
+	transient Planet transitPlanet;
+	Planet natalPlanet;
+	Aspect aspect;
+	@JsonAdapter(DateTimeJSONAdapter.class)
+	DateTime startDate;
+	@JsonAdapter(DateTimeJSONAdapter.class)
+	DateTime endDate;
 
-    public TransitPeriod(Planet planet, AspectPosition aspectPosition, DateTime startDate) {
-        this.planet = planet;
-        this.aspectPosition = aspectPosition;
-        this.startDate = startDate;
-    }
+	public TransitPeriod(Planet transitPlanet, Planet natalPlanet, Aspect aspect, DateTime startDate) {
+		this(transitPlanet, natalPlanet, aspect, startDate, startDate);
+	}
 
-    public TransitPeriod(Planet planet, AspectPosition aspectPosition, DateTime startDate, DateTime endDate) {
-        this.planet = planet;
-        this.aspectPosition = aspectPosition;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
+	public TransitPeriod(Planet transitPlanet, Planet natalPlanet, Aspect aspect, DateTime startDate, DateTime endDate) {
+		this.transitPlanet = transitPlanet;
+		this.natalPlanet = natalPlanet;
+		this.aspect = aspect;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
 
-    public Planet getPlanet() {
-        return planet;
-    }
+	public Planet getNatalPlanet() {
+		return natalPlanet;
+	}
 
-    public AspectPosition getAspectPosition() {
-        return aspectPosition;
-    }
+	public Planet getTransitPlanet() {
+		return transitPlanet;
+	}
 
-    public DateTime getStartDate() {
-        return startDate;
-    }
+	public Aspect getAspect() {
+		return aspect;
+	}
 
-    public DateTime getEndDate() {
-        return endDate;
-    }
+	public DateTime getStartDate() {
+		return startDate;
+	}
 
-    public void setEndDate(DateTime endDate) {
-        this.endDate = endDate;
-    }
+	public DateTime getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(DateTime endDate) {
+		this.endDate = endDate;
+	}
+
+	public int compareTo(Object o) {
+		int returnedValue;
+		if (o == null || !(o instanceof TransitPeriod)) {
+			returnedValue = 1;
+		} else {
+			TransitPeriod obj = (TransitPeriod) o;
+			// D'abord on compare les dates comme moyen de comparaison
+			returnedValue = startDate.compareTo(obj.startDate);
+
+			// Puis on compare les planètes ensemble
+			if(returnedValue == 0) {
+				returnedValue = natalPlanet.compareTo(obj.natalPlanet);
+			}
+
+			if(returnedValue == 0) {
+				returnedValue = transitPlanet.compareTo(obj.transitPlanet);
+			}
+		}
+		return returnedValue;
+	}
 }

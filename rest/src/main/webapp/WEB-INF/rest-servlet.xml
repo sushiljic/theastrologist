@@ -18,4 +18,7 @@
             <!-- Also: why adding Jackson's MessageConverter? Gson should pick JSON serialization in this case -->
         </mvc:message-converters>
     </mvc:annotation-driven>
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="useDefaultSuffixPattern" value="false" />
+    </bean>
 </beans>

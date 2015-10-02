@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.theastrologist</groupId>
         <artifactId>theastrologist-parent</artifactId>
-        <version>1.0.2</version>
+        <version>1.1</version>
     </parent>
     <artifactId>theastrologist-rest</artifactId>
     <packaging>war</packaging>
@@ -18,7 +18,7 @@
         <jstl.version>1.2</jstl.version>
         <taglibs-standard.version>1.1.2</taglibs-standard.version>
         <wro4j.version>1.7.5</wro4j.version>
-        <rest-assured.version>2.4.1</rest-assured.version>
+        <rest-assured.version>2.5.0</rest-assured.version>
     </properties>
 
     <dependencies>
@@ -121,11 +121,11 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
-                <!--<configuration>
+                <configuration>
                     <port>9090</port>
                     <path>/theastrologist</path>
                 </configuration>
-                <executions>
+                <!--<executions>
                     <execution>
                         <id>tomcat-run</id>
                         <configuration>

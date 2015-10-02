@@ -17,9 +17,14 @@ public class DateTimeJSONAdapter extends TypeAdapter<DateTime>{
 
     @Override
     public void write(JsonWriter out, DateTime dateTime) throws IOException {
+            String returnString;
         // implement write: combine firstName and lastName into name
-        out.value(dateTime.toString(ISODateTimeFormat.dateTimeNoMillis()));
-        // implement the write method
+        if(dateTime.getHourOfDay() == 0 && dateTime.getMinuteOfHour() == 0 && dateTime.getSecondOfMinute() == 0) {
+            returnString = dateTime.toString(ISODateTimeFormat.date());
+        } else {
+            returnString = dateTime.toString(ISODateTimeFormat.dateTimeNoMillis());
+        }
+        out.value(returnString);
     }
 
     @Override
