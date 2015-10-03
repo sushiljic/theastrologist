@@ -74,8 +74,8 @@ public class SkyPosition {
     }
 
     private void fillPlanets(SwissEph sw, SweDate sd) {
-        //int flags = SweConst.SEFLG_MOSEPH;
-        int flags = 0;
+        int flags = SweConst.SEFLG_MOSEPH;
+        //int flags = 0;
         double[] xp = new double[6];
         StringBuffer serr = new StringBuffer();
 
