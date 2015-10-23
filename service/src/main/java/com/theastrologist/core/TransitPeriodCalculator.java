@@ -23,7 +23,8 @@ public class TransitPeriodCalculator {
 	public TransitPeriodCalculator() {
 	}
 
-	public TransitPeriods createTransitPeriod(SkyPosition natalTheme, DateTime startDate, DateTime endDate, Degree latitude, Degree longitude) {
+	public TransitPeriods createTransitPeriod(SkyPosition natalTheme, DateTime startDate, DateTime endDate,
+											  Degree latitude, Degree longitude) {
 		TransitPeriodsBuilder builder = new TransitPeriodsBuilder();
 		DateTime currentDate = startDate;
 		while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
@@ -42,6 +43,12 @@ public class TransitPeriodCalculator {
 			}
 
 			currentDate = currentDate.plus(PERIOD_TO_ADD);
+		}
+
+		// A la fin, une fois tous les transits ajoutés pour cette planète, on repasse sur les objets
+		// Pour supprimer ceux qui n'ont pas de durée
+		for (Planet planet : Planet.getTransitPlanets()) {
+			builder.cleanTransitsWithNoLength(planet);
 		}
 		return builder.build();
 	}
