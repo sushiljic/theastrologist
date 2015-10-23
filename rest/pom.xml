@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.theastrologist</groupId>
         <artifactId>theastrologist-parent</artifactId>
-        <version>1.2</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
     <artifactId>theastrologist-rest</artifactId>
     <packaging>war</packaging>
