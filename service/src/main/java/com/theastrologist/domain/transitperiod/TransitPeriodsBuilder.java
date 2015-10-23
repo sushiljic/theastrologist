@@ -40,10 +40,7 @@ public class TransitPeriodsBuilder {
 				transitPeriods.add(newPeriod);
 			}
 		} else {
-			TransitPeriod period = new TransitPeriod(planetInTransit, natalPlanet, transitType, currentTime);
-			SortedSet<TransitPeriod> sortedPeriods = Sets.newTreeSet();
-			sortedPeriods.add(period);
-			map.put(planetInTransit, sortedPeriods);
+			insertNewTransitPeriod(planetInTransit, natalPlanet, transitType);
 		}
 	}
 
@@ -83,5 +80,15 @@ public class TransitPeriodsBuilder {
 		TransitPeriods returnedValue = new TransitPeriods();
 		returnedValue.setPeriods(map);
 		return returnedValue;
+	}
+
+	public void cleanTransitsWithNoLength(Planet planetInTransit) {
+		SortedSet<TransitPeriod> transitPeriods = map.get(planetInTransit);
+		SortedSet<TransitPeriod> newPeriods = Sets.filter(transitPeriods, new Predicate<TransitPeriod>() {
+			public boolean apply(TransitPeriod transitPeriod) {
+				return !transitPeriod.getStartDate().equals(transitPeriod.getEndDate());
+			}
+		});
+		map.put(planetInTransit, newPeriods);
 	}
 }
