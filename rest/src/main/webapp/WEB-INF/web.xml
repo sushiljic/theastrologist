@@ -14,13 +14,18 @@
 
     <servlet-mapping>
         <servlet-name>rest</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
 
+    <!-- Add this to your web.xml to enable "CORS" -->
+    <filter>
+        <filter-name>cors</filter-name>
+        <filter-class>com.theastrologist.filter.CORSFilter</filter-class>
+    </filter>
 
-    <!-- Page d'accueil -->
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
+    <filter-mapping>
+        <filter-name>cors</filter-name>
+        <url-pattern>/rest/*</url-pattern>
+    </filter-mapping>
 
 </web-app>

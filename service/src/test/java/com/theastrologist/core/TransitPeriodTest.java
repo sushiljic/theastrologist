@@ -204,4 +204,26 @@ public class TransitPeriodTest {
 		assertThat(second.getStartDate(), equalTo(startDate));
 		assertThat(second.getEndDate(), equalTo(DateTime.parse("2015-12-30")));
 	}
+
+	@Test
+	public void testSupprTwoElementsNoLength() throws Exception {
+		// Given
+		SkyPosition natalPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
+
+		DateTime startDate = DateTime.parse("2016-08-01");
+		DateTime endDate = DateTime.parse("2016-09-10");
+
+		// When
+		TransitPeriods build = TransitPeriodCalculator.INSTANCE
+				.createTransitPeriod(natalPosition, startDate, endDate, LATITUDE, LONGITUDE);
+		Map<Planet, SortedSet<TransitPeriod>> map = build.getPeriods();
+
+		// Then
+		assertThat(map, hasKey(Planet.JUPITER));
+		SortedSet<TransitPeriod> transitPeriodList = map.get(Planet.JUPITER);
+
+		assertThat(transitPeriodList, notNullValue());
+		assertThat(transitPeriodList, not(emptyIterableOf(TransitPeriod.class)));
+		assertThat(transitPeriodList, hasSize(5));
+	}
 }
