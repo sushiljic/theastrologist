@@ -9,7 +9,7 @@ import org.joda.time.DateTime;
 /**
  * Created by SAM on 20/07/2015.
  */
-public class TransitPeriod implements Comparable {
+public class PlanetTransitPeriod implements Comparable {
 	transient Planet transitPlanet;
 	Planet natalPlanet;
 	Aspect aspect;
@@ -18,11 +18,11 @@ public class TransitPeriod implements Comparable {
 	@JsonAdapter(DateTimeJSONAdapter.class)
 	DateTime endDate;
 
-	public TransitPeriod(Planet transitPlanet, Planet natalPlanet, Aspect aspect, DateTime startDate) {
+	public PlanetTransitPeriod(Planet transitPlanet, Planet natalPlanet, Aspect aspect, DateTime startDate) {
 		this(transitPlanet, natalPlanet, aspect, startDate, startDate);
 	}
 
-	public TransitPeriod(Planet transitPlanet, Planet natalPlanet, Aspect aspect, DateTime startDate, DateTime endDate) {
+	public PlanetTransitPeriod(Planet transitPlanet, Planet natalPlanet, Aspect aspect, DateTime startDate, DateTime endDate) {
 		this.transitPlanet = transitPlanet;
 		this.natalPlanet = natalPlanet;
 		this.aspect = aspect;
@@ -56,10 +56,10 @@ public class TransitPeriod implements Comparable {
 
 	public int compareTo(Object o) {
 		int returnedValue;
-		if (o == null || !(o instanceof TransitPeriod)) {
+		if (o == null || !(o instanceof PlanetTransitPeriod)) {
 			returnedValue = 1;
 		} else {
-			TransitPeriod obj = (TransitPeriod) o;
+			PlanetTransitPeriod obj = (PlanetTransitPeriod) o;
 			// D'abord on compare les dates comme moyen de comparaison
 			returnedValue = startDate.compareTo(obj.startDate);
 

@@ -73,10 +73,6 @@ public enum Planet implements SkyArtefact {
     public static List<Planet> getTransitPlanets() {
         if (transitPlanets == null) {
             transitPlanets = new ArrayList<Planet>();
-            transitPlanets.add(SOLEIL);
-            transitPlanets.add(LUNE);
-            transitPlanets.add(MERCURE);
-            transitPlanets.add(VENUS);
             transitPlanets.add(MARS);
             transitPlanets.add(JUPITER);
             transitPlanets.add(SATURNE);
@@ -84,7 +80,6 @@ public enum Planet implements SkyArtefact {
             transitPlanets.add(NEPTUNE);
             transitPlanets.add(PLUTON);
             transitPlanets.add(LILITH_MOYENNE);
-            transitPlanets.add(LILITH_EXACTE);
             transitPlanets.add(NOEUD_NORD_MOYEN);
         }
         return transitPlanets;

@@ -1,16 +1,11 @@
 package com.theastrologist.core;
 
-import com.theastrologist.core.ThemeCalculator;
-import com.theastrologist.domain.Degree;
-import com.theastrologist.domain.Planet;
-import com.theastrologist.domain.PlanetPosition;
-import com.theastrologist.domain.SkyPosition;
+import com.theastrologist.domain.*;
 import com.theastrologist.domain.aspect.Aspect;
 import com.theastrologist.domain.aspect.AspectPosition;
-import com.theastrologist.domain.transitperiod.TransitPeriod;
+import com.theastrologist.domain.transitperiod.PlanetTransitPeriod;
 import com.theastrologist.domain.transitperiod.TransitPeriods;
 import com.theastrologist.domain.transitperiod.TransitPeriodsBuilder;
-import com.theastrologist.core.TransitPeriodCalculator;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
@@ -27,7 +22,7 @@ import static org.hamcrest.junit.MatcherAssert.assertThat;
 /**
  * Created by SAM on 30/06/2015.
  */
-public class TransitPeriodTest {
+public class PlanetTransitPeriodTest {
 
 	private Degree asDegree = new Degree(341, 46);
 	private PlanetPosition asPosition = PlanetPosition.createPlanetPosition(asDegree, asDegree);
@@ -44,42 +39,42 @@ public class TransitPeriodTest {
 	}
 
 	@Test
-	public void testMapTransitOneElement() throws Exception {
+	public void testMapTransitOnePlanet() throws Exception {
 		// Given
 		TransitPeriodsBuilder builder = new TransitPeriodsBuilder();
 		Degree asDegree = new Degree(341, 46);
 
-		Planet planetInTransit = Planet.SOLEIL;
-		PlanetPosition planetInTransitPosition = PlanetPosition.createPlanetPosition(new Degree(172, 4), asDegree);
+		Planet planetInTransit = Planet.URANUS;
+		PlanetPosition planetInTransitPosition = PlanetPosition.createPlanetPosition(new Degree(17, 48), asDegree);
 
-		Planet natalPlanet = Planet.MERCURE;
-		PlanetPosition natalPlanetPosition = PlanetPosition.createPlanetPosition(new Degree(261, 14), asDegree);
-		DateTime dateTime = DateTime.parse("2015-09-15");
+		Planet natalPlanet = Planet.LILITH_MOYENNE;
+		PlanetPosition natalPlanetPosition = PlanetPosition.createPlanetPosition(new Degree(13, 31), asDegree);
+		DateTime dateTime = DateTime.parse("2015-10-29");
 
 		AspectPosition aspectPosition = AspectPosition
 				.createTransitPosition(natalPlanet, planetInTransit, natalPlanetPosition, planetInTransitPosition);
 
 		// When
 		builder.startNewPeriod(dateTime);
-		builder.appendTransit(natalPlanet, planetInTransit, aspectPosition.getAspect());
+		builder.appendPlanetTransit(natalPlanet, planetInTransit, aspectPosition.getAspect());
 		TransitPeriods build = builder.build();
-		Map<Planet, SortedSet<TransitPeriod>> map = build.getPeriods();
 
 		// Then
-		assertThat(map, hasKey(Planet.SOLEIL));
-		SortedSet<TransitPeriod> transitPeriodList = map.get(Planet.SOLEIL);
+		Map<Planet, SortedSet<PlanetTransitPeriod>> planetPeriods = build.getPlanetPeriods();
+		assertThat(planetPeriods, hasKey(Planet.URANUS));
+		SortedSet<PlanetTransitPeriod> planetTransitPeriodList = planetPeriods.get(Planet.URANUS);
 
-		assertThat(transitPeriodList, notNullValue());
-		assertThat(transitPeriodList, hasSize(1));
+		assertThat(planetTransitPeriodList, notNullValue());
+		assertThat(planetTransitPeriodList, hasSize(1));
 
-		TransitPeriod first = transitPeriodList.first();
+		PlanetTransitPeriod first = planetTransitPeriodList.first();
 		assertThat(first, notNullValue());
 		assertThat(first.getStartDate(), equalTo(dateTime));
 		assertThat(first.getEndDate(), equalTo(dateTime));
 	}
 
 	@Test
-	public void testMapTransitTwoElementsMerge() throws Exception {
+	public void testMapTransitTwoPlanetsMerge() throws Exception {
 		// Given
 		TransitPeriodsBuilder builder = new TransitPeriodsBuilder();
 		Degree asDegree = new Degree(341, 46);
@@ -94,7 +89,7 @@ public class TransitPeriodTest {
 				.createTransitPosition(natalPlanet, planetInTransit, natalPlanetPosition, planetInTransitPosition);
 
 		builder.startNewPeriod(dateTime);
-		builder.appendTransit(planetInTransit, natalPlanet, aspectPosition.getAspect());
+		builder.appendPlanetTransit(planetInTransit, natalPlanet, aspectPosition.getAspect());
 
 		PlanetPosition planetInTransitSecondPosition = PlanetPosition
 				.createPlanetPosition(new Degree(239, 50), asDegree);
@@ -104,21 +99,21 @@ public class TransitPeriodTest {
 									   planetInTransitSecondPosition);
 
 		builder.startNewPeriod(secondDateTime);
-		builder.appendTransit(planetInTransit, natalPlanet, aspectSecondPosition.getAspect());
+		builder.appendPlanetTransit(planetInTransit, natalPlanet, aspectSecondPosition.getAspect());
 
 		// When
 		TransitPeriods build = builder.build();
-		Map<Planet, SortedSet<TransitPeriod>> map = build.getPeriods();
+		Map<Planet, SortedSet<PlanetTransitPeriod>> map = build.getPlanetPeriods();
 
 
 		// Then
 		assertThat(map, hasKey(Planet.SATURNE));
-		SortedSet<TransitPeriod> transitPeriodList = map.get(Planet.SATURNE);
+		SortedSet<PlanetTransitPeriod> planetTransitPeriodList = map.get(Planet.SATURNE);
 
-		assertThat(transitPeriodList, notNullValue());
-		assertThat(transitPeriodList, hasSize(1));
+		assertThat(planetTransitPeriodList, notNullValue());
+		assertThat(planetTransitPeriodList, hasSize(1));
 
-		TransitPeriod second = transitPeriodList.last();
+		PlanetTransitPeriod second = planetTransitPeriodList.last();
 		assertThat(second, notNullValue());
 		assertThat(second.getStartDate(), equalTo(dateTime));
 		assertThat(second.getEndDate(), equalTo(secondDateTime));
@@ -140,7 +135,7 @@ public class TransitPeriodTest {
 				.createTransitPosition(natalPlanet, planetInTransit, natalPlanetPosition, planetInTransitPosition);
 
 		builder.startNewPeriod(dateTime);
-		builder.appendTransit(natalPlanet, planetInTransit, aspectPosition.getAspect());
+		builder.appendPlanetTransit(natalPlanet, planetInTransit, aspectPosition.getAspect());
 
 		PlanetPosition planetInTransitSecondPosition = PlanetPosition
 				.createPlanetPosition(new Degree(201, 36), asDegree);
@@ -150,26 +145,26 @@ public class TransitPeriodTest {
 									   planetInTransitSecondPosition);
 
 		builder.startNewPeriod(secondDateTime);
-		builder.appendTransit(natalPlanet, planetInTransit, aspectSecondPosition.getAspect());
+		builder.appendPlanetTransit(natalPlanet, planetInTransit, aspectSecondPosition.getAspect());
 
 		// When
 		TransitPeriods build = builder.build();
-		Map<Planet, SortedSet<TransitPeriod>> map = build.getPeriods();
+		Map<Planet, SortedSet<PlanetTransitPeriod>> map = build.getPlanetPeriods();
 
 
 		// Then
 		assertThat(map, hasKey(Planet.SOLEIL));
-		SortedSet<TransitPeriod> transitPeriodList = map.get(Planet.SOLEIL);
+		SortedSet<PlanetTransitPeriod> planetTransitPeriodList = map.get(Planet.SOLEIL);
 
-		assertThat(transitPeriodList, notNullValue());
-		assertThat(transitPeriodList, hasSize(2));
+		assertThat(planetTransitPeriodList, notNullValue());
+		assertThat(planetTransitPeriodList, hasSize(2));
 
-		TransitPeriod first = transitPeriodList.first();
+		PlanetTransitPeriod first = planetTransitPeriodList.first();
 		assertThat(first, notNullValue());
 		assertThat(first.getStartDate(), equalTo(dateTime));
 		assertThat(first.getEndDate(), equalTo(dateTime));
 
-		TransitPeriod second = transitPeriodList.last();
+		PlanetTransitPeriod second = planetTransitPeriodList.last();
 		assertThat(second, notNullValue());
 		assertThat(second.getStartDate(), equalTo(secondDateTime));
 		assertThat(second.getEndDate(), equalTo(secondDateTime));
@@ -186,23 +181,28 @@ public class TransitPeriodTest {
 		// When
 		TransitPeriods build = TransitPeriodCalculator.INSTANCE
 				.createTransitPeriod(natalPosition, startDate, endDate, LATITUDE, LONGITUDE);
-		Map<Planet, SortedSet<TransitPeriod>> map = build.getPeriods();
+		Map<Planet, SortedSet<PlanetTransitPeriod>> map = build.getPlanetPeriods();
 
 		// Then
 		assertThat(map, hasKey(Planet.PLUTON));
-		SortedSet<TransitPeriod> transitPeriodList = map.get(Planet.PLUTON);
+		SortedSet<PlanetTransitPeriod> planetTransitPeriodList = map.get(Planet.PLUTON);
 
-		assertThat(transitPeriodList, notNullValue());
-		assertThat(transitPeriodList, not(emptyIterableOf(TransitPeriod.class)));
+		assertThat(planetTransitPeriodList, notNullValue());
+		assertThat(planetTransitPeriodList, not(emptyIterableOf(PlanetTransitPeriod.class)));
 
-		Iterator<TransitPeriod> iterator = transitPeriodList.iterator();
+		Iterator<PlanetTransitPeriod> iterator = planetTransitPeriodList.iterator();
 		iterator.next();
-		TransitPeriod second = iterator.next();
+		PlanetTransitPeriod second = iterator.next();
 		assertThat(second, notNullValue());
 		assertThat(second.getNatalPlanet(), is(Planet.SOLEIL));
 		assertThat(second.getAspect(), is(Aspect.CONJONCTION));
 		assertThat(second.getStartDate(), equalTo(startDate));
 		assertThat(second.getEndDate(), equalTo(DateTime.parse("2015-12-30")));
+
+		assertThat(map, not(hasKey(Planet.SOLEIL)));
+		assertThat(map, not(hasKey(Planet.LUNE)));
+		assertThat(map, not(hasKey(Planet.MERCURE)));
+		assertThat(map, not(hasKey(Planet.VENUS)));
 	}
 
 	@Test
@@ -216,14 +216,14 @@ public class TransitPeriodTest {
 		// When
 		TransitPeriods build = TransitPeriodCalculator.INSTANCE
 				.createTransitPeriod(natalPosition, startDate, endDate, LATITUDE, LONGITUDE);
-		Map<Planet, SortedSet<TransitPeriod>> map = build.getPeriods();
+		Map<Planet, SortedSet<PlanetTransitPeriod>> map = build.getPlanetPeriods();
 
 		// Then
 		assertThat(map, hasKey(Planet.JUPITER));
-		SortedSet<TransitPeriod> transitPeriodList = map.get(Planet.JUPITER);
+		SortedSet<PlanetTransitPeriod> planetTransitPeriodList = map.get(Planet.JUPITER);
 
-		assertThat(transitPeriodList, notNullValue());
-		assertThat(transitPeriodList, not(emptyIterableOf(TransitPeriod.class)));
-		assertThat(transitPeriodList, hasSize(5));
+		assertThat(planetTransitPeriodList, notNullValue());
+		assertThat(planetTransitPeriodList, not(emptyIterableOf(PlanetTransitPeriod.class)));
+		assertThat(planetTransitPeriodList, hasSize(5));
 	}
 }

@@ -23,7 +23,7 @@ public class ThemeCalculator {
 
     public SkyPosition getSkyPosition(DateTime dateTime, Degree latitude, Degree longitude) {
         SkyPosition skyPosition = new SkyPosition(dateTime, latitude, longitude);
-        LOG.info("Calculating sky position for Date = " + dateTime + ", with Latitude = " + latitude + " and Longitude = " + longitude);
+        LOG.debug("Calculating sky position for Date = " + dateTime + ", with Latitude = " + latitude + " and Longitude = " + longitude);
         skyPosition.calculate(sw);
         return skyPosition;
     }

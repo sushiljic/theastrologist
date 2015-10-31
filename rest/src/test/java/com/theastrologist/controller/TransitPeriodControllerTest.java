@@ -38,7 +38,10 @@ public class TransitPeriodControllerTest {
 									   Double.toString(new Degree(48, 39).getBaseDegree()),
 									   Double.toString(new Degree(2, 25).getBaseDegree()));
 
-		response.then().statusCode(200).body("periods.PLUTON", hasSize(4));
+		response.then().statusCode(200)
+				.body("planetPeriods.PLUTON", hasSize(4))
+				.body("housePeriods.NOEUD_NORD_MOYEN", hasSize(2))
+				.body("housePeriods.MARS", hasSize(14));
 	}
 
 	@Test
@@ -50,6 +53,6 @@ public class TransitPeriodControllerTest {
 									   Double.toString(new Degree(48, 39).getBaseDegree()),
 									   Double.toString(new Degree(2, 25).getBaseDegree()));
 
-		response.then().statusCode(200).body("periods.PLUTON", hasSize(4));
+		response.then().statusCode(200).body("planetPeriods.PLUTON", hasSize(4));
 	}
 }
