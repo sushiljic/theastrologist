@@ -32,9 +32,9 @@ public class TransitPeriodControllerTest {
 	public void testRequest() throws URISyntaxException {
 
 		MockMvcResponse response = get("/transitperiod/{natalDate}/{startDate}/{endDate}/{latitude:.+}/{longitude:.+}",
-									   "1985-01-04T11:20:00+01:00",
-									   "2014-01-01T11:20:00+02:00",
-									   "2016-01-01T11:20:00+02:00",
+									   "1985-01-04T11:20:00",
+									   "2014-01-01T11:20:00",
+									   "2016-01-01T11:20:00",
 									   Double.toString(new Degree(48, 39).getBaseDegree()),
 									   Double.toString(new Degree(2, 25).getBaseDegree()));
 
@@ -48,7 +48,7 @@ public class TransitPeriodControllerTest {
 	public void testRequestShortDates() throws URISyntaxException {
 
 		MockMvcResponse response = get("/transitperiod/{natalDate}/{startDate}/{endDate}/{latitude:.+}/{longitude:.+}",
-									   "1985-01-04T11:20:00+01:00",
+									   "1985-01-04T11:20:00",
 									   "2014-01-01", "2016-01-01",
 									   Double.toString(new Degree(48, 39).getBaseDegree()),
 									   Double.toString(new Degree(2, 25).getBaseDegree()));
