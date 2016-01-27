@@ -121,7 +121,7 @@ public class SkyPosition {
 				Degree sunDegree = this.positions.get(Planet.SOLEIL).getDegree();
 				Degree moonDegree = this.positions.get(Planet.LUNE).getDegree();
 
-				Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
+				Degree partDeFortune = CalcUtil.calculatePartDeFortune(sunDegree, moonDegree);
 				PlanetPosition planetPosition = PlanetPosition.createPlanetPosition(
 						partDeFortune, ascendantDegree);
 
@@ -171,9 +171,6 @@ public class SkyPosition {
 				new Degree(0)
 		);
 		this.positions.put(Planet.ASCENDANT, asPosition);
-
-		Degree mcDegree = new Degree(mc);
-		this.positions.put(Planet.MILIEU_DU_CIEL, PlanetPosition.createPlanetPosition(mcDegree, asDegree));
 	}
 
 	public SortedSet<PlanetValue> getDominantPlanets() {

@@ -104,7 +104,7 @@ public class AspectPositionTest {
 
         assertThat(aspectsForSkyPosition, notNullValue());
 
-        Map<Planet, AspectPosition> planetAspectPositionMap = aspectsForSkyPosition.get(Planet.MILIEU_DU_CIEL);
+        Map<Planet, AspectPosition> planetAspectPositionMap = aspectsForSkyPosition.get(Planet.URANUS);
 
         assertThat(planetAspectPositionMap, notNullValue());
 
@@ -113,7 +113,7 @@ public class AspectPositionTest {
         AspectPosition aspectPosition = planetAspectPositionMap.get(Planet.MERCURE);
         assertThat(aspectPosition, notNullValue());
         assertThat(aspectPosition.getAspect(), is(Aspect.CONJONCTION));
-        assertThat(aspectPosition.getPlanet(), is(Planet.MILIEU_DU_CIEL));
+        assertThat(aspectPosition.getPlanet(), is(Planet.URANUS));
         assertThat(aspectPosition.getPlanetComparison(), is(Planet.MERCURE));
         assertThat(aspectPosition.getOrbDelta().getDegree(), equalTo(0));
         assertThat(aspectPosition.getOrbDelta().getMinutes(), equalTo(-50));
@@ -126,7 +126,7 @@ public class AspectPositionTest {
 
         assertThat(aspectsForSkyPosition, notNullValue());
 
-        SortedMap<Planet, AspectPosition> planetAspectPositionMap = aspectsForSkyPosition.get(Planet.MILIEU_DU_CIEL);
+        SortedMap<Planet, AspectPosition> planetAspectPositionMap = aspectsForSkyPosition.get(Planet.URANUS);
 
         assertThat(planetAspectPositionMap, notNullValue());
 

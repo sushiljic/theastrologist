@@ -67,44 +67,6 @@ public class HousePositionTest {
     }
 
     @Test
-    public void testGetMcPosition() throws Exception {
-        PlanetPosition asPosition = testSkyPosition.getPlanetPosition(Planet.MILIEU_DU_CIEL);
-        assertThat(asPosition, notNullValue());
-
-        Degree degree = asPosition.getDegree();
-        Degree degreeInSign = asPosition.getDegreeInSign();
-        Degree degreeInHouse = asPosition.getDegreeInHouse();
-
-        assertThat(degree.getDegree(), equalTo(262));
-        assertThat(degree.getMinutes(), equalTo(5));
-
-        assertThat(asPosition.getSign(), equalTo(Sign.SAGITTAIRE));
-        assertThat(degreeInSign.getDegree(), equalTo(22));
-        assertThat(degreeInSign.getMinutes(), equalTo(5));
-
-        assertThat(asPosition.getHouse(), equalTo(House.X));
-        assertThat(degreeInHouse.getDegree(), equalTo(10));
-        assertThat(degreeInHouse.getMinutes(), equalTo(18));
-    }
-
-    @Test
-    public void testGetMcPositionDecan() throws Exception {
-        PlanetPosition asPosition = testSkyPosition.getPlanetPosition(Planet.MILIEU_DU_CIEL);
-        assertThat(asPosition, notNullValue());
-
-        SignDecan decanInSign = asPosition.getDecanInSign();
-        HouseDecan decanInHouse = asPosition.getDecanInHouse();
-
-        assertThat(asPosition.getSign(), equalTo(Sign.SAGITTAIRE));
-        assertThat(decanInSign.getDecanNumber(), equalTo(3));
-        assertThat(decanInSign.getRelatedSign(), equalTo(Sign.LION));
-
-        assertThat(asPosition.getHouse(), equalTo(House.X));
-        assertThat(decanInHouse.getDecanNumber(), equalTo(2));
-        assertThat(decanInHouse.getRelatedHouse(), equalTo(House.II));
-    }
-
-    @Test
     public void testGetHousePositions() throws Exception {
         HousePosition firstHousePosition = testSkyPosition.getHousePosition(House.I);
         assertThat(firstHousePosition, notNullValue());

@@ -438,14 +438,14 @@ public class PlanetPositionTest {
         Degree degreeInHouse = planetPosition.getDegreeInHouse();
 
 
-        assertThat(degree.getDegree(), equalTo(129));
-        assertThat(degree.getMinutes(), equalTo(27));
+        assertThat(degree.getDegree(), equalTo(357));
+        assertThat(degree.getMinutes(), equalTo(50));
 
-        assertThat(planetPosition.getSign(), equalTo(Sign.LION));
-        assertThat(degreeInSign.getDegree(), equalTo(9));
-        assertThat(degreeInSign.getMinutes(), equalTo(27));
+        assertThat(planetPosition.getSign(), equalTo(Sign.POISSONS));
+        assertThat(degreeInSign.getDegree(), equalTo(27));
+        assertThat(degreeInSign.getMinutes(), equalTo(50));
 
-        assertThat(planetPosition.getHouse(), equalTo(House.V));
+        assertThat(planetPosition.getHouse(), equalTo(House.I));
         assertThat(degreeInHouse.getDegree(), equalTo(27));
         assertThat(degreeInHouse.getMinutes(), equalTo(40));
 

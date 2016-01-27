@@ -26,8 +26,7 @@ public enum Planet implements SkyArtefact {
     NOEUD_SUD_MOYEN(-1),
     LILITH_EXACTE(SweConst.SE_OSCU_APOG),
     LILITH_MOYENNE(SweConst.SE_MEAN_APOG),
-    PART_DE_FORTUNE(-1),
-    MILIEU_DU_CIEL(-1);
+    PART_DE_FORTUNE(-1);
 
     private static List<Planet> realPlanets;
     private static List<Planet> transitPlanets;

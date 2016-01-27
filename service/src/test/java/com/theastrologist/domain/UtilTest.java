@@ -74,13 +74,12 @@ public class UtilTest {
 
     @Test
     public void testCalculatePartDeFortune() {
-        Degree ascendantDegree = new Degree(341, 46);
         Degree sunDegree = new Degree(284.);
         Degree moonDegree = new Degree(71, 41);
 
-        Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
-        assertThat(partDeFortune.getDegree(), equalTo(129));
-        assertThat(partDeFortune.getMinutes(), equalTo(27));
+        Degree partDeFortune = CalcUtil.calculatePartDeFortune(sunDegree, moonDegree);
+        assertThat(partDeFortune.getDegree(), equalTo(357));
+        assertThat(partDeFortune.getMinutes(), equalTo(50));
     }
 
     @Test
@@ -89,7 +88,7 @@ public class UtilTest {
         Degree sunDegree = new Degree(14, 5);
         Degree moonDegree = new Degree(312, 16);
 
-        Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
+        Degree partDeFortune = CalcUtil.calculatePartDeFortune(sunDegree, moonDegree);
         assertThat(partDeFortune.getDegree(), equalTo(279));
         assertThat(partDeFortune.getMinutes(), equalTo(57));
     }
@@ -100,7 +99,7 @@ public class UtilTest {
         Degree sunDegree = new Degree(10, 0);
         Degree moonDegree = new Degree(220, 0);
 
-        Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
+        Degree partDeFortune = CalcUtil.calculatePartDeFortune(sunDegree, moonDegree);
         assertThat(partDeFortune.getDegree(), equalTo(0));
         assertThat(partDeFortune.getMinutes(), equalTo(0));
     }
@@ -111,7 +110,7 @@ public class UtilTest {
         Degree sunDegree = new Degree(110, 0);
         Degree moonDegree = new Degree(60, 0);
 
-        Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
+        Degree partDeFortune = CalcUtil.calculatePartDeFortune(sunDegree, moonDegree);
         assertThat(partDeFortune.getDegree(), equalTo(0));
         assertThat(partDeFortune.getMinutes(), equalTo(0));
     }
@@ -122,7 +121,7 @@ public class UtilTest {
         Degree sunDegree = new Degree(254, 50);
         Degree moonDegree = new Degree(50, 58);
 
-        Degree partDeFortune = CalcUtil.calculatePartDeFortune(ascendantDegree, sunDegree, moonDegree);
+        Degree partDeFortune = CalcUtil.calculatePartDeFortune(sunDegree, moonDegree);
         assertThat(partDeFortune.getDegree(), equalTo(168));
         assertThat(partDeFortune.getMinutes(), equalTo(39));
     }

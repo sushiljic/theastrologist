@@ -197,7 +197,7 @@ public class PlanetTransitPeriodTest {
 		assertThat(second.getNatalPlanet(), is(Planet.SOLEIL));
 		assertThat(second.getAspect(), is(Aspect.CONJONCTION));
 		assertThat(second.getStartDate(), equalTo(startDate));
-		assertThat(second.getEndDate(), equalTo(endDate));
+		assertThat(second.getEndDate(), equalTo(DateTime.parse("2015-12-30")));
 
 		assertThat(map, not(hasKey(Planet.SOLEIL)));
 		assertThat(map, not(hasKey(Planet.LUNE)));
@@ -224,6 +224,6 @@ public class PlanetTransitPeriodTest {
 
 		assertThat(planetTransitPeriodList, notNullValue());
 		assertThat(planetTransitPeriodList, not(emptyIterableOf(PlanetTransitPeriod.class)));
-		assertThat(planetTransitPeriodList, hasSize(6));
+		assertThat(planetTransitPeriodList, hasSize(4));
 	}
 }
