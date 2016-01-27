@@ -1,6 +1,5 @@
 package com.theastrologist.controller;
 
-import com.theastrologist.controller.exception.WrongDateRestException;
 import com.theastrologist.core.ThemeCalculator;
 import com.theastrologist.domain.Degree;
 import com.theastrologist.domain.SkyPosition;
@@ -23,9 +22,8 @@ public class ThemeController {
 	public SkyPosition getTheme(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String datetime,
 								@PathVariable double latitude,
 								@PathVariable double longitude) {
-		DateTime parse = ControllerUtil.parseDateTime(datetime);
-		Degree latitudeDegree = new Degree
-				(latitude);
+		DateTime parse = ControllerUtil.parseDateTime(datetime, latitude, longitude);
+		Degree latitudeDegree = new Degree(latitude);
 		Degree longitudeDegree = new Degree(longitude);
 		SkyPosition position = ThemeCalculator.INSTANCE.getSkyPosition(parse, latitudeDegree, longitudeDegree);
 		return position;
