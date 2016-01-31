@@ -4,12 +4,10 @@ import com.theastrologist.controller.exception.WrongDateRestException;
 import com.theastrologist.external.GoogleRestException;
 import com.theastrologist.external.timezone.TimezoneResponse;
 import com.theastrologist.external.timezone.TimezoneRestClient;
-import org.joda.time.Chronology;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.web.util.UriUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -18,12 +16,13 @@ import java.io.UnsupportedEncodingException;
  * Created by Samy on 16/09/2015.
  */
 public class ControllerUtil {
-	public static DateTime parseDateTime(String datetime, double latitude, double longitude)
+	private static final Logger LOGGER = Logger.getLogger(ControllerUtil.class);
+
+	public DateTime parseDateTime(String datetime, double latitude, double longitude)
 			throws WrongDateRestException {
 		LocalDateTime parsedDate = null;
 		try {
 			String decodedDateTime = UriUtils.decode(datetime, "UTF-8");
-
 			parsedDate = LocalDateTime.parse(decodedDateTime);
 		} catch (IllegalArgumentException e) {
 			throw new WrongDateRestException(datetime, e);
@@ -31,19 +30,26 @@ public class ControllerUtil {
 			throw new WrongDateRestException(datetime, e);
 		}
 
-		DateTime firstUtcDateTime = parsedDate.toDateTime(DateTimeZone.UTC);
-		long millis = firstUtcDateTime.getMillis();
+		DateTime dateTime = parsedDate.toDateTime(DateTimeZone.UTC);
+		long millis = dateTime.getMillis();
 
+		DateTimeZone dateTimeZone = queryGoogleForTimezone(latitude, longitude, millis);
+		if (dateTimeZone != null) {
+			dateTime = parsedDate.toDateTime(dateTimeZone);
+		}
+		return dateTime;
+	}
+
+	public DateTimeZone queryGoogleForTimezone(double latitude, double longitude, long millis) {
 		TimezoneRestClient client = new TimezoneRestClient(latitude, longitude, millis);
 		TimezoneResponse response = null;
+		DateTimeZone dateTimeZone = null;
 		try {
 			response = client.getTimezone();
+			dateTimeZone = DateTimeZone.forID(response.timeZoneId);
 		} catch (GoogleRestException e) {
-			throw new WrongDateRestException(datetime, e);
+			LOGGER.warn("Google Timezone API exception, using UTC instead", e);
 		}
-
-		DateTimeZone dateTimeZone = DateTimeZone.forID(response.timeZoneId);
-		DateTime dateTime = parsedDate.toDateTime(dateTimeZone);
-		return dateTime;
+		return dateTimeZone;
 	}
 }
