@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/transitperiod")
-public class TransitPeriodController {
-
-	/*@Autowired
-	ThemeController themeController;*/
+public class TransitPeriodController extends AbstractController {
 
 	@RequestMapping(value = "/{natalDate}/{startDate}/{endDate}/{latitude:.+}/{longitude:.+}", method = RequestMethod.GET)
 	public TransitPeriods getTransitPeriod(
@@ -28,9 +25,9 @@ public class TransitPeriodController {
 			@PathVariable double latitude,
 			@PathVariable double longitude) {
 		//SkyPosition natalPosition = themeController.getTheme(latitude, longitude, natalDate);
-		DateTime parsedNatalDate = ControllerUtil.parseDateTime(natalDate, latitude, longitude);
-		DateTime parsedStartDate = ControllerUtil.parseDateTime(startDate, latitude, longitude);
-		DateTime parsedEndDate = ControllerUtil.parseDateTime(endDate, latitude, longitude);
+		DateTime parsedNatalDate = controllerUtil.parseDateTime(natalDate, latitude, longitude);
+		DateTime parsedStartDate = controllerUtil.parseDateTime(startDate, latitude, longitude);
+		DateTime parsedEndDate = controllerUtil.parseDateTime(endDate, latitude, longitude);
 		Degree parsedLatitude = new Degree(latitude);
 		Degree parsedLongitude = new Degree(longitude);
 		SkyPosition natalPosition = ThemeCalculator.INSTANCE
