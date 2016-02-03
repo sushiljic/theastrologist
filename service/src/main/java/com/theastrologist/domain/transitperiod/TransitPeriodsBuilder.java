@@ -105,7 +105,7 @@ public class TransitPeriodsBuilder {
 						currentPeriod = backPeriod;
 					} else {
 						throw new IllegalStateException(
-								"too big gap between houses : " + currentHouse + lastHouse + planetInTransit);
+								"too big gap between houses : current house = " + currentHouse + ", last house = " + lastHouse + ", planet in transit = " + planetInTransit);
 					}
 				}
 

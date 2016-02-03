@@ -16,6 +16,7 @@ import java.util.SortedMap;
 public class TransitPeriodCalculator {
 	private static final Logger LOG = Logger.getLogger(TransitPeriodCalculator.class);
 	private static final ReadablePeriod PERIOD_TO_ADD = Weeks.ONE;
+	private static final ReadablePeriod PERIOD_TO_ADD_FIN = Days.ONE;
 
 	public static final TransitPeriodCalculator INSTANCE = new TransitPeriodCalculator();
 
@@ -26,14 +27,12 @@ public class TransitPeriodCalculator {
 											  Degree latitude, Degree longitude) {
 		TransitPeriodsBuilder builder = new TransitPeriodsBuilder();
 		DateTime currentDate = startDate;
-		while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
-			SkyPosition currentSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(currentDate, latitude, longitude);
-			builder.startNewPeriod(currentDate);
+		currentDate = fillPeriods(currentDate, natalTheme, endDate, latitude, longitude, builder, PERIOD_TO_ADD);
 
-			appendPlanetPeriods(natalTheme, builder, currentSkyPosition);
-			appendHousePeriods(natalTheme, builder, currentSkyPosition);
-
-			currentDate = currentDate.plus(PERIOD_TO_ADD);
+		// A la fin, on vérifie si on colle sur la vraie date de fin
+		if (currentDate.isBefore(endDate)) {
+			// Et on finit les quelques jours qui manquent
+			currentDate = fillPeriods(currentDate, natalTheme, endDate, latitude, longitude, builder, PERIOD_TO_ADD_FIN);
 		}
 
 		// A la fin, une fois tous les transits ajoutés pour cette planète, on repasse sur les objets
@@ -42,6 +41,25 @@ public class TransitPeriodCalculator {
 			builder.cleanTransitsWithNoLength(planet);
 		}
 		return builder.build();
+	}
+
+	private DateTime fillPeriods(DateTime currentDate, SkyPosition natalTheme, DateTime endDate, Degree latitude,
+								 Degree longitude, TransitPeriodsBuilder builder, ReadablePeriod periodToAdd) {
+		while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
+			SkyPosition currentSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(currentDate, latitude, longitude);
+			builder.startNewPeriod(currentDate);
+
+			appendPlanetPeriods(natalTheme, builder, currentSkyPosition);
+			appendHousePeriods(natalTheme, builder, currentSkyPosition);
+
+			DateTime plus = currentDate.plus(periodToAdd);
+			if (! plus.isAfter(endDate)) {
+				currentDate = plus;
+			} else {
+				break;
+			}
+		}
+		return currentDate;
 	}
 
 	private void appendHousePeriods(SkyPosition natalTheme, TransitPeriodsBuilder builder,

@@ -328,7 +328,7 @@ public class HouseTransitPeriodTest {
 		assertThat(last.getNatalHouse(), is(House.XI));
 		assertThat(last.getBeforeTransitionStartDate(), equalTo(DateTime.parse("2014-01-19")));
 		assertThat(last.getStartDate(), equalTo(DateTime.parse("2014-11-23")));
-		assertThat(last.getEndDate(), equalTo(DateTime.parse("2017-12-31")));
+		assertThat(last.getEndDate(), equalTo(endDate));
 		assertThat(last.getAfterTransitionEndDate(), equalTo(null));
 
 		assertThat(map, not(hasKey(Planet.SOLEIL)));
@@ -365,6 +365,6 @@ public class HouseTransitPeriodTest {
 
 		assertThat(planetTransitPeriodList, notNullValue());
 		assertThat(planetTransitPeriodList, not(emptyIterableOf(PlanetTransitPeriod.class)));
-		assertThat(planetTransitPeriodList, hasSize(5));
+		assertThat(planetTransitPeriodList, hasSize(6));
 	}
 }
