@@ -33,7 +33,6 @@ public class ThemeControllerTest {
 		controllerUtil = createMockBuilder(ControllerUtil.class).addMockedMethod("queryGoogleForTimezone").createMock();
 		themeController.setControllerUtil(controllerUtil);
 		RestAssuredMockMvc.standaloneSetup(themeController);
-
 	}
 
 	@Test

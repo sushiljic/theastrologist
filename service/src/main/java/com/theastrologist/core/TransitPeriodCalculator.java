@@ -10,9 +10,6 @@ import org.joda.time.*;
 
 import java.util.SortedMap;
 
-/**
- * Created by SAM on 15/07/2015.
- */
 public class TransitPeriodCalculator {
 	private static final Logger LOG = Logger.getLogger(TransitPeriodCalculator.class);
 	private static final ReadablePeriod PERIOD_TO_ADD = Weeks.ONE;
