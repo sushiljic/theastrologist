@@ -27,7 +27,6 @@ public class TimezoneRestClientTest {
 	private RestTemplate mockedRestTemplate;
 
 	@Test
-	@Ignore
 	public void testTimezoneClient() throws GoogleRestException {
 		TimezoneRestClient timezoneRestClient = new TimezoneRestClient(48.64566300000001, 2.410451, 473685600000L);
 		TimezoneResponse response = timezoneRestClient.getTimezone();
@@ -39,7 +38,6 @@ public class TimezoneRestClientTest {
 
 
 	@Test
-	@Ignore
 	public void testTimezoneClientAilleurs() throws GoogleRestException {
 		TimezoneRestClient timezoneRestClient = new TimezoneRestClient(-26.3902488, -70.0475302, -244161900000L);
 		TimezoneResponse response = timezoneRestClient.getTimezone();

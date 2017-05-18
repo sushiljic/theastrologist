@@ -59,7 +59,7 @@ public class SkyPosition {
 		SweDate sd = DateUtil.getSweDateUTC(date);
 
 		LOG.debug("Calculating sky position for Date = " + sd + ", with Latitude = " + latitude + " and Longitude = "
-				 + longitude);
+				  + longitude);
 
 		fillHousesAndAscendant(sw, sd);
 		fillPlanets(sw, sd);
@@ -96,8 +96,7 @@ public class SkyPosition {
 					if (serr.length() > 0) {
 						LOG.error("Warning: " + serr);
 					} else {
-						LOG.error(
-								String.format("Warning, different flags used (0x%x)", ret));
+						LOG.error(String.format("Warning, different flags used (0x%x)", ret));
 					}
 				}
 
