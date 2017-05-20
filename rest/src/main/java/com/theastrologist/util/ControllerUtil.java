@@ -49,12 +49,16 @@ public class ControllerUtil {
 
 	public DateTime convertUTDateTime(DateTime utcDatetime, double latitude, double longitude)
 			throws WrongDateRestException {
-		DateTimeZone dateTimeZone = getTimezone(utcDatetime, latitude, longitude);
+		DateTimeZone dateTimeZone = getTimezone(utcDatetime.toDateTime(DateTimeZone.UTC), latitude, longitude);
 		return utcDatetime.withZone(dateTimeZone);
 	}
 
 	public DateTimeZone queryGoogleForTimezone(double latitude, double longitude, long millis) {
-		TimezoneRestClient client = new TimezoneRestClient(latitude, longitude, millis);
+		String s = Long.toString(millis);
+		long timestamp;
+		timestamp = s.length() > 12 ? Long.parseLong(s.substring(0, 11)): millis;
+
+		TimezoneRestClient client = new TimezoneRestClient(latitude, longitude, timestamp);
 		TimezoneResponse response = null;
 		DateTimeZone dateTimeZone = null;
 		try {
