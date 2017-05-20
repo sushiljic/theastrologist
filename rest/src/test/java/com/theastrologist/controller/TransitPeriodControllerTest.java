@@ -47,12 +47,12 @@ public class TransitPeriodControllerTest {
 				.andReturn(DateTimeZone.forID("Europe/Paris")).times(3);
 		replay(controllerUtil);
 
-		MockMvcResponse response = get("/transitperiod/{natalDate}/{startDate}/{endDate}/{latitude:.+}/{longitude:.+}",
+		MockMvcResponse response = get("/{natalDate}/{latitude:.+}/{longitude:.+}/transitperiod/{startDate}/{endDate}",
 									   "1985-01-04T11:20:00",
-									   "2014-01-01T11:20:00",
-									   "2016-01-01T11:20:00",
 									   Double.toString(new Degree(48, 39).getBaseDegree()),
-									   Double.toString(new Degree(2, 25).getBaseDegree()));
+									   Double.toString(new Degree(2, 25).getBaseDegree()),
+									   "2014-01-01T11:20:00",
+									   "2016-01-01T11:20:00");
 
 		response.then().statusCode(200)
 				.body("planetPeriods.PLUTON", hasSize(4))
@@ -69,12 +69,12 @@ public class TransitPeriodControllerTest {
 				.andReturn(DateTimeZone.forID("Europe/Paris")).times(3);
 		replay(controllerUtil);
 
-		MockMvcResponse response = get("/transitperiod/{natalDate}/{startDate}/{endDate}/{latitude:.+}/{longitude:.+}",
+		MockMvcResponse response = get("/{natalDate}/{latitude:.+}/{longitude:.+}/transitperiod/{startDate}/{endDate}",
 									   "1985-01-04T11:20:00",
-									   "2014-01-01T11:20:00",
-									   "2016-01-01T11:20:00",
 									   Double.toString(new Degree(48, 39).getBaseDegree()),
-									   Double.toString(new Degree(2, 25).getBaseDegree()));
+									   Double.toString(new Degree(2, 25).getBaseDegree()),
+									   "2014-01-01T11:20:00",
+									   "2016-01-01T11:20:00");
 
 		response.then().statusCode(200)
 				.body("planetPeriods.PLUTON", hasSize(4))
@@ -91,11 +91,12 @@ public class TransitPeriodControllerTest {
 				.andReturn(DateTimeZone.forID("Europe/Paris")).times(3);
 		replay(controllerUtil);
 
-		MockMvcResponse response = get("/transitperiod/{natalDate}/{startDate}/{endDate}/{latitude:.+}/{longitude:.+}",
+		MockMvcResponse response = get("/{natalDate}/{latitude:.+}/{longitude:.+}/transitperiod/{startDate}/{endDate}",
 									   "1985-01-04T11:20:00",
-									   "2014-01-01", "2016-01-01",
 									   Double.toString(new Degree(48, 39).getBaseDegree()),
-									   Double.toString(new Degree(2, 25).getBaseDegree()));
+									   Double.toString(new Degree(2, 25).getBaseDegree()),
+									   "2014-01-01",
+									   "2016-01-01");
 
 		response.then().statusCode(200).body("planetPeriods.PLUTON", hasSize(4));
 

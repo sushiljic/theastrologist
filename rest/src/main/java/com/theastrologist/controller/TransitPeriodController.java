@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.*;
  * Created by Samy on 16/09/2015.
  */
 @RestController
-@RequestMapping("/transitperiod")
+@RequestMapping("/{natalDate}/{latitude:.+}/{longitude:.+}")
 public class TransitPeriodController extends AbstractController {
 
-	@RequestMapping(value = "/{natalDate}/{startDate}/{endDate}/{latitude:.+}/{longitude:.+}", method = RequestMethod.GET)
+	@RequestMapping(value = "/transitperiod/{startDate}/{endDate}", method = RequestMethod.GET)
 	public TransitPeriods getTransitPeriod(
 			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String natalDate,
-			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String startDate,
-			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String endDate,
 			@PathVariable double latitude,
-			@PathVariable double longitude) {
+			@PathVariable double longitude,
+			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String startDate,
+			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String endDate) {
 		//SkyPosition natalPosition = themeController.getTheme(latitude, longitude, natalDate);
 		DateTime parsedNatalDate = controllerUtil.parseDateTime(natalDate, latitude, longitude);
 		DateTime parsedStartDate = controllerUtil.parseDateTime(startDate, latitude, longitude);
