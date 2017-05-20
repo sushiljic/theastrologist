@@ -3,6 +3,7 @@ package com.theastrologist.controller;
 import com.theastrologist.core.RevolutionCalculator;
 import com.theastrologist.core.ThemeCalculator;
 import com.theastrologist.domain.Degree;
+import com.theastrologist.domain.DateTimeJson;
 import com.theastrologist.domain.SkyPosition;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -41,6 +42,19 @@ public class RevolutionController extends AbstractController {
 		return ThemeCalculator.INSTANCE.getSkyPosition(zonedDateTime, latitudeDegree, longitudeDegree);
 	}
 
+	@GetMapping(value = "/solar/{fromDate}/date")
+	public DateTimeJson getSolarRevolutionDate(
+			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String natalDate,
+			@PathVariable double natalLatitude,
+			@PathVariable double natalLongitude,
+			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String fromDate) {
+		SkyPosition natalTheme = calculateSkyPosition(natalDate, natalLatitude, natalLongitude);
+
+		DateTime fromDateTime = new DateTime(fromDate);
+		DateTime solarRevolutionUT = RevolutionCalculator.INSTANCE.getSolarRevolutionUT(natalTheme, fromDateTime);
+		return new DateTimeJson(solarRevolutionUT);
+	}
+
 	@GetMapping(value = "/lunar/{fromDate}/{anniversaryLatitude:.+}/{anniversaryLongitude:.+}")
 	public SkyPosition getLunarRevolution(
 			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String natalDate,
@@ -58,5 +72,18 @@ public class RevolutionController extends AbstractController {
 		DateTime lunarRevolutionUT = RevolutionCalculator.INSTANCE.getLunarRevolutionUT(natalTheme, fromDateTime);
 		DateTime zonedDateTime = controllerUtil.convertUTDateTime(lunarRevolutionUT, anniversaryLatitude, anniversaryLongitude);
 		return ThemeCalculator.INSTANCE.getSkyPosition(zonedDateTime, latitudeDegree, longitudeDegree);
+	}
+
+	@GetMapping(value = "/lunar/{fromDate}/date")
+	public DateTimeJson getLunarRevolutionDate(
+			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String natalDate,
+			@PathVariable double natalLatitude,
+			@PathVariable double natalLongitude,
+			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String fromDate) {
+		SkyPosition natalTheme = calculateSkyPosition(natalDate, natalLatitude, natalLongitude);
+
+		DateTime fromDateTime = new DateTime(fromDate);
+		DateTime lunarRevolutionUT = RevolutionCalculator.INSTANCE.getLunarRevolutionUT(natalTheme, fromDateTime);
+		return new DateTimeJson(lunarRevolutionUT);
 	}
 }
