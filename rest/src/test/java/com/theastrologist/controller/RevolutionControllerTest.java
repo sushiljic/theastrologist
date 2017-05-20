@@ -42,7 +42,7 @@ public class RevolutionControllerTest {
 	@Test
 	public void testSimpleSolarRevolution() {
 		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
-				.andReturn(DateTimeZone.forID("Europe/Paris"));
+				.andReturn(DateTimeZone.forID("Europe/Paris")).times(2);
 		replay(controllerUtil);
 
 		MockMvcResponse response = get(
@@ -55,7 +55,7 @@ public class RevolutionControllerTest {
 				PARIS_LONGITUDE);
 
 		response.then().statusCode(200)
-				.body("date", equalTo("2017-01-04T04:41:02Z"))
+				.body("date", equalTo("2017-01-04T05:41:02+01:00"))
 				.body("positions.SOLEIL.sign", equalTo("CAPRICORNE"))
 				.body("positions.SOLEIL.degreeInSign.degree", equalTo(14))
 				.body("positions.SOLEIL.degreeInSign.minutes", equalTo(0))
@@ -66,9 +66,28 @@ public class RevolutionControllerTest {
 	}
 
 	@Test
-	public void testSimpleLunarRevolution() {
+	public void testSimpleSolarRevolutionDate() {
 		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
 				.andReturn(DateTimeZone.forID("Europe/Paris"));
+		replay(controllerUtil);
+
+		MockMvcResponse response = get(
+				"/{natal_date}/{natal_latitude}/{natal_longitude}/revolution/solar/{from_date}/date",
+				TEST_NATAL_DATE,
+				NATAL_LATITUDE,
+				NATAL_LONGITUDE,
+				TEST_REV_SOLAR_DATE);
+
+		response.then().statusCode(200)
+				.body("date", equalTo("2017-01-04T04:41:02Z"));
+
+		verify(controllerUtil);
+	}
+
+	@Test
+	public void testSimpleLunarRevolution() {
+		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
+				.andReturn(DateTimeZone.forID("Europe/Paris")).times(2);
 		replay(controllerUtil);
 
 		MockMvcResponse response = get(
@@ -81,12 +100,31 @@ public class RevolutionControllerTest {
 				PARIS_LONGITUDE);
 
 		response.then().statusCode(200)
-				.body("date", equalTo("2017-05-26T06:33:39Z"))
+				.body("date", equalTo("2017-05-26T08:33:39+02:00"))
 				.body("positions.LUNE.sign", equalTo("GEMEAUX"))
 				.body("positions.LUNE.degreeInSign.degree", equalTo(11))
 				.body("positions.LUNE.degreeInSign.minutes", equalTo(40))
 				.body("positions.ASCENDANT.sign", equalTo("CANCER"))
 				.body("positions.ASCENDANT.degreeInSign.degree", equalTo(12));
+
+		verify(controllerUtil);
+	}
+
+	@Test
+	public void testSimpleLunarRevolutionDate() {
+		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
+				.andReturn(DateTimeZone.forID("Europe/Paris"));
+		replay(controllerUtil);
+
+		MockMvcResponse response = get(
+				"/{natal_date}/{natal_latitude}/{natal_longitude}/revolution/lunar/{from_date}/date",
+				TEST_NATAL_DATE,
+				NATAL_LATITUDE,
+				NATAL_LONGITUDE,
+				TEST_REV_LUNAR_DATE);
+
+		response.then().statusCode(200)
+				.body("date", equalTo("2017-05-26T06:33:39Z"));
 
 		verify(controllerUtil);
 	}
