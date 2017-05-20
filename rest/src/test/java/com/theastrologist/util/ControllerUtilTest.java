@@ -24,6 +24,32 @@ public class ControllerUtilTest {
 	}
 
 	@Test
+	public void convertDateTimeFr() throws Exception {
+		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
+				.andReturn(DateTimeZone.forID("Europe/Paris"));
+		replay(controllerUtil);
+
+		DateTime dateTime = controllerUtil.convertUTDateTime(new DateTime("1985-01-04T11:20:00.000Z"), 48.64566300000001, 2.410451);
+		assertThat(dateTime, notNullValue());
+		assertThat(dateTime, hasToString("1985-01-04T12:20:00.000+01:00"));
+
+		verify(controllerUtil);
+	}
+
+	@Test
+	public void convertDateTimeFrEte() throws Exception {
+		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
+				.andReturn(DateTimeZone.forID("Europe/Paris"));
+		replay(controllerUtil);
+
+		DateTime dateTime = controllerUtil.convertUTDateTime(new DateTime("1979-08-15T21:30:00.000Z"), 48.64566300000001, 2.410451);
+		assertThat(dateTime, notNullValue());
+		assertThat(dateTime, hasToString("1979-08-15T23:30:00.000+02:00"));
+
+		verify(controllerUtil);
+	}
+
+	@Test
 	public void parseDateTimeFr() throws Exception {
 		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
 				.andReturn(DateTimeZone.forID("Europe/Paris"));

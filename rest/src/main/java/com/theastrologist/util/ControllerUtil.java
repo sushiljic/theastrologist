@@ -20,6 +20,21 @@ public class ControllerUtil {
 
 	public DateTime parseDateTime(String datetime, double latitude, double longitude)
 			throws WrongDateRestException {
+		LocalDateTime parsedDate = toLocalDateTime(datetime);
+		DateTime dateTime = parsedDate.toDateTime(DateTimeZone.UTC);
+		DateTimeZone dateTimeZone = getTimezone(dateTime, latitude, longitude);
+		if (dateTimeZone != null) {
+			dateTime = parsedDate.toDateTime(dateTimeZone);
+		}
+		return dateTime;
+	}
+
+	private DateTimeZone getTimezone(DateTime dateTime, double latitude, double longitude) {
+		long millis = dateTime.getMillis();
+		return queryGoogleForTimezone(latitude, longitude, millis);
+	}
+
+	private LocalDateTime toLocalDateTime(String datetime) throws WrongDateRestException {
 		LocalDateTime parsedDate = null;
 		try {
 			String decodedDateTime = UriUtils.decode(datetime, "UTF-8");
@@ -29,15 +44,13 @@ public class ControllerUtil {
 		} catch (UnsupportedEncodingException e) {
 			throw new WrongDateRestException(datetime, e);
 		}
+		return parsedDate;
+	}
 
-		DateTime dateTime = parsedDate.toDateTime(DateTimeZone.UTC);
-		long millis = dateTime.getMillis();
-
-		DateTimeZone dateTimeZone = queryGoogleForTimezone(latitude, longitude, millis);
-		if (dateTimeZone != null) {
-			dateTime = parsedDate.toDateTime(dateTimeZone);
-		}
-		return dateTime;
+	public DateTime convertUTDateTime(DateTime utcDatetime, double latitude, double longitude)
+			throws WrongDateRestException {
+		DateTimeZone dateTimeZone = getTimezone(utcDatetime, latitude, longitude);
+		return utcDatetime.withZone(dateTimeZone);
 	}
 
 	public DateTimeZone queryGoogleForTimezone(double latitude, double longitude, long millis) {
