@@ -44,7 +44,7 @@ public class TransitPeriodControllerTest {
 	public void testRequest() throws URISyntaxException {
 
 		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
-				.andReturn(DateTimeZone.forID("Europe/Paris")).times(3);
+				.andReturn(DateTimeZone.forID("Europe/Paris"));
 		replay(controllerUtil);
 
 		MockMvcResponse response = get("/{natalDate}/{latitude:.+}/{longitude:.+}/transitperiod/{startDate}/{endDate}",
@@ -66,7 +66,7 @@ public class TransitPeriodControllerTest {
 	public void testRequestCompleterPeriodes() throws URISyntaxException {
 
 		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
-				.andReturn(DateTimeZone.forID("Europe/Paris")).times(3);
+				.andReturn(DateTimeZone.forID("Europe/Paris"));
 		replay(controllerUtil);
 
 		MockMvcResponse response = get("/{natalDate}/{latitude:.+}/{longitude:.+}/transitperiod/{startDate}/{endDate}",
@@ -88,7 +88,7 @@ public class TransitPeriodControllerTest {
 	public void testRequestShortDates() throws URISyntaxException {
 
 		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
-				.andReturn(DateTimeZone.forID("Europe/Paris")).times(3);
+				.andReturn(DateTimeZone.forID("Europe/Paris"));
 		replay(controllerUtil);
 
 		MockMvcResponse response = get("/{natalDate}/{latitude:.+}/{longitude:.+}/transitperiod/{startDate}/{endDate}",
@@ -101,5 +101,17 @@ public class TransitPeriodControllerTest {
 		response.then().statusCode(200).body("planetPeriods.PLUTON", hasSize(4));
 
 		verify(controllerUtil);
+	}
+
+	@Test
+	public void testTransitPeriodRequestWithAddress() {
+
+		MockMvcResponse response = get("/{natalDate}/{address}/transitperiod/{startDate}/{endDate}",
+									   "1985-01-04T11:20:00", "Ris-Orangis", "2014-01-01", "2016-01-01");
+
+		response.then().statusCode(200)
+				.body("planetPeriods.PLUTON", hasSize(5))
+				.body("housePeriods.NOEUD_NORD_MOYEN", hasSize(2))
+				.body("housePeriods.MARS", hasSize(14));
 	}
 }

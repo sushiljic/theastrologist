@@ -30,6 +30,7 @@ public class SkyPosition {
 	private DateTime date;
 	private final Degree latitude;
 	private final Degree longitude;
+	private String address;
 	private SortedMap<Planet, PlanetPosition> positions = new TreeMap<Planet, PlanetPosition>();
 
 	private transient Map<House, HousePosition> houseMap = new HashMap<House, HousePosition>();
@@ -379,5 +380,13 @@ public class SkyPosition {
 
 	public HousePosition getHousePosition(House house) {
 		return houseMap.get(house);
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getAddress() {
+		return address;
 	}
 }

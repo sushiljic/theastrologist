@@ -1,6 +1,18 @@
 package com.theastrologist.controller;
 
+import com.theastrologist.controller.exception.ErrorResponse;
+import com.theastrologist.controller.exception.NoResultsRestException;
+import com.theastrologist.controller.exception.TooManyResultsRestException;
+import com.theastrologist.external.geoloc.GeoResponse;
+import com.theastrologist.external.geoloc.GeoResult;
+import com.theastrologist.external.geoloc.GeolocException;
+import com.theastrologist.external.geoloc.GeolocRestClient;
 import com.theastrologist.util.ControllerUtil;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.List;
 
 /**
  * Created by Samy on 31/01/2016.
@@ -10,5 +22,27 @@ public class AbstractController {
 
 	public void setControllerUtil(ControllerUtil controllerUtil) {
 		this.controllerUtil = controllerUtil;
+	}
+
+	public GeoResult queryForGeoloc(String address) throws GeolocException {
+		GeolocRestClient geolocRestClient = new GeolocRestClient(address);
+		GeoResponse response = geolocRestClient.getGeocoding();
+
+		List<GeoResult> results = response.getResults();
+		if(results.isEmpty()) {
+			throw new NoResultsRestException();
+		} else if(results.size() > 1) {
+			throw new TooManyResultsRestException();
+		}
+
+		return results.get(0);
+	}
+
+	@ExceptionHandler(GeolocException.class)
+	public ResponseEntity<ErrorResponse> exceptionHandler(Exception ex) {
+		ErrorResponse error = new ErrorResponse();
+		error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		error.setMessage(ex.getMessage());
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
 	}
 }
