@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.theastrologist</groupId>
@@ -100,11 +101,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>com.swisseph</groupId>
-            <artifactId>swisseph</artifactId>
-            <version>2.0.1</version>
-        </dependency>
 
         <dependency>
             <groupId>joda-time</groupId>
@@ -176,7 +172,30 @@
 
     <build>
         <plugins>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>com.swiseph:swisseph</id>
+                        <inherited>false</inherited>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>com.swisseph</groupId>
+                            <artifactId>swisseph</artifactId>
+                            <version>2.0.1</version>
+                            <packaging>jar</packaging>
+                            <file>${project.basedir}/lib/swisseph-2.01.00-01.jar</file>
+                            <createChecksum>true</createChecksum>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>external.atlassian.jgitflow</groupId>
                 <artifactId>jgitflow-maven-plugin</artifactId>
@@ -209,11 +228,6 @@
     <profiles>
         <!-- When built in OpenShift the 'openshift' profile will be used when
             invoking mvn. -->
-        <!-- Use this profile for any OpenShift specific customization your app
-            will need. -->
-        <!-- By default that is to put the resulting archive into the 'webapps'
-            folder. -->
-        <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
         <profile>
             <id>openshift</id>
             <build>
