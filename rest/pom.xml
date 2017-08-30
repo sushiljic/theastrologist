@@ -99,7 +99,6 @@
             <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>

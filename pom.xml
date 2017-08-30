@@ -101,6 +101,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.swisseph</groupId>
+            <artifactId>swisseph</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>${joda.time.version}</version>
@@ -131,6 +137,12 @@
             <groupId>com.fatboyindustrial.gson-jodatime-serialisers</groupId>
             <artifactId>gson-jodatime-serialisers</artifactId>
             <version>1.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
 
         <!-- dépendances de test -->
@@ -164,6 +176,7 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>external.atlassian.jgitflow</groupId>
                 <artifactId>jgitflow-maven-plugin</artifactId>
@@ -194,13 +207,13 @@
     </build>
 
     <profiles>
-            <!-- When built in OpenShift the 'openshift' profile will be used when
-                invoking mvn. -->
-            <!-- Use this profile for any OpenShift specific customization your app
-                will need. -->
-            <!-- By default that is to put the resulting archive into the 'webapps'
-                folder. -->
-            <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
+        <!-- When built in OpenShift the 'openshift' profile will be used when
+            invoking mvn. -->
+        <!-- Use this profile for any OpenShift specific customization your app
+            will need. -->
+        <!-- By default that is to put the resulting archive into the 'webapps'
+            folder. -->
+        <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
         <profile>
             <id>openshift</id>
             <build>
@@ -210,7 +223,7 @@
                         <artifactId>maven-war-plugin</artifactId>
                         <version>2.1.1</version>
                         <configuration>
-                            <outputDirectory>webapps</outputDirectory>
+                            <outputDirectory>deployments</outputDirectory>
                             <warName>ROOT</warName>
                         </configuration>
                     </plugin>
@@ -218,5 +231,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
