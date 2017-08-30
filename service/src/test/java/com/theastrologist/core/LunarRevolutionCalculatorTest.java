@@ -29,7 +29,7 @@ public class LunarRevolutionCalculatorTest {
 				.getLunarRevolutionUT(testSkyPosition, TEST_REV_DATE.minusMonths(1));
 
 		assertThat(lunarRevolutionTime, notNullValue());
-		assertThat(lunarRevolutionTime.toString(), equalTo("2017-04-28T20:14:17.949Z"));
+		assertThat(lunarRevolutionTime.toString(), equalTo("2017-04-28T20:14:18.456Z"));
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class LunarRevolutionCalculatorTest {
 				.getLunarRevolutionUT(testSkyPosition, TEST_REV_DATE);
 
 		assertThat(lunarRevolutionTime, notNullValue());
-		assertThat(lunarRevolutionTime.toString(), equalTo("2017-05-26T06:33:39.118Z"));
+		assertThat(lunarRevolutionTime.toString(), equalTo("2017-05-26T06:33:39.626Z"));
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class LunarRevolutionCalculatorTest {
 				.getLunarRevolutionUT(testSkyPosition, TEST_REV_DATE.plusMonths(1));
 
 		assertThat(lunarRevolutionTime, notNullValue());
-		assertThat(lunarRevolutionTime.toString(), equalTo("2017-06-22T17:15:09.622Z"));
+		assertThat(lunarRevolutionTime.toString(), equalTo("2017-06-22T17:15:10.130Z"));
 	}
 
 	@Test
