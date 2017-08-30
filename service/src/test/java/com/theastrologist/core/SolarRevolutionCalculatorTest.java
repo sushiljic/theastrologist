@@ -38,7 +38,7 @@ public class SolarRevolutionCalculatorTest {
 				.getSolarRevolutionUT(testSkyPosition, TEST_REV_DATE.minusYears(1));
 
 		assertThat(solarRevolutionTime, notNullValue());
-		assertThat(solarRevolutionTime.toString(), equalTo("2016-01-04T22:53:54.721Z"));
+		assertThat(solarRevolutionTime.toString(), equalTo("2016-01-04T22:53:55.113Z"));
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class SolarRevolutionCalculatorTest {
 				.getSolarRevolutionUT(testSkyPosition, TEST_REV_DATE);
 
 		assertThat(solarRevolutionTime, notNullValue());
-		assertThat(solarRevolutionTime.toString(), equalTo("2017-01-04T04:41:02.452Z"));
+		assertThat(solarRevolutionTime.toString(), equalTo("2017-01-04T04:41:02.952Z"));
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class SolarRevolutionCalculatorTest {
 				.getSolarRevolutionUT(testSkyPosition, TEST_REV_DATE.plusYears(1));
 
 		assertThat(solarRevolutionTime, notNullValue());
-		assertThat(solarRevolutionTime.toString(), equalTo("2018-01-04T10:33:26.631Z"));
+		assertThat(solarRevolutionTime.toString(), equalTo("2018-01-04T10:33:27.131Z"));
 	}
 
 	@Test
