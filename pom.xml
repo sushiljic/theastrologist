@@ -49,6 +49,7 @@
     <modules>
         <module>service</module>
         <module>rest</module>
+        <module>data</module>
     </modules>
 
     <dependencies>
