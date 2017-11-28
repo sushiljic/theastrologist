@@ -2,11 +2,11 @@ package com.theastrologist.controller;
 
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Longs;
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
-import com.jayway.restassured.module.mockmvc.response.MockMvcResponse;
+
 import com.theastrologist.domain.Degree;
 import com.theastrologist.util.ControllerUtil;
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
@@ -17,7 +17,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 
-import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.*;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
+import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
 import static org.easymock.EasyMock.*;
 import static org.easymock.EasyMock.replay;
 import static org.hamcrest.Matchers.equalTo;

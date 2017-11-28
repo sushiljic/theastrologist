@@ -1,9 +1,10 @@
 package com.theastrologist.controller;
 
-import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
-import com.jayway.restassured.module.mockmvc.response.MockMvcResponse;
+
 import com.theastrologist.domain.Degree;
 import com.theastrologist.util.ControllerUtil;
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
 import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
 import org.joda.time.DateTimeZone;
@@ -11,7 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.get;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
+import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
 import static org.hamcrest.Matchers.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
