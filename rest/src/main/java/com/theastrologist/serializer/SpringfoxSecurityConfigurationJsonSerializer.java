@@ -1,0 +1,37 @@
+package com.theastrologist.serializer;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import java.lang.reflect.Type;
+import springfox.documentation.swagger.web.SecurityConfiguration;
+
+/**
+ * {@code SpringfoxSecurityConfigurationJsonSerializer} is a JSON serializer for
+ * Springfox's {@code SecurityConfiguration} class.
+ * <p/>
+ *
+ * @author Indra Basak
+ * @since 11/23/17
+ */
+public class SpringfoxSecurityConfigurationJsonSerializer
+		implements JsonSerializer<SecurityConfiguration> {
+
+	@Override
+	public JsonElement serialize(SecurityConfiguration config,
+								 Type type, JsonSerializationContext context) {
+		final JsonObject jsonObject = new JsonObject();
+
+		jsonObject.addProperty("clientId", config.getClientId());
+		jsonObject.addProperty("realm", config.getRealm());
+		jsonObject.addProperty("appName", config.getAppName());
+		jsonObject.addProperty("apiKey", config.getApiKey());
+		jsonObject.addProperty("apiKeyName", config.getApiKeyName());
+		jsonObject.addProperty("clientSecret", config.getClientSecret());
+		jsonObject.addProperty("scopeSeparator", config.scopeSeparator());
+		jsonObject.addProperty("apiKeyVehicle", config.getApiKeyVehicle());
+
+		return jsonObject;
+	}
+}
