@@ -38,6 +38,18 @@ public class SkyPositionTest {
     }
 
     @Test
+    public void testCache() throws Exception {
+        SkyPosition skyPosition;
+        skyPosition = ThemeCalculator.INSTANCE.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
+        skyPosition = ThemeCalculator.INSTANCE.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
+        skyPosition = ThemeCalculator.INSTANCE.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
+        skyPosition = ThemeCalculator.INSTANCE.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
+        skyPosition = ThemeCalculator.INSTANCE.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
+        skyPosition = ThemeCalculator.INSTANCE.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
+        assertThat(skyPosition, notNullValue());
+    }
+
+    @Test
     public void testGetDominantPlanetsSamy() throws Exception {
         SortedSet<PlanetValue> testSet = samySkyPosition.getDominantPlanets();
         assertThat(testSet, notNullValue());
