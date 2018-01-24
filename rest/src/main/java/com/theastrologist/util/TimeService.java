@@ -60,11 +60,11 @@ public class TimeService {
 		long timestamp;
 		timestamp = s.length() > 12 ? Long.parseLong(s.substring(0, 11)): millis;
 
-		TimezoneRestClient client = new TimezoneRestClient(latitude, longitude, timestamp);
+		TimezoneRestClient client = TimezoneRestClient.newInstance();
 		TimezoneResponse response = null;
 		DateTimeZone dateTimeZone = null;
 		try {
-			response = client.getTimezone();
+			response = client.getTimezone(latitude, longitude, timestamp);
 			dateTimeZone = DateTimeZone.forID(response.timeZoneId);
 		} catch (GoogleRestException e) {
 			LOGGER.warn("Google Timezone API exception, using UTC instead", e);
