@@ -1,8 +1,5 @@
 package com.theastrologist.controller;
 
-import com.theastrologist.controller.exception.ErrorResponse;
-import com.theastrologist.controller.exception.NoResultsRestException;
-import com.theastrologist.controller.exception.TooManyResultsRestException;
 import com.theastrologist.core.ThemeCalculator;
 import com.theastrologist.domain.Degree;
 import com.theastrologist.domain.SkyPosition;
@@ -13,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * Created by SAM on 16/11/2014.
  */
@@ -23,7 +18,7 @@ import java.util.List;
 public class ThemeController extends AbstractController {
 
 	private SkyPosition getSkyPosition(String datetime, double latitude, double longitude, String address) {
-		DateTime parse = controllerUtil.parseDateTime(datetime, latitude, longitude);
+		DateTime parse = timeService.parseDateTime(datetime, latitude, longitude);
 		Degree latitudeDegree = new Degree(latitude);
 		Degree longitudeDegree = new Degree(longitude);
 		SkyPosition skyPosition = ThemeCalculator.INSTANCE.getSkyPosition(parse, latitudeDegree, longitudeDegree);

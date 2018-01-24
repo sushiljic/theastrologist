@@ -28,13 +28,13 @@ public class RevolutionController extends AbstractController {
 												SkyPosition natalTheme) {
 		DateTime fromDateTime = new DateTime(fromDate);
 		DateTime solarRevolutionUT = RevolutionCalculator.INSTANCE.getSolarRevolutionUT(natalTheme, fromDateTime);
-		DateTime zonedDateTime = controllerUtil
+		DateTime zonedDateTime = timeService
 				.convertUTDateTime(solarRevolutionUT, anniversaryLatitude, anniversaryLongitude);
 		return calculateSkyPosition(zonedDateTime, anniversaryLatitude, anniversaryLongitude);
 	}
 
 	private SkyPosition getNatalTheme(String natalDate, double natalLatitude, double natalLongitude) {
-		DateTime natalDateTime = controllerUtil.parseDateTime(natalDate, natalLatitude, natalLongitude);
+		DateTime natalDateTime = timeService.parseDateTime(natalDate, natalLatitude, natalLongitude);
 		return calculateSkyPosition(natalDateTime, natalLatitude, natalLongitude);
 	}
 
@@ -59,7 +59,7 @@ public class RevolutionController extends AbstractController {
 												double anniversaryLongitude, SkyPosition natalTheme) {
 		DateTime fromDateTime = new DateTime(fromDate);
 		DateTime lunarRevolutionUT = RevolutionCalculator.INSTANCE.getLunarRevolutionUT(natalTheme, fromDateTime);
-		DateTime zonedDateTime = controllerUtil
+		DateTime zonedDateTime = timeService
 				.convertUTDateTime(lunarRevolutionUT, anniversaryLatitude, anniversaryLongitude);
 		return calculateSkyPosition(zonedDateTime, anniversaryLatitude, anniversaryLongitude);
 	}

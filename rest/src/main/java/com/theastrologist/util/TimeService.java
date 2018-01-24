@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
+import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -15,8 +16,9 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by Samy on 16/09/2015.
  */
-public class ControllerUtil {
-	private static final Logger LOGGER = Logger.getLogger(ControllerUtil.class);
+@Service
+public class TimeService {
+	private static final Logger LOGGER = Logger.getLogger(TimeService.class);
 
 	public DateTime parseDateTime(String datetime, double latitude, double longitude)
 			throws WrongDateRestException {

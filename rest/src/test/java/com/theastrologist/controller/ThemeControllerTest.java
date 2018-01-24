@@ -2,170 +2,265 @@ package com.theastrologist.controller;
 
 
 import com.theastrologist.domain.Degree;
-import com.theastrologist.util.ControllerUtil;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.response.MockMvcResponse;
-import org.easymock.EasyMockRunner;
-import org.easymock.Mock;
+import com.theastrologist.util.TimeService;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
-import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.*;
 import static org.hamcrest.Matchers.*;
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.*;
 
 
 /**
- * Classes de test pour tester les URL de type "theme/48.6456630/2.4104510/1985-01-04T11:20:00+01:00"
+ * Classes de test pour tester les URL de type "48.6456630/2.4104510/1985-01-04T11:20:00+01:00/theme/"
  */
-@RunWith(EasyMockRunner.class)
+@RunWith(SpringRunner.class)
+@ActiveProfiles("test")
+@WebMvcTest(ThemeController.class)
 public class ThemeControllerTest {
+	@Autowired
+	private MockMvc mockMvc;
 
-	private static ThemeController themeController;
-
-	private ControllerUtil controllerUtil;
+	@Autowired
+	private TimeService timeService;
 
 	@Before
 	public void setUp() throws Exception {
-		themeController = new ThemeController();
-		controllerUtil = createMockBuilder(ControllerUtil.class).addMockedMethod("queryGoogleForTimezone").createMock();
-		themeController.setControllerUtil(controllerUtil);
-		RestAssuredMockMvc.standaloneSetup(themeController);
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
-	public void testSimpleTheme() {
+	public void testSimpleTheme() throws Exception {
 		double latitude = new Degree(48, 39).getBaseDegree();
 		double longitude = new Degree(2, 25).getBaseDegree();
 		String dateTime = "1985-01-04T11:20:00";
 
-		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
-				.andReturn(DateTimeZone.forID("Europe/Paris"));
-		replay(controllerUtil);
+		Mockito.when(timeService.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
+			   .thenReturn(DateTimeZone.forID("Europe/Paris"));
 
-		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", dateTime,
-									   latitude, longitude);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{latitude}/{longitude}/theme",
+					 dateTime, latitude, longitude)
+				.accept(MediaType.APPLICATION_JSON);
 
-		response.then().statusCode(200)
-				.body("positions.MERCURE.sign", equalTo("SAGITTAIRE"))
-				.body("positions.LUNE.house", equalTo("III"))
-				.body("positions.ASCENDANT.sign", equalTo("POISSONS"));
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		String body = result.getResponse().getContentAsString();
+		MockHttpServletResponse response = result.getResponse();
 
-		verify(controllerUtil);
+		assertThat(response.getStatus(), equalTo(HttpStatus.OK.value()));
+		assertThat(body, hasJsonPath("positions.MERCURE.sign", equalTo("SAGITTAIRE")));
+		assertThat(body, hasJsonPath("positions.LUNE.house", equalTo("III")));
+		assertThat(body, hasJsonPath("positions.ASCENDANT.sign", equalTo("POISSONS")));
 	}
 
 	@Test
-	public void testSimpleDateFormat() {
-		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
-				.andReturn(DateTimeZone.forID("Europe/Paris"));
-		replay(controllerUtil);
+	public void testSimpleDateFormat() throws Exception {
+		Mockito.when(timeService.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
+			   .thenReturn(DateTimeZone.forID("Europe/Paris"));
 
-		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", "1985-01-04T11:20:00",
-									   new Degree(48, 39).getBaseDegree(), new Degree(2, 25).getBaseDegree());
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{latitude}/{longitude}/theme",
+					 "1985-01-04T11:20:00",
+					 new Degree(48, 39).getBaseDegree(),
+					 new Degree(2, 25).getBaseDegree())
+				.accept(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		String body = result.getResponse().getContentAsString();
+		MockHttpServletResponse response = result.getResponse();
 
 		// Ce test vérifie que la date est bien prise en compte et que le format est correct
-		response.then().statusCode(200).body("date", equalTo("1985-01-04T11:20:00+01:00"));
+		assertThat(response.getStatus(), equalTo(HttpStatus.OK.value()));
+		assertThat(body, hasJsonPath("date", equalTo("1985-01-04T11:20:00+01:00")));
 
-		verify(controllerUtil);
 	}
 
 	@Test
-	public void testSimpleLatitude() {
-		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", "1985-01-04T11:20:00",
-									   new Degree(32, 39).getBaseDegree(), new Degree(4, 5).getBaseDegree());
+	public void testSimpleLatitude() throws Exception {
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{latitude}/{longitude}/theme",
+					 "1985-01-04T11:20:00",
+					 new Degree(32, 39).getBaseDegree(),
+					 new Degree(4, 5).getBaseDegree())
+				.accept(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		String body = result.getResponse().getContentAsString();
+		MockHttpServletResponse response = result.getResponse();
+
+		assertThat(response.getStatus(), equalTo(HttpStatus.OK.value()));
+		assertThat(body, hasJsonPath("latitude.degree", equalTo(32)));
+		assertThat(body, hasJsonPath("latitude.minutes", equalTo(39)));
+	}
+
+	@Test
+	public void testSimpleLatitudeAutreFormat() throws Exception {
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{latitude}/{longitude}/theme",
+					 "1985-01-04T11:20:00",
+					 48.6456630, 2.4104510)
+				.accept(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		String body = result.getResponse().getContentAsString();
+		MockHttpServletResponse response = result.getResponse();
+
+		assertThat(response.getStatus(), equalTo(HttpStatus.OK.value()));
 		// Ce test vérifie que la latitude est bien prise en compte
-		response.then().statusCode(200)
-				.body("latitude.degree", equalTo(32))
-				.body("latitude.minutes", equalTo(39));
+		assertThat(body, hasJsonPath("latitude.degree", equalTo(48)));
+		assertThat(body, hasJsonPath("latitude.minutes", equalTo(38)));
 	}
 
 	@Test
-	public void testSimpleLatitudeAutreFormat() {
-		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", "1985-01-04T11:20:00",
-									   48.6456630, 2.4104510);
-		// Ce test vérifie que la latitude est bien prise en compte
-		response.then().statusCode(200)
-				.body("latitude.degree", equalTo(48))
-				.body("latitude.minutes", equalTo(38));
-	}
+	public void testSimpleLongitude() throws Exception {
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{latitude}/{longitude}/theme",
+					 "1985-01-04T11:20:00",
+					 new Degree(12, 59).getBaseDegree(),
+					 new Degree(4, 41).getBaseDegree())
+				.accept(MediaType.APPLICATION_JSON);
 
-	@Test
-	public void testSimpleLongitude() {
-		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", "1985-01-04T11:20:00",
-									   new Degree(12, 59).getBaseDegree(), new Degree(4, 41).getBaseDegree());
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		String body = result.getResponse().getContentAsString();
+		MockHttpServletResponse response = result.getResponse();
+
+		assertThat(response.getStatus(), equalTo(HttpStatus.OK.value()));
 		// Ce test vérifie que la longitude est bien prise en compte
-		response.then().statusCode(200)
-				.body("longitude.degree", equalTo(4))
-				.body("longitude.minutes", equalTo(41));
+		assertThat(body, hasJsonPath("longitude.degree", equalTo(4)));
+		assertThat(body, hasJsonPath("longitude.minutes", equalTo(41)));
 	}
 
 	@Test
-	public void testSimpleLongitudeAutreFormat() {
-		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", "1985-01-04T11:20:00",
-									   48.6456630, 2.4104510);
+	public void testSimpleLongitudeAutreFormat() throws Exception {
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{latitude}/{longitude}/theme",
+					 "1985-01-04T11:20:00",
+					 48.6456630, 2.4104510)
+				.accept(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		String body = result.getResponse().getContentAsString();
+		MockHttpServletResponse response = result.getResponse();
+
+		assertThat(response.getStatus(), equalTo(HttpStatus.OK.value()));
 		// Ce test vérifie que la longitude est bien prise en compte
-		response.then().statusCode(200)
-				.body("longitude.degree", equalTo(2))
-				.body("longitude.minutes", equalTo(24));
+		assertThat(body, hasJsonPath("longitude.degree", equalTo(2)));
+		assertThat(body, hasJsonPath("longitude.minutes", equalTo(24)));
 	}
 
 	@Test
-	public void testWrongDate() {
-		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", "Mauvaise date",
-									   new Degree(48, 39).getBaseDegree(), new Degree(2, 25).getBaseDegree());
-		response.then().statusCode(400).statusLine("400 Wrong date format");
+	public void testWrongDate() throws Exception {
+
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{latitude}/{longitude}/theme",
+					 "Mauvaise date",
+					 new Degree(48, 39).getBaseDegree(), new Degree(2, 25).getBaseDegree())
+				.accept(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		MockHttpServletResponse response = result.getResponse();
+
+		assertThat(response.getStatus(), equalTo(HttpStatus.BAD_REQUEST.value()));
+		assertThat(response.getErrorMessage(), equalTo("Wrong date format"));
+
 	}
 
 	@Test
-	public void testWrongLatitude() {
-		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", "1985-01-04T11:20:00", "truc",
-									   new Degree(2, 25).getBaseDegree());
-		response.then().statusCode(400).statusLine(
-				"400 Failed to convert value of type 'java.lang.String' to required type 'double'; nested exception is java.lang.NumberFormatException: For input string: \"truc\"");
+	public void testWrongLatitude() throws Exception {
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{latitude}/{longitude}/theme",
+					 "1985-01-04T11:20:00",
+					 "truc",
+					 new Degree(2, 25).getBaseDegree())
+				.accept(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		MockHttpServletResponse response = result.getResponse();
+		assertThat(response.getStatus(), equalTo(HttpStatus.BAD_REQUEST.value()));
 	}
 
 	@Test
-	public void testWrongLongitude() {
-		MockMvcResponse response = get("/{datetime}/{latitude}/{longitude}/theme", "1985-01-04T11:20:00",
-									   new Degree(2, 25).getBaseDegree(), "truc");
-		response.then().statusCode(400).statusLine(
-				"400 Failed to convert value of type 'java.lang.String' to required type 'double'; nested exception is java.lang.NumberFormatException: For input string: \"truc\"");
+	public void testWrongLongitude() throws Exception {
+
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{latitude}/{longitude}/theme",
+					 "1985-01-04T11:20:00",
+					 new Degree(2, 25).getBaseDegree(),
+					 "truc")
+				.accept(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		MockHttpServletResponse response = result.getResponse();
+
+		assertThat(response.getStatus(), equalTo(HttpStatus.BAD_REQUEST.value()));
 	}
 
 	@Test
-	public void testSimpleThemeWithAddressParis() {
+	public void testSimpleThemeWithAddressParis() throws Exception {
 		String dateTime = "1985-01-04T11:20:00";
 
-		expect(controllerUtil.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
-				.andReturn(DateTimeZone.forID("Europe/Paris"));
-		replay(controllerUtil);
+		Mockito.when(timeService.queryGoogleForTimezone(anyDouble(), anyDouble(), anyLong()))
+			   .thenReturn(DateTimeZone.forID("Europe/Paris"));
 
-		MockMvcResponse response = get("/{datetime}/{address}/theme", dateTime, "Ris-Orangis");
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{address}/theme", dateTime, "Ris-Orangis")
+				.accept(MediaType.APPLICATION_JSON);
 
-		response.then().statusCode(200)
-				.body("address", equalTo("91130 Ris-Orangis, France"))
-				.body("positions.MERCURE.sign", equalTo("SAGITTAIRE"))
-				.body("positions.LUNE.house", equalTo("III"))
-				.body("positions.ASCENDANT.sign", equalTo("POISSONS"));
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		String body = result.getResponse().getContentAsString();
+		MockHttpServletResponse response = result.getResponse();
 
-		verify(controllerUtil);
+		assertThat(response.getStatus(), equalTo(HttpStatus.OK.value()));
+		assertThat(body, hasJsonPath("address", equalTo("91130 Ris-Orangis, France")));
+		assertThat(body, hasJsonPath("positions.MERCURE.sign", equalTo("SAGITTAIRE")));
+		assertThat(body, hasJsonPath("positions.LUNE.house", equalTo("III")));
+		assertThat(body, hasJsonPath("positions.ASCENDANT.sign", equalTo("POISSONS")));
 	}
 
 	@Test
-	public void testTooManyResults() {
+	public void testTooManyResults() throws Exception {
 		String dateTime = "1985-01-04T11:20:00";
-		MockMvcResponse response = get("/{datetime}/{address}/theme", dateTime, "Chin");
-		response.then().statusCode(400).statusLine("400 Too many results for geoloc");
+
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{address}/theme", dateTime, "Chi")
+				.accept(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		MockHttpServletResponse response = result.getResponse();
+
+		assertThat(response.getStatus(), equalTo(HttpStatus.BAD_REQUEST.value()));
+		assertThat(response.getErrorMessage(), equalTo("Too many results for geoloc"));
 	}
 
 	@Test
-	public void testNoResult() {
+	public void testNoResult() throws Exception {
 		String dateTime = "1985-01-04T11:20:00";
-		MockMvcResponse response = get("/{datetime}/{address}/theme", dateTime, "Choudavoir");
-		response.then().statusCode(400).statusLine("400 No result returned by Google API");
+
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.get("/{datetime}/{address}/theme", dateTime, "Choudavoir")
+				.accept(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		MockHttpServletResponse response = result.getResponse();
+
+		assertThat(response.getStatus(), equalTo(HttpStatus.BAD_REQUEST.value()));
+		assertThat(response.getErrorMessage(), equalTo("No result returned by Google API"));
 	}
 }

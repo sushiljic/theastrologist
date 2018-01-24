@@ -7,7 +7,6 @@ import com.theastrologist.domain.SkyPosition;
 import com.theastrologist.domain.transitperiod.TransitPeriods;
 import com.theastrologist.external.geoloc.GeoResult;
 import com.theastrologist.external.geoloc.GeolocException;
-import com.theastrologist.util.ControllerUtil;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +44,7 @@ public class TransitPeriodController extends AbstractController {
 
 	private TransitPeriods getTransitPeriods(String natalDate, double latitude, double longitude, String startDate,
 											 String endDate) {
-		DateTime parsedNatalDate = controllerUtil.parseDateTime(natalDate, latitude, longitude);
+		DateTime parsedNatalDate = timeService.parseDateTime(natalDate, latitude, longitude);
 		DateTime parsedStartDate = new DateTime(startDate);
 		DateTime parsedEndDate = new DateTime(endDate);
 		Degree parsedLatitude = new Degree(latitude);
