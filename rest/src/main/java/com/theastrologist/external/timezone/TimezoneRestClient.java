@@ -2,6 +2,7 @@ package com.theastrologist.external.timezone;
 
 import com.theastrologist.external.GoogleRestClient;
 import com.theastrologist.external.GoogleRestException;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.net.URI;
 
@@ -18,6 +19,7 @@ public class TimezoneRestClient extends GoogleRestClient<TimezoneResponse> {
 		return new TimezoneRestClient();
 	}
 
+	@Cacheable(cacheNames = "timezone", key = "{#latitude, #longitude, #time}")
 	public TimezoneResponse getTimezone(double latitude, double longitude, long time) throws GoogleRestException {
 		URI uri = getUri(latitude, longitude, time);
 		return getResponse(uri);
@@ -29,5 +31,4 @@ public class TimezoneRestClient extends GoogleRestClient<TimezoneResponse> {
 						   .build()
 						   .encode().toUri();
 	}
-
 }
