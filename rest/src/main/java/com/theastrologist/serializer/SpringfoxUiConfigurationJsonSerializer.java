@@ -9,14 +9,6 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import springfox.documentation.swagger.web.UiConfiguration;
 
-/**
- * {@code SpringfoxUiConfigurationJsonSerializer} is a JSON serializer for
- * Springfox's {@code UiConfiguration} class.
- * <p/>
- *
- * @author Indra Basak
- * @since 11/23/17
- */
 public class SpringfoxUiConfigurationJsonSerializer
 		implements JsonSerializer<UiConfiguration> {
 
