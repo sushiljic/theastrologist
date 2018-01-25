@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN" "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
-<urlrewrite default-match-type="regex">
-   <rule>
-    <note>Renomme les url de type /wro-version/all.js en /wro/all.js</note>
-	<from>^/wro-[^/]*/(.*)$</from>
-	<to>/wro/$1</to>   
-   </rule>
-</urlrewrite>

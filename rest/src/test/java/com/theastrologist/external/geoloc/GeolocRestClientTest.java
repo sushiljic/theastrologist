@@ -24,7 +24,7 @@ public class GeolocRestClientTest {
 
     @Test
     public void testGeoClientMultipleResults() throws GeolocException {
-        GeolocRestClient geolocRestClient = new GeolocRestClient("Chin");
+        GeolocRestClient geolocRestClient = new GeolocRestClient("Chi");
         GeoResponse response = geolocRestClient.getGeocoding();
         assertThat(response, notNullValue());
         assertThat(response.getStatus(), is(GeoStatus.OK));

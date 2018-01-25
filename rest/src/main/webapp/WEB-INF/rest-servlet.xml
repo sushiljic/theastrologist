@@ -11,14 +11,4 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context.xsd">
     <context:component-scan base-package="com.theastrologist.controller"/>
-    <mvc:annotation-driven>
-        <mvc:message-converters>
-            <bean class="org.springframework.http.converter.json.GsonHttpMessageConverter"/>
-            <!-- other HttpMessageConverters you need here -->
-            <!-- Also: why adding Jackson's MessageConverter? Gson should pick JSON serialization in this case -->
-        </mvc:message-converters>
-    </mvc:annotation-driven>
-    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-        <property name="useDefaultSuffixPattern" value="false" />
-    </bean>
 </beans>

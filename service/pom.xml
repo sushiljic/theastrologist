@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.theastrologist</groupId>
         <artifactId>theastrologist-parent</artifactId>
-        <version>1.8.4</version>
+        <version>1.9</version>
     </parent>
 
     <artifactId>theastrologist-service</artifactId>
@@ -18,11 +18,7 @@
             <artifactId>swisseph</artifactId>
             <version>2.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.3.1</version>
-        </dependency>
+
     </dependencies>
 
     <build>

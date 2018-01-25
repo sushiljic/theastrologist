@@ -3,11 +3,13 @@ package com.theastrologist.controller;
 import com.theastrologist.controller.exception.ErrorResponse;
 import com.theastrologist.controller.exception.NoResultsRestException;
 import com.theastrologist.controller.exception.TooManyResultsRestException;
+import com.theastrologist.external.GoogleRestException;
 import com.theastrologist.external.geoloc.GeoResponse;
 import com.theastrologist.external.geoloc.GeoResult;
 import com.theastrologist.external.geoloc.GeolocException;
 import com.theastrologist.external.geoloc.GeolocRestClient;
-import com.theastrologist.util.ControllerUtil;
+import com.theastrologist.util.TimeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,10 +20,11 @@ import java.util.List;
  * Created by Samy on 31/01/2016.
  */
 public class AbstractController {
-	protected ControllerUtil controllerUtil = new ControllerUtil();
+	@Autowired
+	protected TimeService timeService;
 
-	public void setControllerUtil(ControllerUtil controllerUtil) {
-		this.controllerUtil = controllerUtil;
+	public void setTimeService(TimeService timeService) {
+		this.timeService = timeService;
 	}
 
 	public GeoResult queryForGeoloc(String address) throws GeolocException {

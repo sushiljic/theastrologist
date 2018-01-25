@@ -1,6 +1,7 @@
 package com.theastrologist.external.geoloc;
 
 import com.google.common.base.Strings;
+import com.theastrologist.external.GoogleRestException;
 import org.springframework.web.client.RestClientException;
 
 import java.util.ResourceBundle;
@@ -35,7 +36,7 @@ public class GeolocException extends Exception {
         super(throwable);
         try {
             throw throwable;
-        } catch (RestClientException e) {
+        } catch (GoogleRestException e) {
             this.message = getResourceString("rest.client");
         } catch (Throwable th) {
             // Do nothing
