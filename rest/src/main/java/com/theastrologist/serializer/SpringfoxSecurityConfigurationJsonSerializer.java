@@ -18,11 +18,12 @@ public class SpringfoxSecurityConfigurationJsonSerializer
 		jsonObject.addProperty("clientId", config.getClientId());
 		jsonObject.addProperty("realm", config.getRealm());
 		jsonObject.addProperty("appName", config.getAppName());
-		jsonObject.addProperty("apiKey", config.getApiKey());
-		jsonObject.addProperty("apiKeyName", config.getApiKeyName());
 		jsonObject.addProperty("clientSecret", config.getClientSecret());
 		jsonObject.addProperty("scopeSeparator", config.scopeSeparator());
-		jsonObject.addProperty("apiKeyVehicle", config.getApiKeyVehicle());
+		jsonObject.addProperty("useBasicAuthenticationWithAccessCodeGrant", config.getUseBasicAuthenticationWithAccessCodeGrant());
+
+		final JsonElement additionalQueryStringParams = context.serialize(config.getAdditionalQueryStringParams());
+		jsonObject.add("additionalQueryStringParams", additionalQueryStringParams);
 
 		return jsonObject;
 	}

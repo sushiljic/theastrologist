@@ -37,7 +37,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Toutes les versions des dépendences en ordre alphabétique -->
-        <guava.version>18.0</guava.version>
+        <guava.version>20.0</guava.version>
         <easymock.version>3.2</easymock.version>
         <joda.time.version>2.5</joda.time.version>
         <junit.version>4.12</junit.version>

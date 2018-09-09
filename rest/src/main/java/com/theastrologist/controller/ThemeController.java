@@ -30,9 +30,11 @@ public class ThemeController extends AbstractController {
 		return skyPosition;
 	}
 
-	@ApiOperation(value = "Theme", produces = "application/json")
+	@ApiOperation(value = "Calculate astral chart", produces = "application/json")
 	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "Wrong date format, or wrong latitude / longitude numeric format")})
+			@ApiResponse(code = 200, message = "Successfully calculated"),
+			@ApiResponse(code = 400, message = "Wrong date format, or wrong latitude / longitude numeric format")
+	})
 	@GetMapping(value = "/{latitude:.+}/{longitude:.+}/theme")
 	public SkyPosition getTheme(
 			@ApiParam(value = "Theme date and time. ISO Datetime format, ex : 2018-01-22T22:04:19", required = true) @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String datetime,
@@ -41,8 +43,9 @@ public class ThemeController extends AbstractController {
 		return getSkyPosition(datetime, latitude, longitude, null);
 	}
 
-	@ApiOperation(value = "Theme", produces = "application/json")
+	@ApiOperation(value = "Calculate astral chart", produces = "application/json")
 	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Successfully calculated"),
 			@ApiResponse(code = 400, message = "Multiple location found for this address, No location found for this address or Wrong date format")})
 	@GetMapping(value = "/{address}/theme")
 	public ResponseEntity<SkyPosition> getTheme(

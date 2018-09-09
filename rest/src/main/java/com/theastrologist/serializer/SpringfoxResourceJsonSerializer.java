@@ -16,7 +16,7 @@ public class SpringfoxResourceJsonSerializer
 		final JsonObject jsonObject = new JsonObject();
 
 		jsonObject.addProperty("name", resource.getName());
-		jsonObject.addProperty("location", resource.getLocation());
+		jsonObject.addProperty("url", resource.getUrl());
 		jsonObject.addProperty("swaggerVersion", resource.getSwaggerVersion());
 
 		return jsonObject;
