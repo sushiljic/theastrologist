@@ -23,7 +23,7 @@ public class ThemeController extends AbstractController {
 		DateTime parse = timeService.parseDateTime(datetime, latitude, longitude);
 		Degree latitudeDegree = new Degree(latitude);
 		Degree longitudeDegree = new Degree(longitude);
-		SkyPosition skyPosition = ThemeCalculator.INSTANCE.getSkyPosition(parse, latitudeDegree, longitudeDegree);
+		SkyPosition skyPosition = ThemeCalculator.getInstance().getSkyPosition(parse, latitudeDegree, longitudeDegree);
 		if (address != null) {
 			skyPosition.setAddress(address);
 		}

@@ -31,10 +31,10 @@ public class SkyPositionTest {
 
     @Before
     public void setUp() throws Exception {
-        samySkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
-        laurentSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(LAURENT_DATE, LATITUDE, LONGITUDE);
-        emilieSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(EMILIE_DATE, LATITUDE, LONGITUDE);
-        vanessaSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(VANESSA_DATE, LATITUDE, LONGITUDE);
+        samySkyPosition = ThemeCalculator.getInstance().getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
+        laurentSkyPosition = ThemeCalculator.getInstance().getSkyPosition(LAURENT_DATE, LATITUDE, LONGITUDE);
+        emilieSkyPosition = ThemeCalculator.getInstance().getSkyPosition(EMILIE_DATE, LATITUDE, LONGITUDE);
+        vanessaSkyPosition = ThemeCalculator.getInstance().getSkyPosition(VANESSA_DATE, LATITUDE, LONGITUDE);
     }
 
     @Test
@@ -109,7 +109,7 @@ public class SkyPositionTest {
         assertThat(iter.next().getPlanet(), is(Planet.JUPITER));
         assertThat(iter.next().getPlanet(), is(Planet.LUNE));
 
-        SortedSet<PlanetValue> filleVanessa = ThemeCalculator.INSTANCE.getSkyPosition(new DateTime(2005, 2, 4, 17, 35, DATE_TIME_ZONE), LATITUDE, LONGITUDE).getDominantPlanets();
+        SortedSet<PlanetValue> filleVanessa = ThemeCalculator.getInstance().getSkyPosition(new DateTime(2005, 2, 4, 17, 35, DATE_TIME_ZONE), LATITUDE, LONGITUDE).getDominantPlanets();
         assertThat(filleVanessa, notNullValue());
     }
 

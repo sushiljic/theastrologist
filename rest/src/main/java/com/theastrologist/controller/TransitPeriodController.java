@@ -53,9 +53,9 @@ public class TransitPeriodController extends AbstractController {
 		DateTime parsedEndDate = new DateTime(endDate);
 		Degree parsedLatitude = new Degree(latitude);
 		Degree parsedLongitude = new Degree(longitude);
-		SkyPosition natalPosition = ThemeCalculator.INSTANCE
+		SkyPosition natalPosition = ThemeCalculator.getInstance()
 				.getSkyPosition(parsedNatalDate, parsedLatitude, parsedLongitude);
-		return TransitPeriodCalculator.INSTANCE
+		return TransitPeriodCalculator.getInstance()
 				.createTransitPeriod(natalPosition, parsedStartDate, parsedEndDate, parsedLatitude, parsedLongitude);
 	}
 }
