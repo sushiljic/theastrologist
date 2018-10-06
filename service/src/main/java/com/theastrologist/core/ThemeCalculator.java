@@ -10,9 +10,14 @@ public class ThemeCalculator {
 
 	private static final Logger LOG = Logger.getLogger(ThemeCalculator.class);
 
-	public static final ThemeCalculator INSTANCE = new ThemeCalculator();
+	private ThemeCalculator() {}
 
-	public ThemeCalculator() {
+	private static class ThemeCalculatorHolder {
+		private final static ThemeCalculator instance = new ThemeCalculator();
+	}
+
+	public static ThemeCalculator getInstance() {
+		return ThemeCalculatorHolder.instance;
 	}
 
 	public SkyPosition getSkyPosition(DateTime dateTime, Degree latitude, Degree longitude) {

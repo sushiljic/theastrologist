@@ -15,9 +15,14 @@ public class TransitPeriodCalculator {
 	private static final ReadablePeriod PERIOD_TO_ADD = Weeks.ONE;
 	private static final ReadablePeriod PERIOD_TO_ADD_FIN = Days.ONE;
 
-	public static final TransitPeriodCalculator INSTANCE = new TransitPeriodCalculator();
+	private TransitPeriodCalculator() {}
 
-	public TransitPeriodCalculator() {
+	private static class TransitPeriodCalculatorHolder {
+		private final static TransitPeriodCalculator instance = new TransitPeriodCalculator();
+	}
+
+	public static TransitPeriodCalculator getInstance() {
+		return TransitPeriodCalculatorHolder.instance;
 	}
 
 	public TransitPeriods createTransitPeriod(SkyPosition natalTheme, DateTime startDate, DateTime endDate,
@@ -43,7 +48,7 @@ public class TransitPeriodCalculator {
 	private DateTime fillPeriods(DateTime currentDate, SkyPosition natalTheme, DateTime endDate, Degree latitude,
 								 Degree longitude, TransitPeriodsBuilder builder, ReadablePeriod periodToAdd) {
 		while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
-			SkyPosition currentSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(currentDate, latitude, longitude);
+			SkyPosition currentSkyPosition = ThemeCalculator.getInstance().getSkyPosition(currentDate, latitude, longitude);
 			builder.startNewPeriod(currentDate);
 
 			appendPlanetPeriods(natalTheme, builder, currentSkyPosition);
@@ -61,7 +66,7 @@ public class TransitPeriodCalculator {
 
 	private void appendHousePeriods(SkyPosition natalTheme, TransitPeriodsBuilder builder,
 									SkyPosition currentSkyPosition) {
-		Degree ascendantDegree = natalTheme.getAscendantPosition().getDegree();
+		Degree ascendantDegree = natalTheme.getPlanetPosition(Planet.ASCENDANT).getDegree();
 		for (Planet planetInTransit : Planet.getTransitPlanets()) {
 			PlanetPosition planetPosition = currentSkyPosition.getPlanetPosition(planetInTransit);
 			Degree degree = planetPosition.getDegree();
@@ -72,7 +77,7 @@ public class TransitPeriodCalculator {
 
 	private void appendPlanetPeriods(SkyPosition natalTheme, TransitPeriodsBuilder builder,
 									 SkyPosition currentSkyPosition) {
-		SortedMap<Planet, SortedMap<Planet, AspectPosition>> aspectsForTransit = AspectCalculator.INSTANCE
+		SortedMap<Planet, SortedMap<Planet, AspectPosition>> aspectsForTransit = AspectCalculator.getInstance()
 				.createAspectsForTransit(natalTheme, currentSkyPosition);
 
 		for (Planet natalPlanet : aspectsForTransit.keySet()) {

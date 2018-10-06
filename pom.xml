@@ -6,7 +6,7 @@
     <groupId>com.theastrologist</groupId>
     <artifactId>theastrologist-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.9</version>
+    <version>1.10.0</version>
     <name>The Astrologist - Parent</name>
 
     <parent>
@@ -37,7 +37,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Toutes les versions des dépendences en ordre alphabétique -->
-        <guava.version>18.0</guava.version>
+        <guava.version>20.0</guava.version>
         <easymock.version>3.2</easymock.version>
         <joda.time.version>2.5</joda.time.version>
         <junit.version>4.12</junit.version>
@@ -90,12 +90,6 @@
             <artifactId>lombok</artifactId>
             <version>1.16.6</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <version>${easymock.version}</version>
         </dependency>
 
         <dependency>
@@ -160,12 +154,11 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>external.atlassian.jgitflow</groupId>
-                <artifactId>jgitflow-maven-plugin</artifactId>
-                <version>1.0-m5.1</version>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>1.10.0</version>
                 <configuration>
-                    <noDeploy>true</noDeploy>
-                    <!-- see goals wiki page for configuration options -->
+                    <skipFeatureVersion>true</skipFeatureVersion>
                 </configuration>
             </plugin>
             <plugin>
@@ -187,25 +180,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <!-- When built in OpenShift the 'openshift' profile will be used when
-            invoking mvn. -->
-        <profile>
-            <id>openshift</id>
-            <build>
-                <finalName>${project.name}</finalName>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>2.1.1</version>
-                        <configuration>
-                            <outputDirectory>deployments</outputDirectory>
-                            <warName>ROOT</warName>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

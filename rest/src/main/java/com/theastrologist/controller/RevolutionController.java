@@ -24,14 +24,14 @@ public class RevolutionController extends AbstractController {
 	private SkyPosition calculateSkyPosition(DateTime natalDate, double natalLatitude, double natalLongitude) {
 		Degree latitudeDegree = new Degree(natalLatitude);
 		Degree longitudeDegree = new Degree(natalLongitude);
-		return ThemeCalculator.INSTANCE.getSkyPosition(natalDate, latitudeDegree, longitudeDegree);
+		return ThemeCalculator.getInstance().getSkyPosition(natalDate, latitudeDegree, longitudeDegree);
 	}
 
 	private SkyPosition getSolarRevolutionTheme(String fromDate, double anniversaryLatitude,
 												double anniversaryLongitude,
 												SkyPosition natalTheme) {
 		DateTime fromDateTime = new DateTime(fromDate);
-		DateTime solarRevolutionUT = RevolutionCalculator.INSTANCE.getSolarRevolutionUT(natalTheme, fromDateTime);
+		DateTime solarRevolutionUT = RevolutionCalculator.getInstance().getSolarRevolutionUT(natalTheme, fromDateTime);
 		DateTime zonedDateTime = timeService
 				.convertUTDateTime(solarRevolutionUT, anniversaryLatitude, anniversaryLongitude);
 		return calculateSkyPosition(zonedDateTime, anniversaryLatitude, anniversaryLongitude);
@@ -46,7 +46,7 @@ public class RevolutionController extends AbstractController {
 											  String fromDate) {
 		SkyPosition natalTheme = getNatalTheme(natalDate, natalLatitude, natalLongitude);
 		DateTime fromDateTime = new DateTime(fromDate);
-		DateTime solarRevolutionUT = RevolutionCalculator.INSTANCE.getSolarRevolutionUT(natalTheme, fromDateTime);
+		DateTime solarRevolutionUT = RevolutionCalculator.getInstance().getSolarRevolutionUT(natalTheme, fromDateTime);
 		return new DateTimeJson(solarRevolutionUT);
 	}
 
@@ -55,14 +55,14 @@ public class RevolutionController extends AbstractController {
 		SkyPosition natalTheme = getNatalTheme(natalDate, natalLatitude, natalLongitude);
 
 		DateTime fromDateTime = new DateTime(fromDate);
-		DateTime lunarRevolutionUT = RevolutionCalculator.INSTANCE.getLunarRevolutionUT(natalTheme, fromDateTime);
+		DateTime lunarRevolutionUT = RevolutionCalculator.getInstance().getLunarRevolutionUT(natalTheme, fromDateTime);
 		return new DateTimeJson(lunarRevolutionUT);
 	}
 
 	private SkyPosition getLunarRevolutionTheme(String fromDate, double anniversaryLatitude,
 												double anniversaryLongitude, SkyPosition natalTheme) {
 		DateTime fromDateTime = new DateTime(fromDate);
-		DateTime lunarRevolutionUT = RevolutionCalculator.INSTANCE.getLunarRevolutionUT(natalTheme, fromDateTime);
+		DateTime lunarRevolutionUT = RevolutionCalculator.getInstance().getLunarRevolutionUT(natalTheme, fromDateTime);
 		DateTime zonedDateTime = timeService
 				.convertUTDateTime(lunarRevolutionUT, anniversaryLatitude, anniversaryLongitude);
 		return calculateSkyPosition(zonedDateTime, anniversaryLatitude, anniversaryLongitude);

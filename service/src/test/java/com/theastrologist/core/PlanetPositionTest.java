@@ -21,7 +21,7 @@ public class PlanetPositionTest {
 
     @Before
     public void setup() {
-        testSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        testSkyPosition = ThemeCalculator.getInstance().getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
     }
 
     @Test

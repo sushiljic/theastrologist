@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>com.theastrologist</groupId>
         <artifactId>theastrologist-parent</artifactId>
-        <version>1.9</version>
+        <version>1.10.0</version>
     </parent>
     <artifactId>theastrologist-rest</artifactId>
     <packaging>war</packaging>
     <name>The Astrologist - REST Web Service</name>
 
     <properties>
-        <rest-assured.version>3.0.6</rest-assured.version>
         <h2.version>1.4.196</h2.version>
         <spring.boot.version>1.5.9.RELEASE</spring.boot.version>
-        <swagger.version>2.7.0</swagger.version>
+        <swagger.version>2.8.0</swagger.version>
 
         <start-class>com.theastrologist.RestApplication</start-class>
     </properties>
@@ -72,6 +72,16 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${swagger.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-annotations</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-models</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -89,25 +99,22 @@
             <version>${swagger.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.21</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+            <version>1.5.21</version>
+        </dependency>
+
         <!-- Tests -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <version>${spring.boot.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>spring-mock-mvc</artifactId>
-            <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -148,7 +155,26 @@
                 <version>2.2</version>
                 <configuration>
                     <port>9090</port>
-                    <path>/theastrologist</path>
+                    <path>/</path>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.6.9</version>
+                <configuration>
+                    <container>
+                        <containerId>tomcat8x</containerId>
+                        <zipUrlInstaller>
+                            <url>http://repo1.maven.org/maven2/org/apache/tomcat/tomcat/8.5.9/tomcat-8.5.9.zip</url>
+                        </zipUrlInstaller>
+                    </container>
+                    <configuration>
+                        <type>standalone</type>
+                        <properties>
+                            <cargo.servlet.port>9090</cargo.servlet.port>
+                        </properties>
+                    </configuration>
                 </configuration>
             </plugin>
             <plugin>
@@ -158,13 +184,15 @@
                 <executions>
                     <execution>
                         <phase>package</phase>
-                        <goals><goal>copy</goal></goals>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>com.github.jsimone</groupId>
                                     <artifactId>webapp-runner</artifactId>
-                                    <version>7.0.82.0</version>
+                                    <version>8.5.23.0</version>
                                     <destFileName>webapp-runner.jar</destFileName>
                                 </artifactItem>
                             </artifactItems>

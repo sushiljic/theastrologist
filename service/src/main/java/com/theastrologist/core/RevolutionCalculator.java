@@ -1,6 +1,7 @@
 package com.theastrologist.core;
 
 import com.theastrologist.domain.Degree;
+import com.theastrologist.domain.Planet;
 import com.theastrologist.domain.PlanetPosition;
 import com.theastrologist.domain.SkyPosition;
 import com.theastrologist.util.DateUtil;
@@ -14,28 +15,34 @@ import swisseph.*;
  */
 public class RevolutionCalculator {
 	private static final Logger LOG = Logger.getLogger(RevolutionCalculator.class);
-	public static final RevolutionCalculator INSTANCE = new RevolutionCalculator();
 
-	public RevolutionCalculator() {
+	private RevolutionCalculator() {}
+
+	private static class RevolutionCalculatorHolder {
+		private final static RevolutionCalculator instance = new RevolutionCalculator();
+	}
+
+	public static RevolutionCalculator getInstance() {
+		return RevolutionCalculatorHolder.instance;
 	}
 
 	public SkyPosition getSolarRevolution(SkyPosition natalTheme, DateTime from, Degree latitude, Degree longitude) {
 		DateTime solarRevolutionUT = getSolarRevolutionUT(natalTheme, from);
-		return ThemeCalculator.INSTANCE.getSkyPosition(solarRevolutionUT, latitude, longitude);
+		return ThemeCalculator.getInstance().getSkyPosition(solarRevolutionUT, latitude, longitude);
 	}
 
 	public SkyPosition getLunarRevolution(SkyPosition natalTheme, DateTime from, Degree latitude, Degree longitude) {
 		DateTime moonRevolutionUT = getLunarRevolutionUT(natalTheme, from);
-		return ThemeCalculator.INSTANCE.getSkyPosition(moonRevolutionUT, latitude, longitude);
+		return ThemeCalculator.getInstance().getSkyPosition(moonRevolutionUT, latitude, longitude);
 	}
 
 	public DateTime getSolarRevolutionUT(SkyPosition natalTheme, DateTime from) {
-		PlanetPosition soleilPosition = natalTheme.getSoleilPosition();
+		PlanetPosition soleilPosition = natalTheme.getPlanetPosition(Planet.SOLEIL);
 		return getRevolution(soleilPosition, from, SweConst.SE_SUN);
 	}
 
 	public DateTime getLunarRevolutionUT(SkyPosition natalTheme, DateTime from) {
-		PlanetPosition lunePosition = natalTheme.getLunePosition();
+		PlanetPosition lunePosition = natalTheme.getPlanetPosition(Planet.LUNE);
 		return getRevolution(lunePosition, from, SweConst.SE_MOON);
 	}
 

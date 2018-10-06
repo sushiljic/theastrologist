@@ -13,7 +13,15 @@ import java.util.SortedMap;
 
 public class AspectCalculator {
 
-	public static final AspectCalculator INSTANCE = new AspectCalculator();
+	private AspectCalculator() {}
+
+	private static class AspectCalculatorHolder {
+		private final static AspectCalculator instance = new AspectCalculator();
+	}
+
+	public static AspectCalculator getInstance() {
+		return AspectCalculatorHolder.instance;
+	}
 
 	/**
 	 * Calcul des aspects sur une carte du ciel
