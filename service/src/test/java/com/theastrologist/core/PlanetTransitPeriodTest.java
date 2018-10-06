@@ -173,13 +173,13 @@ public class PlanetTransitPeriodTest {
 	@Test
 	public void testFullTransitPeriod() throws Exception {
 		// Given
-		SkyPosition natalPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
+		SkyPosition natalPosition = ThemeCalculator.getInstance().getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
 
 		DateTime startDate = DateTime.parse("2014-01-01");
 		DateTime endDate = DateTime.parse("2016-01-01");
 
 		// When
-		TransitPeriods build = TransitPeriodCalculator.INSTANCE
+		TransitPeriods build = TransitPeriodCalculator.getInstance()
 				.createTransitPeriod(natalPosition, startDate, endDate, LATITUDE, LONGITUDE);
 		Map<Planet, SortedSet<PlanetTransitPeriod>> map = build.getPlanetPeriods();
 
@@ -208,13 +208,13 @@ public class PlanetTransitPeriodTest {
 	@Test
 	public void testSupprTwoElementsNoLength() throws Exception {
 		// Given
-		SkyPosition natalPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
+		SkyPosition natalPosition = ThemeCalculator.getInstance().getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
 
 		DateTime startDate = DateTime.parse("2016-08-01");
 		DateTime endDate = DateTime.parse("2016-09-10");
 
 		// When
-		TransitPeriods build = TransitPeriodCalculator.INSTANCE
+		TransitPeriods build = TransitPeriodCalculator.getInstance()
 				.createTransitPeriod(natalPosition, startDate, endDate, LATITUDE, LONGITUDE);
 		Map<Planet, SortedSet<PlanetTransitPeriod>> map = build.getPlanetPeriods();
 

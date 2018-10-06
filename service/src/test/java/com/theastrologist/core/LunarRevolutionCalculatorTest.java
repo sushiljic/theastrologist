@@ -20,12 +20,12 @@ public class LunarRevolutionCalculatorTest {
 
 	@Before
 	public void setup() {
-		testSkyPosition = ThemeCalculator.INSTANCE.getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
+		testSkyPosition = ThemeCalculator.getInstance().getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
 	}
 
 	@Test
 	public void testLunarRevolutionUTSAM201704() throws Exception {
-		DateTime lunarRevolutionTime = RevolutionCalculator.INSTANCE
+		DateTime lunarRevolutionTime = RevolutionCalculator.getInstance()
 				.getLunarRevolutionUT(testSkyPosition, TEST_REV_DATE.minusMonths(1));
 
 		assertThat(lunarRevolutionTime, notNullValue());
@@ -34,7 +34,7 @@ public class LunarRevolutionCalculatorTest {
 
 	@Test
 	public void testLunarRevolutionSAM201704() throws Exception {
-		SkyPosition lunarRevolution = RevolutionCalculator.INSTANCE
+		SkyPosition lunarRevolution = RevolutionCalculator.getInstance()
 				.getLunarRevolution(testSkyPosition, TEST_REV_DATE.minusMonths(1), LATITUDE, LONGITUDE);
 
 		assertThat(lunarRevolution, notNullValue());
@@ -43,7 +43,7 @@ public class LunarRevolutionCalculatorTest {
 
 	@Test
 	public void testLunarRevolutionUTSAM201705() throws Exception {
-		DateTime lunarRevolutionTime = RevolutionCalculator.INSTANCE
+		DateTime lunarRevolutionTime = RevolutionCalculator.getInstance()
 				.getLunarRevolutionUT(testSkyPosition, TEST_REV_DATE);
 
 		assertThat(lunarRevolutionTime, notNullValue());
@@ -52,7 +52,7 @@ public class LunarRevolutionCalculatorTest {
 
 	@Test
 	public void testLunarRevolutionSAM201705() throws Exception {
-		SkyPosition lunarRevolution = RevolutionCalculator.INSTANCE
+		SkyPosition lunarRevolution = RevolutionCalculator.getInstance()
 				.getLunarRevolution(testSkyPosition, TEST_REV_DATE, LATITUDE, LONGITUDE);
 
 		assertThat(lunarRevolution, notNullValue());
@@ -62,7 +62,7 @@ public class LunarRevolutionCalculatorTest {
 
 	@Test
 	public void testLunarRevolutionUTSAM201706() throws Exception {
-		DateTime lunarRevolutionTime = RevolutionCalculator.INSTANCE
+		DateTime lunarRevolutionTime = RevolutionCalculator.getInstance()
 				.getLunarRevolutionUT(testSkyPosition, TEST_REV_DATE.plusMonths(1));
 
 		assertThat(lunarRevolutionTime, notNullValue());
@@ -71,7 +71,7 @@ public class LunarRevolutionCalculatorTest {
 
 	@Test
 	public void testLunarRevolutionSAM201706() throws Exception {
-		SkyPosition lunarRevolution = RevolutionCalculator.INSTANCE
+		SkyPosition lunarRevolution = RevolutionCalculator.getInstance()
 				.getLunarRevolution(testSkyPosition, TEST_REV_DATE.plusMonths(1), LATITUDE, LONGITUDE);
 
 		assertThat(lunarRevolution, notNullValue());

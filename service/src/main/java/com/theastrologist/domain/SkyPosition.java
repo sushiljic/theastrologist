@@ -70,7 +70,7 @@ public class SkyPosition {
 		soleilPosition = positions.get(Planet.SOLEIL);
 		noeudSudPosition = positions.get(Planet.NOEUD_SUD_MOYEN);
 
-		aspects = AspectCalculator.INSTANCE.createAspectsForSkyPosition(this);
+		aspects = AspectCalculator.getInstance().createAspectsForSkyPosition(this);
 		dominantPlanets = calculateDominantPlanets();
 	}
 
