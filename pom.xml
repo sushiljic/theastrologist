@@ -180,25 +180,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <!-- When built in OpenShift the 'openshift' profile will be used when
-            invoking mvn. -->
-        <profile>
-            <id>openshift</id>
-            <build>
-                <finalName>${project.name}</finalName>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>3.2.2</version>
-                        <configuration>
-                            <outputDirectory>deployments</outputDirectory>
-                            <warName>ROOT</warName>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

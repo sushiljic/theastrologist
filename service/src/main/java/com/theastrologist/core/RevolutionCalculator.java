@@ -1,6 +1,7 @@
 package com.theastrologist.core;
 
 import com.theastrologist.domain.Degree;
+import com.theastrologist.domain.Planet;
 import com.theastrologist.domain.PlanetPosition;
 import com.theastrologist.domain.SkyPosition;
 import com.theastrologist.util.DateUtil;
@@ -36,12 +37,12 @@ public class RevolutionCalculator {
 	}
 
 	public DateTime getSolarRevolutionUT(SkyPosition natalTheme, DateTime from) {
-		PlanetPosition soleilPosition = natalTheme.getSoleilPosition();
+		PlanetPosition soleilPosition = natalTheme.getPlanetPosition(Planet.SOLEIL);
 		return getRevolution(soleilPosition, from, SweConst.SE_SUN);
 	}
 
 	public DateTime getLunarRevolutionUT(SkyPosition natalTheme, DateTime from) {
-		PlanetPosition lunePosition = natalTheme.getLunePosition();
+		PlanetPosition lunePosition = natalTheme.getPlanetPosition(Planet.LUNE);
 		return getRevolution(lunePosition, from, SweConst.SE_MOON);
 	}
 

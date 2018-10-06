@@ -66,7 +66,7 @@ public class TransitPeriodCalculator {
 
 	private void appendHousePeriods(SkyPosition natalTheme, TransitPeriodsBuilder builder,
 									SkyPosition currentSkyPosition) {
-		Degree ascendantDegree = natalTheme.getAscendantPosition().getDegree();
+		Degree ascendantDegree = natalTheme.getPlanetPosition(Planet.ASCENDANT).getDegree();
 		for (Planet planetInTransit : Planet.getTransitPlanets()) {
 			PlanetPosition planetPosition = currentSkyPosition.getPlanetPosition(planetInTransit);
 			Degree degree = planetPosition.getDegree();

@@ -33,6 +33,7 @@ public enum Planet implements SkyArtefact {
     private static List<Planet> transitPlanets;
     private final int sweConst;
     private static List<Planet> principalePlanets;
+    private static List<Planet> secondPlanets;
 
     public int getSweConst() {
         return sweConst;
@@ -48,9 +49,17 @@ public enum Planet implements SkyArtefact {
             principalePlanets.add(ASCENDANT);
             principalePlanets.add(SOLEIL);
             principalePlanets.add(LUNE);
-            principalePlanets.add(NOEUD_SUD_MOYEN);
         }
         return principalePlanets;
+    }
+
+    public static List<Planet> getSecondPlanets() {
+        if (secondPlanets == null) {
+            secondPlanets = new ArrayList<Planet>();
+            secondPlanets.add(NOEUD_SUD_MOYEN);
+            secondPlanets.add(MILIEU_DU_CIEL);
+        }
+        return secondPlanets;
     }
 
     public static List<Planet> getRealPlanets() {

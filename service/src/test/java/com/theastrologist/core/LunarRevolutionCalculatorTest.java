@@ -1,6 +1,7 @@
 package com.theastrologist.core;
 
 import com.theastrologist.domain.Degree;
+import com.theastrologist.domain.Planet;
 import com.theastrologist.domain.Sign;
 import com.theastrologist.domain.SkyPosition;
 import com.theastrologist.util.CalcUtil;
@@ -38,7 +39,7 @@ public class LunarRevolutionCalculatorTest {
 				.getLunarRevolution(testSkyPosition, TEST_REV_DATE.minusMonths(1), LATITUDE, LONGITUDE);
 
 		assertThat(lunarRevolution, notNullValue());
-		assertThat(lunarRevolution.getAscendantPosition().getSign(), is(Sign.SCORPION));
+		assertThat(lunarRevolution.getPlanetPosition(Planet.ASCENDANT).getSign(), is(Sign.SCORPION));
 	}
 
 	@Test
