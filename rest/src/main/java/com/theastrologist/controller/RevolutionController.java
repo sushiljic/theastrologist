@@ -1,7 +1,7 @@
 package com.theastrologist.controller;
 
-import com.theastrologist.core.RevolutionCalculator;
-import com.theastrologist.core.ThemeCalculator;
+import com.theastrologist.service.RevolutionCalculator;
+import com.theastrologist.service.ThemeCalculator;
 import com.theastrologist.domain.Degree;
 import com.theastrologist.domain.DateTimeJson;
 import com.theastrologist.domain.SkyPosition;
@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +22,13 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "/revolution", tags = "Revolution", description = "Solar and lunar revolutions")
 public class RevolutionController extends AbstractController {
 
+	@Autowired
+	private ThemeCalculator themeCalculator;
+
 	private SkyPosition calculateSkyPosition(DateTime natalDate, double natalLatitude, double natalLongitude) {
 		Degree latitudeDegree = new Degree(natalLatitude);
 		Degree longitudeDegree = new Degree(natalLongitude);
-		return ThemeCalculator.getInstance().getSkyPosition(natalDate, latitudeDegree, longitudeDegree);
+		return themeCalculator.getSkyPosition(natalDate, latitudeDegree, longitudeDegree);
 	}
 
 	private SkyPosition getSolarRevolutionTheme(String fromDate, double anniversaryLatitude,

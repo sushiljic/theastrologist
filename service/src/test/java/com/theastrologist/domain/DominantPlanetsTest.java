@@ -1,12 +1,25 @@
 package com.theastrologist.domain;
 
-import com.theastrologist.core.DominantPlanetsCalculator;
-import com.theastrologist.core.ThemeCalculator;
+import com.theastrologist.config.ServiceTestConfig;
+import com.theastrologist.domain.Degree;
+import com.theastrologist.domain.Planet;
+import com.theastrologist.domain.SkyPosition;
 import com.theastrologist.domain.planetvalue.PlanetValue;
+import com.theastrologist.service.DominantPlanetsCalculator;
+import com.theastrologist.service.ThemeCalculator;
+import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
 
@@ -16,6 +29,8 @@ import static org.junit.Assert.*;
 /**
  * Created by Samy on 25/07/2015.
  */
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = {ServiceTestConfig.class})
 public class DominantPlanetsTest {
 
     public static final DateTimeZone DATE_TIME_ZONE = DateTimeZone.forTimeZone(TimeZone.getTimeZone("Europe/Paris"));
@@ -38,12 +53,15 @@ public class DominantPlanetsTest {
     private SortedSet<PlanetValue> emilieDominantPlanetsHouses;
     private SortedSet<PlanetValue> vanessaDominantPlanetsHouses;
 
+    @Autowired
+    private ThemeCalculator themeCalculator;
+
     @Before
     public void setUp() throws Exception {
-        samySkyPosition = ThemeCalculator.getInstance().getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
-        laurentSkyPosition = ThemeCalculator.getInstance().getSkyPosition(LAURENT_DATE, LATITUDE, LONGITUDE);
-        emilieSkyPosition = ThemeCalculator.getInstance().getSkyPosition(EMILIE_DATE, LATITUDE, LONGITUDE);
-        vanessaSkyPosition = ThemeCalculator.getInstance().getSkyPosition(VANESSA_DATE, LATITUDE, LONGITUDE);
+        samySkyPosition = themeCalculator.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
+        laurentSkyPosition = themeCalculator.getSkyPosition(LAURENT_DATE, LATITUDE, LONGITUDE);
+        emilieSkyPosition = themeCalculator.getSkyPosition(EMILIE_DATE, LATITUDE, LONGITUDE);
+        vanessaSkyPosition = themeCalculator.getSkyPosition(VANESSA_DATE, LATITUDE, LONGITUDE);
 
         samyDominantPlanetsSigns = DominantPlanetsCalculator.getInstance().getDominantPlanetsSigns(samySkyPosition);
         laurentDominantPlanetsSigns = DominantPlanetsCalculator.getInstance().getDominantPlanetsSigns(laurentSkyPosition);
@@ -63,7 +81,7 @@ public class DominantPlanetsTest {
         assertThat(testSet, not(empty()));
         List<PlanetValue> testList = new ArrayList<PlanetValue>(testSet);
         Iterator<PlanetValue> iter = testList.iterator();
-        assertThat(iter.next().getPlanet(), is(Planet.MARS));
+        assertThat(iter.next().getPlanet(), Matchers.is(Planet.MARS));
         assertThat(iter.next().getPlanet(), is(Planet.SATURNE));
         assertThat(iter.next().getPlanet(), is(Planet.JUPITER));
         assertThat(iter.next().getPlanet(), is(Planet.URANUS));
