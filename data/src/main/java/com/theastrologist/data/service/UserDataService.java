@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class UserDataService {
-    //@Autowired
+    @Autowired
     private UserRepository userRepository;
 
     public User getUserByName(String userName) {
@@ -30,6 +30,5 @@ public class UserDataService {
         // userRepository.findAll().forEach(article -&gt; articleList.add(article));
 
         return userList;
-
     }
 }

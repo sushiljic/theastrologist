@@ -16,11 +16,6 @@ import org.springframework.context.annotation.Scope;
 public class ServiceConfiguration {
 
     @Bean
-    public ThemeService themeCalculator() {
-        return new ThemeService();
-    }
-
-    @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
     public Swieph swieph() {
         return new Swieph();

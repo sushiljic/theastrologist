@@ -1,6 +1,7 @@
 package com.theastrologist.data.repository;
 
 import com.theastrologist.data.DataConfiguration;
+import com.theastrologist.data.DataTestConfiguration;
 import com.theastrologist.domain.user.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,10 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-//@SpringBootTest
+@ContextConfiguration(classes = {DataTestConfiguration.class})
 //@AutoConfigurationPackage
-//@SpringBootConfiguration
-//@ContextConfiguration(classes = {DataConfiguration.class})
 public class UserRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
