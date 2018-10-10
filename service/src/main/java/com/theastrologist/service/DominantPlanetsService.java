@@ -8,22 +8,16 @@ import com.theastrologist.domain.planetvalue.DominantPlanets;
 import com.theastrologist.domain.planetvalue.PlanetValue;
 import com.theastrologist.domain.planetvalue.PlanetValueReasonType;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import java.util.SortedMap;
 import java.util.SortedSet;
 
-public class DominantPlanetsCalculator {
-    private static final Logger LOG = Logger.getLogger(DominantPlanetsCalculator.class);
+@Service
+public class DominantPlanetsService {
+    private static final Logger LOG = Logger.getLogger(DominantPlanetsService.class);
 
-    private DominantPlanetsCalculator() {}
-
-    private static class DominantPlanetCalculatorHolder {
-        private final static DominantPlanetsCalculator instance = new DominantPlanetsCalculator();
-    }
-
-    public static DominantPlanetsCalculator getInstance() {
-        return DominantPlanetsCalculator.DominantPlanetCalculatorHolder.instance;
-    }
+    public DominantPlanetsService() {}
 
     public DominantPlanets getDominantPlanets(SkyPosition position) {
         DominantPlanets dominants = new DominantPlanets();

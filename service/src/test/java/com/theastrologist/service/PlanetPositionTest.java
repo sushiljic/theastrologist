@@ -1,6 +1,6 @@
 package com.theastrologist.service;
 
-import com.theastrologist.config.ServiceTestConfig;
+import com.theastrologist.ServiceTestConfiguration;
 import com.theastrologist.domain.*;
 import com.theastrologist.util.CalcUtil;
 import org.joda.time.DateTime;
@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {ServiceTestConfig.class})
+@ContextConfiguration(classes = {ServiceTestConfiguration.class})
 public class PlanetPositionTest {
 
     private final DateTime TEST_DATE = new DateTime(1985, 1, 4, 11, 20, CalcUtil.DATE_TIME_ZONE);
@@ -27,11 +27,11 @@ public class PlanetPositionTest {
     //private final double LONGITUDE = 2.4104510;
 
     @Autowired
-    private ThemeCalculator themeCalculator;
+    private ThemeService themeService;
 
     @Before
     public void setup() {
-        testSkyPosition = themeCalculator.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        testSkyPosition = themeService.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
     }
 
     @Test

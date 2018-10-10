@@ -9,36 +9,32 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.context.Theme;
+import org.springframework.stereotype.Service;
 import swisseph.*;
 
 /**
  * Created by Samy on 11/05/2017.
  */
-public class RevolutionCalculator {
-	private static final Logger LOG = Logger.getLogger(RevolutionCalculator.class);
+@Service
+public class RevolutionService {
+	private static final Logger LOG = Logger.getLogger(RevolutionService.class);
 
 	@Autowired
-	ThemeCalculator themeCalculator;
+	private ThemeService themeService;
 
-	private RevolutionCalculator() {}
+	@Autowired
+	private Swieph swieph;
 
-	private static class RevolutionCalculatorHolder {
-		private final static RevolutionCalculator instance = new RevolutionCalculator();
-	}
-
-	public static RevolutionCalculator getInstance() {
-		return RevolutionCalculatorHolder.instance;
-	}
+	public RevolutionService() {}
 
 	public SkyPosition getSolarRevolution(SkyPosition natalTheme, DateTime from, Degree latitude, Degree longitude) {
 		DateTime solarRevolutionUT = getSolarRevolutionUT(natalTheme, from);
-		return themeCalculator.getSkyPosition(solarRevolutionUT, latitude, longitude);
+		return themeService.getSkyPosition(solarRevolutionUT, latitude, longitude);
 	}
 
 	public SkyPosition getLunarRevolution(SkyPosition natalTheme, DateTime from, Degree latitude, Degree longitude) {
 		DateTime moonRevolutionUT = getLunarRevolutionUT(natalTheme, from);
-		return themeCalculator.getSkyPosition(moonRevolutionUT, latitude, longitude);
+		return themeService.getSkyPosition(moonRevolutionUT, latitude, longitude);
 	}
 
 	public DateTime getSolarRevolutionUT(SkyPosition natalTheme, DateTime from) {
@@ -57,12 +53,12 @@ public class RevolutionCalculator {
 		int flags = SweConst.SEFLG_MOSEPH | SweConst.SEFLG_TRANSIT_LONGITUDE;
 
 		TransitCalculator tc = new TCPlanet(
-				Swieph.getInstance().value(),
+				swieph.value(),
 				swPlanet,
 				flags,
 				position.getDegree().getBaseDegree());
 
-		double nextTransitUT = Swieph.getInstance().value().getTransitUT(tc, jDate.getJulDay(), false);
+		double nextTransitUT = swieph.value().getTransitUT(tc, jDate.getJulDay(), false);
 
 		long dateMillis = DateTimeUtils.fromJulianDay(nextTransitUT);
 		return new DateTime(dateMillis);

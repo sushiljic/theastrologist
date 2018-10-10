@@ -13,24 +13,19 @@ import org.springframework.stereotype.Service;
 import java.util.SortedMap;
 
 @Service
-public class TransitPeriodCalculator {
+public class TransitPeriodService {
 
-	@Autowired
-	private ThemeCalculator themeCalculator;
-
-	private static final Logger LOG = Logger.getLogger(TransitPeriodCalculator.class);
+	private static final Logger LOG = Logger.getLogger(TransitPeriodService.class);
 	private static final ReadablePeriod PERIOD_TO_ADD = Weeks.ONE;
 	private static final ReadablePeriod PERIOD_TO_ADD_FIN = Days.ONE;
 
-	private TransitPeriodCalculator() {}
+	@Autowired
+	private AspectService aspectService;
 
-	private static class TransitPeriodCalculatorHolder {
-		private final static TransitPeriodCalculator instance = new TransitPeriodCalculator();
-	}
+	@Autowired
+	private ThemeService themeService;
 
-	public static TransitPeriodCalculator getInstance() {
-		return TransitPeriodCalculatorHolder.instance;
-	}
+	public TransitPeriodService() {}
 
 	public TransitPeriods createTransitPeriod(SkyPosition natalTheme, DateTime startDate, DateTime endDate,
 											  Degree latitude, Degree longitude) {
@@ -55,7 +50,7 @@ public class TransitPeriodCalculator {
 	private DateTime fillPeriods(DateTime currentDate, SkyPosition natalTheme, DateTime endDate, Degree latitude,
 								 Degree longitude, TransitPeriodsBuilder builder, ReadablePeriod periodToAdd) {
 		while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
-			SkyPosition currentSkyPosition = themeCalculator.getSkyPosition(currentDate, latitude, longitude);
+			SkyPosition currentSkyPosition = themeService.getSkyPosition(currentDate, latitude, longitude);
 			builder.startNewPeriod(currentDate);
 
 			appendPlanetPeriods(natalTheme, builder, currentSkyPosition);
@@ -84,7 +79,7 @@ public class TransitPeriodCalculator {
 
 	private void appendPlanetPeriods(SkyPosition natalTheme, TransitPeriodsBuilder builder,
 									 SkyPosition currentSkyPosition) {
-		SortedMap<Planet, SortedMap<Planet, AspectPosition>> aspectsForTransit = AspectCalculator.getInstance()
+		SortedMap<Planet, SortedMap<Planet, AspectPosition>> aspectsForTransit = aspectService
 				.createAspectsForTransit(natalTheme, currentSkyPosition);
 
 		for (Planet natalPlanet : aspectsForTransit.keySet()) {

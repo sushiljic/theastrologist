@@ -1,7 +1,7 @@
 package com.theastrologist.controller;
 
-import com.theastrologist.service.DominantPlanetsCalculator;
-import com.theastrologist.service.ThemeCalculator;
+import com.theastrologist.service.DominantPlanetsService;
+import com.theastrologist.service.ThemeService;
 import com.theastrologist.domain.Degree;
 import com.theastrologist.domain.SkyPosition;
 import com.theastrologist.domain.planetvalue.DominantPlanets;
@@ -27,18 +27,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class DominantPlanetsController extends AbstractController {
 
 	@Autowired
-	ThemeCalculator themeCalculator;
+    ThemeService themeService;
+
+	@Autowired
+	private DominantPlanetsService dominantPlanetsService;
 
 	private DominantPlanets getDominantPlanets(String datetime, double latitude, double longitude, String address) {
 		DateTime parse = timeService.parseDateTime(datetime, latitude, longitude);
 		Degree latitudeDegree = new Degree(latitude);
 		Degree longitudeDegree = new Degree(longitude);
-		SkyPosition skyPosition = themeCalculator.getSkyPosition(parse, latitudeDegree, longitudeDegree);
+		SkyPosition skyPosition = themeService.getSkyPosition(parse, latitudeDegree, longitudeDegree);
 		if (address != null) {
 			skyPosition.setAddress(address);
 		}
 
-		DominantPlanets dominantPlanets = DominantPlanetsCalculator.getInstance().getDominantPlanets(skyPosition);
+		DominantPlanets dominantPlanets = dominantPlanetsService.getDominantPlanets(skyPosition);
 
 		return dominantPlanets;
 	}

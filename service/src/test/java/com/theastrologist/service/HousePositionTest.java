@@ -1,6 +1,6 @@
 package com.theastrologist.service;
 
-import com.theastrologist.config.ServiceTestConfig;
+import com.theastrologist.ServiceTestConfiguration;
 import com.theastrologist.domain.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {ServiceTestConfig.class})
+@ContextConfiguration(classes = {ServiceTestConfiguration.class})
 public class HousePositionTest {
 
     public static final DateTimeZone DATE_TIME_ZONE = DateTimeZone.forTimeZone(TimeZone.getTimeZone("Europe/Paris"));
@@ -30,11 +30,11 @@ public class HousePositionTest {
     //private final double LONGITUDE = 2.4104510;
 
     @Autowired
-    private ThemeCalculator themeCalculator;
+    private ThemeService themeService;
 
     @Before
     public void setup() {
-        testSkyPosition = themeCalculator.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        testSkyPosition = themeService.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
     }
 
     @Test

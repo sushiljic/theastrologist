@@ -1,7 +1,7 @@
 package com.theastrologist.controller;
 
-import com.theastrologist.service.ThemeCalculator;
-import com.theastrologist.service.TransitPeriodCalculator;
+import com.theastrologist.service.ThemeService;
+import com.theastrologist.service.TransitPeriodService;
 import com.theastrologist.domain.Degree;
 import com.theastrologist.domain.SkyPosition;
 import com.theastrologist.domain.transitperiod.TransitPeriods;
@@ -23,7 +23,10 @@ import org.springframework.web.bind.annotation.*;
 public class TransitPeriodController extends AbstractController {
 
 	@Autowired
-	private ThemeCalculator themeCalculator;
+	private ThemeService themeService;
+
+	@Autowired
+	private TransitPeriodService transitPeriodService;
 
 	@ApiOperation(value = "Transit period", produces = "application/json")
 	@GetMapping(value = "/{natalDate}/{latitude:.+}/{longitude:.+}/transitperiod/{startDate}/{endDate}")
@@ -57,9 +60,9 @@ public class TransitPeriodController extends AbstractController {
 		DateTime parsedEndDate = new DateTime(endDate);
 		Degree parsedLatitude = new Degree(latitude);
 		Degree parsedLongitude = new Degree(longitude);
-		SkyPosition natalPosition = themeCalculator
+		SkyPosition natalPosition = themeService
 				.getSkyPosition(parsedNatalDate, parsedLatitude, parsedLongitude);
-		return TransitPeriodCalculator.getInstance()
+		return transitPeriodService
 				.createTransitPeriod(natalPosition, parsedStartDate, parsedEndDate, parsedLatitude, parsedLongitude);
 	}
 }

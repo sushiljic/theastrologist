@@ -1,6 +1,6 @@
 package com.theastrologist.service;
 
-import com.theastrologist.config.ServiceTestConfig;
+import com.theastrologist.ServiceTestConfiguration;
 import com.theastrologist.domain.Degree;
 import com.theastrologist.domain.Planet;
 import com.theastrologist.domain.PlanetPosition;
@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {ServiceTestConfig.class})
+@ContextConfiguration(classes = {ServiceTestConfiguration.class})
 public class AspectPositionTest {
 
     private Degree asDegree = new Degree(341, 46);
@@ -40,7 +40,10 @@ public class AspectPositionTest {
     private final Degree LONGITUDE = new Degree(2, 25);
 
     @Autowired
-    ThemeCalculator themeCalculator;
+    private ThemeService themeService;
+
+    @Autowired
+    private AspectService aspectService;
 
     @Before
     public void setUp() throws Exception {
@@ -111,8 +114,8 @@ public class AspectPositionTest {
 
     @Test
     public void testFullAspectMap() throws Exception {
-        SkyPosition testSkyPosition = themeCalculator.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
-        SortedMap<Planet, SortedMap<Planet, AspectPosition>> aspectsForSkyPosition = AspectCalculator.getInstance().createAspectsForSkyPosition(testSkyPosition);
+        SkyPosition testSkyPosition = themeService.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        SortedMap<Planet, SortedMap<Planet, AspectPosition>> aspectsForSkyPosition = aspectService.createAspectsForSkyPosition(testSkyPosition);
 
         assertThat(aspectsForSkyPosition, notNullValue());
 
@@ -133,8 +136,8 @@ public class AspectPositionTest {
 
     @Test
     public void testAspectMapUnsuccessful() throws Exception {
-        SkyPosition testSkyPosition = themeCalculator.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
-        SortedMap<Planet, SortedMap<Planet, AspectPosition>> aspectsForSkyPosition = AspectCalculator.getInstance().createAspectsForSkyPosition(testSkyPosition);
+        SkyPosition testSkyPosition = themeService.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        SortedMap<Planet, SortedMap<Planet, AspectPosition>> aspectsForSkyPosition = aspectService.createAspectsForSkyPosition(testSkyPosition);
 
         assertThat(aspectsForSkyPosition, notNullValue());
 
@@ -148,10 +151,10 @@ public class AspectPositionTest {
 
     @Test
     public void testSynastryConjAscLune() throws Exception {
-        SkyPosition testSkyPosition = themeCalculator.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
-        SkyPosition testSkyPositionComparison = themeCalculator.getSkyPosition(TEST_DATE_COMP, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPosition = themeService.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPositionComparison = themeService.getSkyPosition(TEST_DATE_COMP, LATITUDE, LONGITUDE);
         SortedMap<Planet, SortedMap<Planet, AspectPosition>> synastry =
-                AspectCalculator.getInstance().createAspectsForSynastry(testSkyPosition, testSkyPositionComparison);
+                aspectService.createAspectsForSynastry(testSkyPosition, testSkyPositionComparison);
 
         assertThat(synastry, notNullValue());
 
@@ -172,10 +175,10 @@ public class AspectPositionTest {
 
     @Test
     public void testSynastryConjLuneLune() throws Exception {
-        SkyPosition testSkyPosition = themeCalculator.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
-        SkyPosition testSkyPositionComparison = themeCalculator.getSkyPosition(TEST_DATE_SYNASTRY, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPosition = themeService.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPositionComparison = themeService.getSkyPosition(TEST_DATE_SYNASTRY, LATITUDE, LONGITUDE);
         SortedMap<Planet, SortedMap<Planet, AspectPosition>> synastry =
-                AspectCalculator.getInstance().createAspectsForSynastry(testSkyPosition, testSkyPositionComparison);
+                aspectService.createAspectsForSynastry(testSkyPosition, testSkyPositionComparison);
 
         assertThat(synastry, notNullValue());
 
@@ -196,10 +199,10 @@ public class AspectPositionTest {
 
     @Test
     public void testTransitConjNormale() throws Exception {
-        SkyPosition testSkyPosition = themeCalculator.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
-        SkyPosition testSkyPositionComparison = themeCalculator.getSkyPosition(TEST_DATE_TRANSIT, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPosition = themeService.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPositionComparison = themeService.getSkyPosition(TEST_DATE_TRANSIT, LATITUDE, LONGITUDE);
         SortedMap<Planet, SortedMap<Planet, AspectPosition>> transit =
-                AspectCalculator.getInstance().createAspectsForTransit(testSkyPosition, testSkyPositionComparison);
+                aspectService.createAspectsForTransit(testSkyPosition, testSkyPositionComparison);
 
         assertThat(transit, notNullValue());
 
@@ -220,10 +223,10 @@ public class AspectPositionTest {
 
     @Test
     public void testTransitPasConjDansOrbe() throws Exception {
-        SkyPosition testSkyPosition = themeCalculator.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
-        SkyPosition testSkyPositionComparison = themeCalculator.getSkyPosition(TEST_DATE_TRANSIT, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPosition = themeService.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPositionComparison = themeService.getSkyPosition(TEST_DATE_TRANSIT, LATITUDE, LONGITUDE);
         SortedMap<Planet, SortedMap<Planet, AspectPosition>> transit =
-                AspectCalculator.getInstance().createAspectsForTransit(testSkyPosition, testSkyPositionComparison);
+                aspectService.createAspectsForTransit(testSkyPosition, testSkyPositionComparison);
 
         assertThat(transit, notNullValue());
 
@@ -235,10 +238,10 @@ public class AspectPositionTest {
 
     @Test
     public void testTransitConjSurMemePlanete() throws Exception {
-        SkyPosition testSkyPosition = themeCalculator.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
-        SkyPosition testSkyPositionComparison = themeCalculator.getSkyPosition(TEST_DATE_TRANSIT, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPosition = themeService.getSkyPosition(TEST_DATE, LATITUDE, LONGITUDE);
+        SkyPosition testSkyPositionComparison = themeService.getSkyPosition(TEST_DATE_TRANSIT, LATITUDE, LONGITUDE);
         SortedMap<Planet, SortedMap<Planet, AspectPosition>> transit =
-                AspectCalculator.getInstance().createAspectsForTransit(testSkyPosition, testSkyPositionComparison);
+                aspectService.createAspectsForTransit(testSkyPosition, testSkyPositionComparison);
 
         assertThat(transit, notNullValue());
 

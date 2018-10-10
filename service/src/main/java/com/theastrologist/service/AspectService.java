@@ -7,21 +7,15 @@ import com.theastrologist.domain.Planet;
 import com.theastrologist.domain.PlanetPosition;
 import com.theastrologist.domain.SkyPosition;
 import com.theastrologist.domain.aspect.AspectPosition;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.SortedMap;
 
-public class AspectCalculator {
+@Service
+public class AspectService {
 
-	private AspectCalculator() {}
-
-	private static class AspectCalculatorHolder {
-		private final static AspectCalculator instance = new AspectCalculator();
-	}
-
-	public static AspectCalculator getInstance() {
-		return AspectCalculatorHolder.instance;
-	}
+	public AspectService() {}
 
 	/**
 	 * Calcul des aspects sur une carte du ciel

@@ -1,10 +1,12 @@
 package com.theastrologist.service;
 
+import org.springframework.stereotype.Service;
 import swisseph.SwissEph;
 
 /**
  * Created by Samy on 12/05/2017.
  */
+@Service
 public class Swieph {
 
 	private final SwissEph sw;
@@ -12,25 +14,8 @@ public class Swieph {
 	/**
 	 * Constructeur privé
 	 */
-	private Swieph() {
+	public Swieph() {
 		sw = new SwissEph();
-	}
-
-	/**
-	 * Holder
-	 */
-	private static class SwiephHolder {
-		/**
-		 * Instance unique non préinitialisée
-		 */
-		private final static Swieph instance = new Swieph();
-	}
-
-	/**
-	 * Point d'accès pour l'instance unique du singleton
-	 */
-	public static Swieph getInstance() {
-		return SwiephHolder.instance;
 	}
 
 	public SwissEph value() {

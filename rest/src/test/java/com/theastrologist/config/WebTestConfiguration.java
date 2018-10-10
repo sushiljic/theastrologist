@@ -1,15 +1,11 @@
 package com.theastrologist.config;
 
-import com.theastrologist.service.ThemeCalculator;
-import com.theastrologist.service.config.ServiceConfig;
+import com.theastrologist.service.ThemeService;
 import com.theastrologist.util.TimeService;
-import com.theastrologist.util.TimeServiceTest;
-import org.junit.Test;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.*;
 
-@TestConfiguration
+@Configuration
 @Profile("test")
 public class WebTestConfiguration {
 	@Bean
@@ -19,8 +15,9 @@ public class WebTestConfiguration {
 	}
 
 	@Bean
-	public ThemeCalculator themeCalculator() {
-		return new ThemeCalculator();
+	@Primary
+	public ThemeService themeCalculator() {
+		return new ThemeService();
 	}
 
 

@@ -1,6 +1,6 @@
 package com.theastrologist.service;
 
-import com.theastrologist.config.ServiceTestConfig;
+import com.theastrologist.ServiceTestConfiguration;
 import com.theastrologist.domain.Degree;
 import com.theastrologist.domain.Sign;
 import com.theastrologist.domain.SkyPosition;
@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
  * Created by Samy on 11/05/2017.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {ServiceTestConfig.class})
-public class SolarRevolutionCalculatorTest {
+@ContextConfiguration(classes = {ServiceTestConfiguration.class})
+public class SolarRevolutionServiceTest {
 	private final DateTime TEST_NATAL_DATE = new DateTime(1985, 1, 4, 11, 20, CalcUtil.DATE_TIME_ZONE);
 	private final DateTime TEST_REV_DATE = new DateTime(2016, 3, 12, 05, 36, CalcUtil.DATE_TIME_ZONE);
 	private final Degree NATAL_LATITUDE = new Degree(48, 39);
@@ -35,16 +35,19 @@ public class SolarRevolutionCalculatorTest {
 	//private final double NATAL_LONGITUDE = 2.4104510;
 
 	@Autowired
-	private ThemeCalculator themeCalculator;
+	private ThemeService themeService;
+
+	@Autowired
+	private RevolutionService revolutionService;
 
 	@Before
 	public void setup() {
-		testSkyPosition = themeCalculator.getSkyPosition(TEST_NATAL_DATE, NATAL_LATITUDE, NATAL_LONGITUDE);
+		testSkyPosition = themeService.getSkyPosition(TEST_NATAL_DATE, NATAL_LATITUDE, NATAL_LONGITUDE);
 	}
 
 	@Test
 	public void testSolarRevolutionUTSAM2016() throws Exception {
-		DateTime solarRevolutionTime = RevolutionCalculator.getInstance()
+		DateTime solarRevolutionTime = revolutionService
 				.getSolarRevolutionUT(testSkyPosition, TEST_REV_DATE.minusYears(1));
 
 		assertThat(solarRevolutionTime, notNullValue());
@@ -53,7 +56,7 @@ public class SolarRevolutionCalculatorTest {
 
 	@Test
 	public void testSolarRevolutionSAM2016() throws Exception {
-		SkyPosition solarRevolution = RevolutionCalculator.getInstance()
+		SkyPosition solarRevolution = revolutionService
 				.getSolarRevolution(testSkyPosition, TEST_REV_DATE.minusYears(1), PARIS_LATITUDE, PARIS_LONGITUDE);
 
 		assertThat(solarRevolution, notNullValue());
@@ -62,7 +65,7 @@ public class SolarRevolutionCalculatorTest {
 
 	@Test
 	public void testSolarRevolutionUTSAM2017() throws Exception {
-		DateTime solarRevolutionTime = RevolutionCalculator.getInstance()
+		DateTime solarRevolutionTime = revolutionService
 				.getSolarRevolutionUT(testSkyPosition, TEST_REV_DATE);
 
 		assertThat(solarRevolutionTime, notNullValue());
@@ -71,7 +74,7 @@ public class SolarRevolutionCalculatorTest {
 
 	@Test
 	public void testSolarRevolutionSAM2017() throws Exception {
-		SkyPosition solarRevolution = RevolutionCalculator.getInstance()
+		SkyPosition solarRevolution = revolutionService
 				.getSolarRevolution(testSkyPosition, TEST_REV_DATE, PARIS_LATITUDE, PARIS_LONGITUDE);
 
 		assertThat(solarRevolution, notNullValue());
@@ -81,7 +84,7 @@ public class SolarRevolutionCalculatorTest {
 
 	@Test
 	public void testSolarRevolutionSAM2017Bamako() throws Exception {
-		SkyPosition solarRevolution = RevolutionCalculator.getInstance()
+		SkyPosition solarRevolution = revolutionService
 				.getSolarRevolution(testSkyPosition, TEST_REV_DATE, BAMAKO_LATITUDE, BAMAKO_LONGITUDE);
 
 		assertThat(solarRevolution, notNullValue());
@@ -91,7 +94,7 @@ public class SolarRevolutionCalculatorTest {
 
 	@Test
 	public void testSolarRevolutionUTSAM2018() throws Exception {
-		DateTime solarRevolutionTime = RevolutionCalculator.getInstance()
+		DateTime solarRevolutionTime = revolutionService
 				.getSolarRevolutionUT(testSkyPosition, TEST_REV_DATE.plusYears(1));
 
 		assertThat(solarRevolutionTime, notNullValue());
@@ -100,7 +103,7 @@ public class SolarRevolutionCalculatorTest {
 
 	@Test
 	public void testSolarRevolutionSAM2018() throws Exception {
-		SkyPosition solarRevolution = RevolutionCalculator.getInstance()
+		SkyPosition solarRevolution = revolutionService
 				.getSolarRevolution(testSkyPosition, TEST_REV_DATE.plusYears(1), PARIS_LATITUDE, PARIS_LONGITUDE);
 
 		assertThat(solarRevolution, notNullValue());
@@ -110,7 +113,7 @@ public class SolarRevolutionCalculatorTest {
 
 	@Test
 	public void testSolarRevolutionSAM2018Bamako() throws Exception {
-		SkyPosition solarRevolution = RevolutionCalculator.getInstance()
+		SkyPosition solarRevolution = revolutionService
 				.getSolarRevolution(testSkyPosition, TEST_REV_DATE.plusYears(1), BAMAKO_LATITUDE, BAMAKO_LONGITUDE);
 
 		assertThat(solarRevolution, notNullValue());

@@ -1,12 +1,10 @@
-package com.theastrologist.domain;
+package com.theastrologist.service;
 
-import com.theastrologist.config.ServiceTestConfig;
+import com.theastrologist.ServiceTestConfiguration;
 import com.theastrologist.domain.Degree;
 import com.theastrologist.domain.Planet;
 import com.theastrologist.domain.SkyPosition;
 import com.theastrologist.domain.planetvalue.PlanetValue;
-import com.theastrologist.service.DominantPlanetsCalculator;
-import com.theastrologist.service.ThemeCalculator;
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -14,10 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -30,7 +24,7 @@ import static org.junit.Assert.*;
  * Created by Samy on 25/07/2015.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {ServiceTestConfig.class})
+@ContextConfiguration(classes = {ServiceTestConfiguration.class})
 public class DominantPlanetsTest {
 
     public static final DateTimeZone DATE_TIME_ZONE = DateTimeZone.forTimeZone(TimeZone.getTimeZone("Europe/Paris"));
@@ -54,24 +48,27 @@ public class DominantPlanetsTest {
     private SortedSet<PlanetValue> vanessaDominantPlanetsHouses;
 
     @Autowired
-    private ThemeCalculator themeCalculator;
+    private ThemeService themeService;
+
+    @Autowired
+    private DominantPlanetsService dominantPlanetsService;
 
     @Before
     public void setUp() throws Exception {
-        samySkyPosition = themeCalculator.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
-        laurentSkyPosition = themeCalculator.getSkyPosition(LAURENT_DATE, LATITUDE, LONGITUDE);
-        emilieSkyPosition = themeCalculator.getSkyPosition(EMILIE_DATE, LATITUDE, LONGITUDE);
-        vanessaSkyPosition = themeCalculator.getSkyPosition(VANESSA_DATE, LATITUDE, LONGITUDE);
+        samySkyPosition = themeService.getSkyPosition(SAMY_DATE, LATITUDE, LONGITUDE);
+        laurentSkyPosition = themeService.getSkyPosition(LAURENT_DATE, LATITUDE, LONGITUDE);
+        emilieSkyPosition = themeService.getSkyPosition(EMILIE_DATE, LATITUDE, LONGITUDE);
+        vanessaSkyPosition = themeService.getSkyPosition(VANESSA_DATE, LATITUDE, LONGITUDE);
 
-        samyDominantPlanetsSigns = DominantPlanetsCalculator.getInstance().getDominantPlanetsSigns(samySkyPosition);
-        laurentDominantPlanetsSigns = DominantPlanetsCalculator.getInstance().getDominantPlanetsSigns(laurentSkyPosition);
-        emilieDominantPlanetsSigns = DominantPlanetsCalculator.getInstance().getDominantPlanetsSigns(emilieSkyPosition);
-        vanessaDominantPlanetsSigns = DominantPlanetsCalculator.getInstance().getDominantPlanetsSigns(vanessaSkyPosition);
+        samyDominantPlanetsSigns = dominantPlanetsService.getDominantPlanetsSigns(samySkyPosition);
+        laurentDominantPlanetsSigns = dominantPlanetsService.getDominantPlanetsSigns(laurentSkyPosition);
+        emilieDominantPlanetsSigns = dominantPlanetsService.getDominantPlanetsSigns(emilieSkyPosition);
+        vanessaDominantPlanetsSigns = dominantPlanetsService.getDominantPlanetsSigns(vanessaSkyPosition);
 
-        samyDominantPlanetsHouses = DominantPlanetsCalculator.getInstance().getDominantPlanetsHouses(samySkyPosition);
-        laurentDominantPlanetsHouses = DominantPlanetsCalculator.getInstance().getDominantPlanetsHouses(laurentSkyPosition);
-        emilieDominantPlanetsHouses = DominantPlanetsCalculator.getInstance().getDominantPlanetsHouses(emilieSkyPosition);
-        vanessaDominantPlanetsHouses = DominantPlanetsCalculator.getInstance().getDominantPlanetsHouses(vanessaSkyPosition);
+        samyDominantPlanetsHouses = dominantPlanetsService.getDominantPlanetsHouses(samySkyPosition);
+        laurentDominantPlanetsHouses = dominantPlanetsService.getDominantPlanetsHouses(laurentSkyPosition);
+        emilieDominantPlanetsHouses = dominantPlanetsService.getDominantPlanetsHouses(emilieSkyPosition);
+        vanessaDominantPlanetsHouses = dominantPlanetsService.getDominantPlanetsHouses(vanessaSkyPosition);
     }
 
     @Test
@@ -221,16 +218,16 @@ public class DominantPlanetsTest {
 
     public int compareSigns(SkyPosition skyPosition, Planet planet, Planet planetToCompare) {
 
-        int dominantPoints = DominantPlanetsCalculator.getInstance().calculateDominantSigns(planet, skyPosition).getValue();
-        int dominantPointsToCompare = DominantPlanetsCalculator.getInstance().calculateDominantSigns(planetToCompare, skyPosition).getValue();
+        int dominantPoints = dominantPlanetsService.calculateDominantSigns(planet, skyPosition).getValue();
+        int dominantPointsToCompare = dominantPlanetsService.calculateDominantSigns(planetToCompare, skyPosition).getValue();
 
         return dominantPoints - dominantPointsToCompare;
     }
 
     public int compareHouses(SkyPosition skyPosition, Planet planet, Planet planetToCompare) {
 
-        int dominantPoints = DominantPlanetsCalculator.getInstance().calculateDominantHouses(planet, skyPosition).getValue();
-        int dominantPointsToCompare = DominantPlanetsCalculator.getInstance().calculateDominantHouses(planetToCompare, skyPosition).getValue();
+        int dominantPoints = dominantPlanetsService.calculateDominantHouses(planet, skyPosition).getValue();
+        int dominantPointsToCompare = dominantPlanetsService.calculateDominantHouses(planetToCompare, skyPosition).getValue();
 
         return dominantPoints - dominantPointsToCompare;
     }

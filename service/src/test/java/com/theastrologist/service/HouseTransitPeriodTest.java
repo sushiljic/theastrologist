@@ -1,6 +1,6 @@
 package com.theastrologist.service;
 
-import com.theastrologist.config.ServiceTestConfig;
+import com.theastrologist.ServiceTestConfiguration;
 import com.theastrologist.domain.*;
 import com.theastrologist.domain.transitperiod.HouseTransitPeriod;
 import com.theastrologist.domain.transitperiod.PlanetTransitPeriod;
@@ -26,7 +26,7 @@ import static org.hamcrest.junit.MatcherAssert.assertThat;
  * Created by SAM on 30/06/2015.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {ServiceTestConfig.class})
+@ContextConfiguration(classes = {ServiceTestConfiguration.class})
 public class HouseTransitPeriodTest {
 
 	private Degree asDegree = new Degree(341, 46);
@@ -39,7 +39,10 @@ public class HouseTransitPeriodTest {
 	private final Degree LONGITUDE = new Degree(2, 25);
 
 	@Autowired
-	ThemeCalculator themeCalculator;
+	private ThemeService themeService;
+
+	@Autowired
+	private TransitPeriodService transitPeriodService;
 
 	@Before
 	public void setUp() throws Exception {
@@ -306,13 +309,13 @@ public class HouseTransitPeriodTest {
 	@Test
 	public void testFullTransitPeriod() throws Exception {
 		// Given
-		SkyPosition natalPosition = themeCalculator.getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
+		SkyPosition natalPosition = themeService.getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
 
 		DateTime startDate = DateTime.parse("2012-01-01");
 		DateTime endDate = DateTime.parse("2018-01-01");
 
 		// When
-		TransitPeriods build = TransitPeriodCalculator.getInstance()
+		TransitPeriods build = transitPeriodService
 				.createTransitPeriod(natalPosition, startDate, endDate, LATITUDE, LONGITUDE);
 		Map<Planet, SortedSet<HouseTransitPeriod>> map = build.getHousePeriods();
 
@@ -357,13 +360,13 @@ public class HouseTransitPeriodTest {
 	@Test
 	public void testSupprTwoElementsNoLength() throws Exception {
 		// Given
-		SkyPosition natalPosition = themeCalculator.getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
+		SkyPosition natalPosition = themeService.getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
 
 		DateTime startDate = DateTime.parse("2016-08-01");
 		DateTime endDate = DateTime.parse("2016-09-10");
 
 		// When
-		TransitPeriods build = TransitPeriodCalculator.getInstance()
+		TransitPeriods build = transitPeriodService
 				.createTransitPeriod(natalPosition, startDate, endDate, LATITUDE, LONGITUDE);
 		Map<Planet, SortedSet<PlanetTransitPeriod>> map = build.getPlanetPeriods();
 
