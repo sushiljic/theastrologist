@@ -11,7 +11,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -32,8 +34,10 @@ import static org.mockito.Mockito.*;
  * Classes de test pour tester les URL de type "48.6456630/2.4104510/1985-01-04T11:20:00+01:00/theme/"
  */
 @RunWith(SpringRunner.class)
-@ActiveProfiles("test")
-@WebMvcTest(ThemeController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+//@ActiveProfiles("test")
+//@WebMvcTest(ThemeController.class)
 public class ThemeControllerTest {
 	@Autowired
 	private MockMvc mockMvc;

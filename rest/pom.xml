@@ -25,6 +25,12 @@
             <artifactId>theastrologist-service</artifactId>
         </dependency>
 
+        <!--<dependency>
+            <groupId>${project.groupId}</groupId>
+            <version>${project.version}</version>
+            <artifactId>theastrologist-data</artifactId>
+        </dependency>-->
+
         <!-- SPRING -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

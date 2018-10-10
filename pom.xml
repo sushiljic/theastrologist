@@ -49,8 +49,8 @@
 
     <modules>
         <module>domain</module>
-        <module>data</module>
         <module>service</module>
+        <module>data</module>
         <module>rest</module>
     </modules>
 

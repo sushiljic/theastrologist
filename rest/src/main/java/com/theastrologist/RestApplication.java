@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.theastrologist")
+@ComponentScan(basePackages = {"com.theastrologist"})
 @EnableAutoConfiguration(exclude = {JacksonAutoConfiguration.class})
 public class RestApplication {
 
