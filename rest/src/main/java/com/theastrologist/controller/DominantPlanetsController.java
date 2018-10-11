@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DominantPlanetsController extends AbstractController {
 
 	@Autowired
-    ThemeService themeService;
+    private ThemeService themeService;
 
 	@Autowired
 	private DominantPlanetsService dominantPlanetsService;

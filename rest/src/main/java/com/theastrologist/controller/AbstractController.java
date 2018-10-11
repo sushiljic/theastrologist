@@ -23,10 +23,6 @@ public class AbstractController {
 	@Autowired
 	protected TimeService timeService;
 
-	public void setTimeService(TimeService timeService) {
-		this.timeService = timeService;
-	}
-
 	public GeoResult queryForGeoloc(String address) throws GeolocException {
 		GeolocRestClient geolocRestClient = new GeolocRestClient(address);
 		GeoResponse response = geolocRestClient.getGeocoding();
