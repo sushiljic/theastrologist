@@ -100,14 +100,6 @@
             <version>1.5.21</version>
         </dependency>
 
-        <!-- Tests -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring.boot.version}</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
