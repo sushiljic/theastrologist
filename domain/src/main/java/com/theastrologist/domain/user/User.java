@@ -1,28 +1,35 @@
 package com.theastrologist.domain.user;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "Users")
 @NamedQueries({ @NamedQuery(name = User.QUERY_FIND_BY_USERNAME, query = "SELECT u from User u where u.userName = :userName") })
 public class User {
-    public static final String QUERY_FIND_BY_USERNAME = "UserEntity.finyByUserName";
+    public static final String QUERY_FIND_BY_USERNAME = "UserEntity.findByUserName";
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", columnDefinition = "VARCHAR(255)")
+    private UUID id;
 
     @Basic
     private String userName;
+
+    public User() {}
 
     public User(String userName) {
         this.userName = userName;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

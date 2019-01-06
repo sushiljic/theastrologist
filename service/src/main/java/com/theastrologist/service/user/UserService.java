@@ -2,6 +2,7 @@ package com.theastrologist.service.user;
 
 import com.theastrologist.data.service.UserDataService;
 import com.theastrologist.domain.user.User;
+import com.theastrologist.data.service.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +10,13 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     @Autowired
-    UserDataService userDataService;
+    private UserDataService userDataService;
 
     public User getUser(String username){
         return userDataService.getUserByName(username);
+    }
+
+    public void createUser(User user) throws UserAlreadyExistsException {
+        userDataService.createUser(user);
     }
 }

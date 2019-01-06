@@ -2,6 +2,7 @@ package com.theastrologist.data.service;
 
 import com.theastrologist.data.DataTestConfiguration;
 import com.theastrologist.data.repository.UserRepository;
+import com.theastrologist.data.service.exception.UserAlreadyExistsException;
 import com.theastrologist.domain.user.User;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -30,10 +31,8 @@ public class UserDataServiceTest {
     @Before
     public void setup() {
         User alex = new User("alex");
-
         Mockito.when(userRepository.findByUserName(alex.getUserName())).thenReturn(alex);
     }
-
 
     @Test
     public void findByName() {
@@ -43,10 +42,30 @@ public class UserDataServiceTest {
     }
 
     @Test
+    public void createUserTest() throws Exception {
+        //GIVEN
+        User user = new User("toto");
+        Mockito.when(userRepository.save(user)).thenReturn(user);
+
+        // WHEN
+        userDataService.createUser(user);
+    }
+
+    @Test(expected = UserAlreadyExistsException.class)
+    public void createUserExistingTest() throws Exception {
+        // GIVEN
+        String userName = "toto";
+        User user = new User(userName);
+        Mockito.when(userRepository.findByUserName(userName)).thenReturn(user);
+
+        // WHEN
+        userDataService.createUser(user);
+    }
+
+    @Test
     @Ignore
     public void getAllArticlesTest() {
         // when
-
         List<User> userList = userDataService.getUsers();
         assertThat(userList).isNotNull();
 
