@@ -1,13 +1,16 @@
 package com.theastrologist.controller;
 
 import com.theastrologist.controller.exception.ErrorResponse;
+import com.theastrologist.controller.exception.NoResultsFoundException;
 import com.theastrologist.controller.exception.NoResultsRestException;
 import com.theastrologist.controller.exception.TooManyResultsRestException;
+import com.theastrologist.domain.user.User;
 import com.theastrologist.external.GoogleRestException;
 import com.theastrologist.external.geoloc.GeoResponse;
 import com.theastrologist.external.geoloc.GeoResult;
 import com.theastrologist.external.geoloc.GeolocException;
 import com.theastrologist.external.geoloc.GeolocRestClient;
+import com.theastrologist.service.UserService;
 import com.theastrologist.util.TimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +25,9 @@ import java.util.List;
 public class AbstractController {
 	@Autowired
 	protected TimeService timeService;
+
+	@Autowired
+	private UserService userService;
 
 	public GeoResult queryForGeoloc(String address) throws GeolocException {
 		GeolocRestClient geolocRestClient = new GeolocRestClient(address);
@@ -43,5 +49,13 @@ public class AbstractController {
 		error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		error.setMessage(ex.getMessage());
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
+	}
+
+	public User getUser(String userName) throws NoResultsFoundException {
+		User user = userService.getUser(userName);
+		if(user == null) {
+			throw new NoResultsFoundException();
+		}
+		return user;
 	}
 }

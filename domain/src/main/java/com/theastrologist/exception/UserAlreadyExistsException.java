@@ -1,4 +1,4 @@
-package com.theastrologist.data.service.exception;
+package com.theastrologist.exception;
 
 public class UserAlreadyExistsException extends Exception{
 }

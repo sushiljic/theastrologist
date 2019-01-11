@@ -2,7 +2,7 @@ package com.theastrologist.data.service;
 
 import com.theastrologist.data.DataTestConfiguration;
 import com.theastrologist.data.repository.UserRepository;
-import com.theastrologist.data.service.exception.UserAlreadyExistsException;
+import com.theastrologist.exception.UserAlreadyExistsException;
 import com.theastrologist.domain.user.User;
 import org.junit.Before;
 import org.junit.Ignore;

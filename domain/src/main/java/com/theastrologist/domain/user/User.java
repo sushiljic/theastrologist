@@ -1,8 +1,10 @@
 package com.theastrologist.domain.user;
 
+import com.theastrologist.domain.individual.Individual;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,10 +21,20 @@ public class User {
     @Basic
     private String userName;
 
+    private List<Individual> individuals;
+
     public User() {}
 
     public User(String userName) {
         this.userName = userName;
+    }
+
+    public List<Individual> getIndividuals() {
+        return individuals;
+    }
+
+    public void setIndividuals(List<Individual> individuals) {
+        this.individuals = individuals;
     }
 
     public UUID getId() {

@@ -1,8 +1,8 @@
-package com.theastrologist.service.user;
+package com.theastrologist.service;
 
 import com.theastrologist.data.service.UserDataService;
 import com.theastrologist.domain.user.User;
-import com.theastrologist.data.service.exception.UserAlreadyExistsException;
+import com.theastrologist.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

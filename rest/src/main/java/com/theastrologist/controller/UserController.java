@@ -3,7 +3,7 @@ package com.theastrologist.controller;
 import com.theastrologist.controller.exception.NoResultsFoundException;
 import com.theastrologist.controller.exception.UserAlreadyExistsException;
 import com.theastrologist.domain.user.User;
-import com.theastrologist.service.user.UserService;
+import com.theastrologist.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +43,7 @@ public class UserController extends AbstractController {
 			@ApiParam(value = "User", required = true) @RequestBody User user) throws UserAlreadyExistsException {
 		try {
 			userService.createUser(user);
-		} catch(com.theastrologist.data.service.exception.UserAlreadyExistsException e) {
+		} catch(com.theastrologist.exception.UserAlreadyExistsException e) {
 			throw new UserAlreadyExistsException();
 		}
 

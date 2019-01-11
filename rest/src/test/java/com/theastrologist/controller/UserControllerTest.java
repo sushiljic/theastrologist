@@ -1,11 +1,9 @@
 package com.theastrologist.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.theastrologist.data.repository.UserRepository;
 import com.theastrologist.data.service.UserDataService;
-import com.theastrologist.data.service.exception.UserAlreadyExistsException;
+import com.theastrologist.exception.UserAlreadyExistsException;
 import com.theastrologist.domain.user.User;
-import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +25,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyDouble;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
