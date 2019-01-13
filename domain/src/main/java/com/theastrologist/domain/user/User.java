@@ -4,7 +4,9 @@ import com.theastrologist.domain.individual.Individual;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -21,7 +23,8 @@ public class User {
     @Basic
     private String userName;
 
-    private List<Individual> individuals;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Individual> individuals = new HashSet();
 
     public User() {}
 
@@ -29,11 +32,11 @@ public class User {
         this.userName = userName;
     }
 
-    public List<Individual> getIndividuals() {
+    public Set<Individual> getIndividuals() {
         return individuals;
     }
 
-    public void setIndividuals(List<Individual> individuals) {
+    public void setIndividuals(Set<Individual> individuals) {
         this.individuals = individuals;
     }
 

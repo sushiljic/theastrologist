@@ -1,8 +1,9 @@
 package com.theastrologist.controller;
 
 import com.theastrologist.controller.exception.NoResultsFoundException;
-import com.theastrologist.controller.exception.UserAlreadyExistsException;
+import com.theastrologist.controller.exception.UserAlreadyExistsRestException;
 import com.theastrologist.domain.user.User;
+import com.theastrologist.exception.UserAlreadyExistsException;
 import com.theastrologist.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +41,11 @@ public class UserController extends AbstractController {
 	})
 	@PostMapping(value = "/user")
 	public ResponseEntity<Void> createUser(
-			@ApiParam(value = "User", required = true) @RequestBody User user) throws UserAlreadyExistsException {
+			@ApiParam(value = "User", required = true) @RequestBody User user) throws UserAlreadyExistsRestException {
 		try {
 			userService.createUser(user);
-		} catch(com.theastrologist.exception.UserAlreadyExistsException e) {
-			throw new UserAlreadyExistsException();
+		} catch(UserAlreadyExistsException e) {
+			throw new UserAlreadyExistsRestException();
 		}
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{userName}").buildAndExpand(user.getUserName()).toUri();

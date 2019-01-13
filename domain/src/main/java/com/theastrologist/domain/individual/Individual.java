@@ -1,6 +1,8 @@
 package com.theastrologist.domain.individual;
 
 import com.theastrologist.domain.Degree;
+import com.theastrologist.domain.user.User;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 import org.joda.time.DateTime;
 
@@ -17,13 +19,20 @@ public class Individual {
 	@Column(name = "id", columnDefinition = "VARCHAR(255)")
 	private UUID id;
 
+	@ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	private User user;
+
 	private String name;
 	private DateTime date;
 	private String location;
 	private String country;
-	private Degree latitude;
-	private Degree longitude;
+	//private Degree latitude;
+	//private Degree longitude;
 	private Gender gender;
+
+	public Individual(String name) {
+		this.name = name;
+	}
 
 	public String getName() {
 		return name;
@@ -57,7 +66,7 @@ public class Individual {
 		this.country = country;
 	}
 
-	public Degree getLatitude() {
+	/*public Degree getLatitude() {
 		return latitude;
 	}
 
@@ -71,7 +80,7 @@ public class Individual {
 
 	public void setLongitude(Degree longitude) {
 		this.longitude = longitude;
-	}
+	}*/
 
 	public Gender getGender() {
 		return gender;
@@ -79,5 +88,13 @@ public class Individual {
 
 	public void setGender(Gender gender) {
 		this.gender = gender;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }
