@@ -1,5 +1,6 @@
 package com.theastrologist.domain;
 
+import com.google.common.collect.Lists;
 import com.google.gson.annotations.JsonAdapter;
 import com.theastrologist.core.AspectCalculator;
 import com.theastrologist.domain.aspect.AspectPosition;
@@ -11,10 +12,7 @@ import swisseph.SweConst;
 import swisseph.SweDate;
 import swisseph.SwissEph;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 
 /**
@@ -193,5 +191,37 @@ public class SkyPosition {
 
 	public String getAddress() {
 		return address;
+	}
+
+	public House getMasteredHouse(Planet natalPlanet) {
+		House returnedHouse = null;
+		List<House> masteredHouses = getMasteredHouses(natalPlanet);
+		if(masteredHouses.size() > 0) {
+			returnedHouse = masteredHouses.get(0);
+		}
+		return returnedHouse;
+	}
+
+	private List<House> getMasteredHouses(Planet natalPlanet) {
+		List<House> houses = Lists.newArrayList();
+		for (House house : houseMap.keySet()) {
+			HousePosition housePosition = getHousePosition(house);
+			Sign sign = housePosition.getStartSign();
+			Planet[] masterPlanets = sign.getMasterPlanets();
+			if(Arrays.binarySearch(masterPlanets, natalPlanet) >= 0){
+				houses.add(house);
+			}
+		}
+		houses.sort(Comparator.comparingInt(House::getHouseNumber));
+		return houses;
+	}
+
+	public House getSecondMasteredHouse(Planet natalPlanet) {
+		House returnedHouse = null;
+		List<House> masteredHouses = getMasteredHouses(natalPlanet);
+		if(masteredHouses.size() > 1) {
+			returnedHouse = masteredHouses.get(1);
+		}
+		return returnedHouse;
 	}
 }

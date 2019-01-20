@@ -84,7 +84,9 @@ public class TransitPeriodCalculator {
 			SortedMap<Planet, AspectPosition> aspectsForPlanet = aspectsForTransit.get(natalPlanet);
 			for (Planet planetInTransit : aspectsForPlanet.keySet()) {
 				AspectPosition aspectPosition = aspectsForPlanet.get(planetInTransit);
-				builder.appendPlanetTransit(natalPlanet, planetInTransit, aspectPosition.getAspect());
+				House masteredHouse = natalTheme.getMasteredHouse(natalPlanet);
+				House secondMasteredHouse = natalTheme.getSecondMasteredHouse(natalPlanet);
+				builder.appendPlanetTransit(natalPlanet, planetInTransit, aspectPosition.getAspect(), masteredHouse, secondMasteredHouse);
 			}
 		}
 	}
