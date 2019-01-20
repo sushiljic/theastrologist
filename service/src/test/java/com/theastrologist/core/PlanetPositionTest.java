@@ -458,4 +458,43 @@ public class PlanetPositionTest {
         assertThat(decanInHouse.getDecanNumber(), equalTo(3));
         assertThat(decanInHouse.getRelatedHouse(), equalTo(House.I));
     }
+
+    @Test
+    public void testGetMasteredHouses() throws Exception {
+        assertThat(testSkyPosition.getMasteredHouse(Planet.SOLEIL), equalTo(House.VI));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.SOLEIL), equalTo(null));
+
+        assertThat(testSkyPosition.getMasteredHouse(Planet.LUNE), equalTo(House.V));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.LUNE), equalTo(null));
+
+        assertThat(testSkyPosition.getMasteredHouse(Planet.MERCURE), equalTo(House.IV));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.MERCURE), equalTo(House.VII));
+
+        assertThat(testSkyPosition.getMasteredHouse(Planet.VENUS), equalTo(House.III));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.VENUS), equalTo(House.VIII));
+
+        assertThat(testSkyPosition.getMasteredHouse(Planet.MARS), equalTo(House.II));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.MARS), equalTo(House.IX));
+
+        assertThat(testSkyPosition.getMasteredHouse(Planet.JUPITER), equalTo(House.I));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.JUPITER), equalTo(House.X));
+
+        assertThat(testSkyPosition.getMasteredHouse(Planet.SATURNE), equalTo(House.XI));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.SATURNE), equalTo(House.XII));
+
+        assertThat(testSkyPosition.getMasteredHouse(Planet.URANUS), equalTo(House.XI));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.URANUS), equalTo(House.XII));
+
+        assertThat(testSkyPosition.getMasteredHouse(Planet.NEPTUNE), equalTo(House.I));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.NEPTUNE), equalTo(House.X));
+
+        assertThat(testSkyPosition.getMasteredHouse(Planet.PLUTON), equalTo(House.II));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.PLUTON), equalTo(House.IX));
+
+        assertThat(testSkyPosition.getMasteredHouse(Planet.ASCENDANT), equalTo(null));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.ASCENDANT), equalTo(null));
+
+        assertThat(testSkyPosition.getMasteredHouse(Planet.LILITH_MOYENNE), equalTo(null));
+        assertThat(testSkyPosition.getSecondMasteredHouse(Planet.LILITH_MOYENNE), equalTo(null));
+    }
 }

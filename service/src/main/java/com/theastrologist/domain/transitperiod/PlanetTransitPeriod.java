@@ -2,6 +2,7 @@ package com.theastrologist.domain.transitperiod;
 
 import com.google.gson.annotations.JsonAdapter;
 import com.theastrologist.domain.DateTimeJSONAdapter;
+import com.theastrologist.domain.House;
 import com.theastrologist.domain.Planet;
 import com.theastrologist.domain.aspect.Aspect;
 import org.joda.time.DateTime;
@@ -10,24 +11,28 @@ import org.joda.time.DateTime;
  * Created by SAM on 20/07/2015.
  */
 public class PlanetTransitPeriod implements Comparable {
-	transient Planet transitPlanet;
-	Planet natalPlanet;
-	Aspect aspect;
+	private transient Planet transitPlanet;
+	private Planet natalPlanet;
+	private Aspect aspect;
 	@JsonAdapter(DateTimeJSONAdapter.class)
-	DateTime startDate;
+	private DateTime startDate;
 	@JsonAdapter(DateTimeJSONAdapter.class)
-	DateTime endDate;
+	private DateTime endDate;
+	private House masteredHouse;
+	private House secondMasteredHouse;
 
-	public PlanetTransitPeriod(Planet transitPlanet, Planet natalPlanet, Aspect aspect, DateTime startDate) {
-		this(transitPlanet, natalPlanet, aspect, startDate, startDate);
+	PlanetTransitPeriod(Planet transitPlanet, Planet natalPlanet, Aspect aspect, DateTime startDate, House masteredHouse, House secondMasteredHouse) {
+		this(transitPlanet, natalPlanet, aspect, startDate, startDate, masteredHouse, secondMasteredHouse);
 	}
 
-	public PlanetTransitPeriod(Planet transitPlanet, Planet natalPlanet, Aspect aspect, DateTime startDate, DateTime endDate) {
+	private PlanetTransitPeriod(Planet transitPlanet, Planet natalPlanet, Aspect aspect, DateTime startDate, DateTime endDate, House masteredHouse, House secondMasteredHouse) {
 		this.transitPlanet = transitPlanet;
 		this.natalPlanet = natalPlanet;
 		this.aspect = aspect;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.masteredHouse = masteredHouse;
+		this.secondMasteredHouse = secondMasteredHouse;
 	}
 
 	public Planet getNatalPlanet() {
@@ -50,13 +55,21 @@ public class PlanetTransitPeriod implements Comparable {
 		return endDate;
 	}
 
-	public void setEndDate(DateTime endDate) {
+	void setEndDate(DateTime endDate) {
 		this.endDate = endDate;
+	}
+
+	public House getMasteredHouse() {
+		return masteredHouse;
+	}
+
+	public House getSecondMasteredHouse() {
+		return secondMasteredHouse;
 	}
 
 	public int compareTo(Object o) {
 		int returnedValue;
-		if (o == null || !(o instanceof PlanetTransitPeriod)) {
+		if (!(o instanceof PlanetTransitPeriod)) {
 			returnedValue = 1;
 		} else {
 			PlanetTransitPeriod obj = (PlanetTransitPeriod) o;
@@ -74,4 +87,5 @@ public class PlanetTransitPeriod implements Comparable {
 		}
 		return returnedValue;
 	}
+
 }
