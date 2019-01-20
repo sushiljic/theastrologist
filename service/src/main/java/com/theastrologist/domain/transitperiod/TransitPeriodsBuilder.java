@@ -25,7 +25,7 @@ public class TransitPeriodsBuilder {
 	Map<Planet, HouseTransitPeriod> previousPeriod = Maps.newHashMap();
 	Map<Planet, HouseTransitPeriod> periodOfPreviousTime = Maps.newHashMap();
 
-	public void appendPlanetTransit(Planet natalPlanet, Planet planetInTransit, Aspect transitType) {
+	public void appendPlanetTransit(Planet natalPlanet, Planet planetInTransit, Aspect transitType, House masteredHouse, House secondMasteredHouse) {
 		if (currentTime == null) {
 			throw new IllegalStateException("Cannot add transit if period not set");
 		}
@@ -35,19 +35,20 @@ public class TransitPeriodsBuilder {
 			SortedSet<PlanetTransitPeriod> planetTransitPeriods = planetMap.get(planetInTransit);
 
 			PlanetTransitPeriod lastPlanetTransitPeriod = findLastPlanetTransitPeriod(natalPlanet, transitType,
-																					  planetTransitPeriods);
+					planetTransitPeriods);
 
 			if (lastPlanetTransitPeriod != null) {
 				// On met à jour l'ancienne période de transit pour qu'elle se fusionne avec la nouvelle
 				lastPlanetTransitPeriod.setEndDate(currentTime);
 			} else {
+
 				// Sinon on en crée une nouvelle mais on l'ajoute à la liste
 				PlanetTransitPeriod newPeriod = new PlanetTransitPeriod(planetInTransit, natalPlanet, transitType,
-																		currentTime);
+						currentTime, masteredHouse, secondMasteredHouse);
 				planetTransitPeriods.add(newPeriod);
 			}
 		} else {
-			insertNewPlanetTransitPeriod(planetInTransit, natalPlanet, transitType);
+			insertNewPlanetTransitPeriod(planetInTransit, natalPlanet, transitType, masteredHouse, secondMasteredHouse);
 		}
 	}
 
@@ -71,12 +72,11 @@ public class TransitPeriodsBuilder {
 				if (lastHouse == currentHouse) {
 					// On met à jour l'ancienne période de transit pour qu'elle se fusionne avec la nouvelle
 					forwardPeriod = lastPeriod;
-					backPeriod = previousPeriod.containsKey(planetInTransit) ? previousPeriod.get(planetInTransit) :
-								 null;
+					backPeriod = previousPeriod.getOrDefault(planetInTransit, null);
 					currentPeriod = lastPeriod;
 				} else {
 					if (currentHouse.getPreviousHouse() == lastHouse ||
-						(planetInTransit == Planet.NOEUD_NORD_MOYEN && currentHouse.getNextHouse() == lastHouse)) {
+							(planetInTransit == Planet.NOEUD_NORD_MOYEN && currentHouse.getNextHouse() == lastHouse)) {
 						// Ici on est dans le cas du passage à une nouvelle période
 						backPeriod = lastPeriod;
 						backPeriod.setEndDate(currentTime);
@@ -84,9 +84,7 @@ public class TransitPeriodsBuilder {
 						forwardPeriod.setBeforeTransitionStartDate(currentTime);
 						previousPeriod.put(planetInTransit, backPeriod);
 						currentPeriod = forwardPeriod;
-					} else if (currentHouse.getNextHouse() == lastHouse ||
-							   (planetInTransit == Planet.NOEUD_NORD_MOYEN &&
-								currentHouse.getPreviousHouse() == lastHouse)) {
+					} else if (currentHouse.getNextHouse() == lastHouse) {
 						// Ici on est dans un cas de rétrogradation, on est encore en transition
 						forwardPeriod = lastPeriod;
 						DateTime startDate = forwardPeriod.getStartDate();
@@ -116,8 +114,8 @@ public class TransitPeriodsBuilder {
 					// A chaque fois qu'on saute une étape, on met à jour la date de transition
 					backPeriod.setAfterTransitionEndDate(currentTime);
 					if (backPeriod.getNatalHouse() == currentHouse.getPreviousHouse() ||
-						(planetInTransit == Planet.NOEUD_NORD_MOYEN &&
-						 backPeriod.getNatalHouse() == currentHouse.getNextHouse())) {
+							(planetInTransit == Planet.NOEUD_NORD_MOYEN &&
+									backPeriod.getNatalHouse() == currentHouse.getNextHouse())) {
 						// Uniquement quand on saute une étape
 						forwardPeriod.setStartDate(currentTime);
 					}
@@ -134,14 +132,14 @@ public class TransitPeriodsBuilder {
 	}
 
 	private HouseTransitPeriod insertNewHousePeriod(House currentHouse, Planet planetInTransit,
-													SortedSet<HouseTransitPeriod> houseTransitPeriods) {
+	                                                SortedSet<HouseTransitPeriod> houseTransitPeriods) {
 		HouseTransitPeriod newPeriod = new HouseTransitPeriod(planetInTransit, currentHouse, currentTime);
 		houseTransitPeriods.add(newPeriod);
 		return newPeriod;
 	}
 
-	private void insertNewPlanetTransitPeriod(Planet planetInTransit, Planet natalPlanet, Aspect transitType) {
-		PlanetTransitPeriod period = new PlanetTransitPeriod(planetInTransit, natalPlanet, transitType, currentTime);
+	private void insertNewPlanetTransitPeriod(Planet planetInTransit, Planet natalPlanet, Aspect transitType, House masteredHouse, House secondMasteredHouse) {
+		PlanetTransitPeriod period = new PlanetTransitPeriod(planetInTransit, natalPlanet, transitType, currentTime, masteredHouse, secondMasteredHouse);
 		SortedSet<PlanetTransitPeriod> sortedPeriods = Sets.newTreeSet();
 		sortedPeriods.add(period);
 		planetMap.put(planetInTransit, sortedPeriods);
@@ -156,14 +154,14 @@ public class TransitPeriodsBuilder {
 	}
 
 	private PlanetTransitPeriod findLastPlanetTransitPeriod(final Planet natalPlanet, final Aspect transitType,
-															SortedSet<PlanetTransitPeriod> planetTransitPeriods) {
+	                                                        SortedSet<PlanetTransitPeriod> planetTransitPeriods) {
 		PlanetTransitPeriod planetTransitPeriod = null;
 		SortedSet<PlanetTransitPeriod> filteredSet = Sets
 				.filter(planetTransitPeriods, new Predicate<PlanetTransitPeriod>() {
 					public boolean apply(PlanetTransitPeriod transitPeriod) {
 						return transitPeriod.getNatalPlanet() == natalPlanet &&
-							   transitPeriod.getEndDate().equals(previousTime) &&
-							   transitType == transitPeriod.getAspect();
+								transitPeriod.getEndDate().equals(previousTime) &&
+								transitType == transitPeriod.getAspect();
 					}
 				});
 

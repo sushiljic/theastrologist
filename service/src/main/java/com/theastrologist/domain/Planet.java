@@ -34,6 +34,8 @@ public enum Planet implements SkyArtefact {
     private final int sweConst;
     private static List<Planet> principalePlanets;
     private static List<Planet> secondPlanets;
+    private House masteredHouse;
+    private House secondMasteredHouse;
 
     public int getSweConst() {
         return sweConst;

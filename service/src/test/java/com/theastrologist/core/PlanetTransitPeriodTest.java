@@ -56,7 +56,7 @@ public class PlanetTransitPeriodTest {
 
 		// When
 		builder.startNewPeriod(dateTime);
-		builder.appendPlanetTransit(natalPlanet, planetInTransit, aspectPosition.getAspect());
+		builder.appendPlanetTransit(natalPlanet, planetInTransit, aspectPosition.getAspect(), null, null);
 		TransitPeriods build = builder.build();
 
 		// Then
@@ -89,7 +89,7 @@ public class PlanetTransitPeriodTest {
 				.createTransitPosition(natalPlanet, planetInTransit, natalPlanetPosition, planetInTransitPosition);
 
 		builder.startNewPeriod(dateTime);
-		builder.appendPlanetTransit(planetInTransit, natalPlanet, aspectPosition.getAspect());
+		builder.appendPlanetTransit(planetInTransit, natalPlanet, aspectPosition.getAspect(), null, null);
 
 		PlanetPosition planetInTransitSecondPosition = PlanetPosition
 				.createPlanetPosition(new Degree(239, 50), asDegree);
@@ -99,7 +99,7 @@ public class PlanetTransitPeriodTest {
 									   planetInTransitSecondPosition);
 
 		builder.startNewPeriod(secondDateTime);
-		builder.appendPlanetTransit(planetInTransit, natalPlanet, aspectSecondPosition.getAspect());
+		builder.appendPlanetTransit(planetInTransit, natalPlanet, aspectSecondPosition.getAspect(), null, null);
 
 		// When
 		TransitPeriods build = builder.build();
@@ -135,7 +135,7 @@ public class PlanetTransitPeriodTest {
 				.createTransitPosition(natalPlanet, planetInTransit, natalPlanetPosition, planetInTransitPosition);
 
 		builder.startNewPeriod(dateTime);
-		builder.appendPlanetTransit(natalPlanet, planetInTransit, aspectPosition.getAspect());
+		builder.appendPlanetTransit(natalPlanet, planetInTransit, aspectPosition.getAspect(), null, null);
 
 		PlanetPosition planetInTransitSecondPosition = PlanetPosition
 				.createPlanetPosition(new Degree(201, 36), asDegree);
@@ -145,7 +145,7 @@ public class PlanetTransitPeriodTest {
 									   planetInTransitSecondPosition);
 
 		builder.startNewPeriod(secondDateTime);
-		builder.appendPlanetTransit(natalPlanet, planetInTransit, aspectSecondPosition.getAspect());
+		builder.appendPlanetTransit(natalPlanet, planetInTransit, aspectSecondPosition.getAspect(), null, null);
 
 		// When
 		TransitPeriods build = builder.build();
@@ -225,5 +225,28 @@ public class PlanetTransitPeriodTest {
 		assertThat(planetTransitPeriodList, notNullValue());
 		assertThat(planetTransitPeriodList, not(emptyIterableOf(PlanetTransitPeriod.class)));
 		assertThat(planetTransitPeriodList, hasSize(6));
+	}
+
+	@Test
+	public void testTransitPeriodWithMasteredHouses() throws Exception {
+		// Given
+		SkyPosition natalPosition = ThemeCalculator.getInstance().getSkyPosition(TEST_NATAL_DATE, LATITUDE, LONGITUDE);
+
+		DateTime startDate = DateTime.parse("2014-01-01");
+		DateTime endDate = DateTime.parse("2016-01-01");
+
+		// When
+		TransitPeriods build = TransitPeriodCalculator.getInstance()
+				.createTransitPeriod(natalPosition, startDate, endDate, LATITUDE, LONGITUDE);
+		Map<Planet, SortedSet<PlanetTransitPeriod>> map = build.getPlanetPeriods();
+
+		// Then
+		assertThat(map, hasKey(Planet.MARS));
+		SortedSet<PlanetTransitPeriod> planetTransitPeriodList = map.get(Planet.MARS);
+
+		for (PlanetTransitPeriod planetTransitPeriod : planetTransitPeriodList) {
+			assertThat(planetTransitPeriod.getMasteredHouse(), equalTo(natalPosition.getMasteredHouse(planetTransitPeriod.getNatalPlanet())));
+			assertThat(planetTransitPeriod.getSecondMasteredHouse(), equalTo(natalPosition.getSecondMasteredHouse(planetTransitPeriod.getNatalPlanet())));
+		}
 	}
 }
